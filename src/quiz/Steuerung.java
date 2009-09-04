@@ -13,6 +13,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import main.Biblionaer;
@@ -69,6 +70,25 @@ public class Steuerung implements ActionListener, KeyListener {
 		meinHauptfenster = null;
 		meineKonsole = null;
 		meinSpiel = null;
+
+	}
+
+	public void erstAufrufDerSteuerung() {
+		// Startdialog
+		JOptionPane startDialog = new JOptionPane();
+		int returnOptionDialog = startDialog
+				.showOptionDialog(
+						meinHauptfenster,
+						"Herzlich Willkommen zu \"Wer wird Biblionär\". Zu Beginn wird ein Standardspiel geladen. \nWeitere Spiele können über das Menü geladen werden. Hierzu ist allerdings eine Verbindung zum Internet nötig. \nMit der Verwendung dieses Programmes stimmen Sie zu, nichts davon kommerziell zu verwenden.\n\nViel Spaß beim Spielen, \nIhr Biblionär-Team.",
+						"Herzlich Willkommen", JOptionPane.OK_CANCEL_OPTION,
+						JOptionPane.INFORMATION_MESSAGE, null, null, JOptionPane.OK_OPTION );
+
+		if ( returnOptionDialog == JOptionPane.CANCEL_OPTION
+				|| returnOptionDialog == JOptionPane.CLOSED_OPTION ) {
+			System.exit( 0 );
+		}
+
+		this.actionPerformed( new ActionEvent( this, 0, "Neues Standard-Spiel" ) );
 
 	}
 
