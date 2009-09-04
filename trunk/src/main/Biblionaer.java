@@ -29,5 +29,8 @@ public class Biblionaer {
 
 		// Weiter Einstellungen
 		// meinHauptfenster.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+
+		// Dialog šffnen und Standarspiel starten
+		meineSteuerung.erstAufrufDerSteuerung();
 	}
 }
