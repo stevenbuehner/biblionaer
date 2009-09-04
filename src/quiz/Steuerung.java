@@ -133,7 +133,7 @@ public class Steuerung implements ActionListener, KeyListener {
 		else if ( e.getActionCommand().equals( "Neues Standard-Spiel" ) ) {
 			// Das Spiel direkt aus der SRC-Quelltext-Datei laden
 			XmlToSpiel dasFile = new XmlToSpiel( getClass().getClassLoader().getResource(
-					"importer/quiz.bqxml" ) );
+					"lokaleSpiele/spiel1.txt" ) );
 			meinSpiel = dasFile.getSpiel();
 
 			this.starteNeuesSpiel();
