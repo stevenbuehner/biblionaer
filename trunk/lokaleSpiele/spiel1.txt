@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?><Fragenkatalog>
+<Frage>
+<ID>385</ID>
+<Fragestellung>Wer oder was führte die Weisen nach Bethlehem?</Fragestellung>
+<Antwort1>Ein Stern</Antwort1>
+<Antwort2>Ein Krokodil</Antwort2>
+<Antwort3>Das Schnarchgeräusch von Josef</Antwort3>
+<Antwort4>Ein Raumschiff</Antwort4>
+<richtigeAntwort>1</richtigeAntwort>
+<Bibelstelle>Mat 2,2</Bibelstelle>
+<SchwierigkeitZahl>1</SchwierigkeitZahl>
+<SchwierigkeitText>50 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>268</ID>
+<Fragestellung>Wieso waren die Brüder Josefs sauer auf diesen?</Fragestellung>
+<Antwort1>Ihr Vater schenkte ihm einen Esel.</Antwort1>
+<Antwort2>Josef hatte die schönste Frau.</Antwort2>
+<Antwort3>Josef erhielt eine reiche Erbschaft.</Antwort3>
+<Antwort4>Ihr Vater liebte Josef mehr als sie.</Antwort4>
+<richtigeAntwort>4</richtigeAntwort>
+<Bibelstelle>Gen 37,3ff</Bibelstelle>
+<SchwierigkeitZahl>2</SchwierigkeitZahl>
+<SchwierigkeitText>100 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>404</ID>
+<Fragestellung>Wie hieß der jüngste Sohn von Jakob?</Fragestellung>
+<Antwort1>Abraham</Antwort1>
+<Antwort2>Jakob hatte bloß einen Sohn.</Antwort2>
+<Antwort3>Benjamin</Antwort3>
+<Antwort4>Isaak</Antwort4>
+<richtigeAntwort>3</richtigeAntwort>
+<Bibelstelle>Gen 29,31ff</Bibelstelle>
+<SchwierigkeitZahl>3</SchwierigkeitZahl>
+<SchwierigkeitText>200 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>989</ID>
+<Fragestellung>Welches Buch kommt vor MatthÃ¤us?</Fragestellung>
+<Antwort1>Obadja</Antwort1>
+<Antwort2>Sacharja</Antwort2>
+<Antwort3>Maleachi</Antwort3>
+<Antwort4>Lukas</Antwort4>
+<richtigeAntwort>3</richtigeAntwort>
+<Bibelstelle>Maleachi 1</Bibelstelle>
+<SchwierigkeitZahl>4</SchwierigkeitZahl>
+<SchwierigkeitText>300 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>642</ID>
+<Fragestellung>(Bitte vervollständigen Sie) Himmel und Erde werden vergehen, meine Worte aber ...</Fragestellung>
+<Antwort1>haben noch keinem geschadet.</Antwort1>
+<Antwort2>sind wie Granit.</Antwort2>
+<Antwort3>gelten bis zu meinem Tod.</Antwort3>
+<Antwort4>werden nie vergehen.</Antwort4>
+<richtigeAntwort>4</richtigeAntwort>
+<Bibelstelle>Mat 24.35</Bibelstelle>
+<SchwierigkeitZahl>5</SchwierigkeitZahl>
+<SchwierigkeitText>500 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>945</ID>
+<Fragestellung>In welchem Buch der Bibel kommt die Geschichte</Fragestellung>
+<Antwort1>2. Moses</Antwort1>
+<Antwort2>1.Moses</Antwort2>
+<Antwort3>Samuel</Antwort3>
+<Antwort4>Johannes</Antwort4>
+<richtigeAntwort>2</richtigeAntwort>
+<Bibelstelle>1. Mose 38</Bibelstelle>
+<SchwierigkeitZahl>6</SchwierigkeitZahl>
+<SchwierigkeitText>1.000 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>91</ID>
+<Fragestellung>Welchen Beruf hatte Paulus gelernt?</Fragestellung>
+<Antwort1>Schäfer</Antwort1>
+<Antwort2>Zeltmacher</Antwort2>
+<Antwort3>Fischer</Antwort3>
+<Antwort4>Priester</Antwort4>
+<richtigeAntwort>2</richtigeAntwort>
+<Bibelstelle>Apg 18,3</Bibelstelle>
+<SchwierigkeitZahl>7</SchwierigkeitZahl>
+<SchwierigkeitText>2.000 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>280</ID>
+<Fragestellung>Wer oder was ist Horeb?</Fragestellung>
+<Antwort1>Ein weiser Mann, im Alten Testament</Antwort1>
+<Antwort2>Ein See</Antwort2>
+<Antwort3>Ein Berg</Antwort3>
+<Antwort4>Ein Bruder des Petrus</Antwort4>
+<richtigeAntwort>3</richtigeAntwort>
+<Bibelstelle>Ex 33,6</Bibelstelle>
+<SchwierigkeitZahl>8</SchwierigkeitZahl>
+<SchwierigkeitText>4.000 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>176</ID>
+<Fragestellung>Welches ist das einzige Evangelium, in dem uns Jesus vom verlorenen Sohn berichtet?</Fragestellung>
+<Antwort1>Lukas</Antwort1>
+<Antwort2>Matthäus</Antwort2>
+<Antwort3>Johannes</Antwort3>
+<Antwort4>Markus</Antwort4>
+<richtigeAntwort>1</richtigeAntwort>
+<Bibelstelle>Luk 15,11-32</Bibelstelle>
+<SchwierigkeitZahl>9</SchwierigkeitZahl>
+<SchwierigkeitText>8.000 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>487</ID>
+<Fragestellung>Welchen Jünger Jesu lies der König Herodes umbringen?</Fragestellung>
+<Antwort1>Markus</Antwort1>
+<Antwort2>Jakobus</Antwort2>
+<Antwort3>Petrus</Antwort3>
+<Antwort4>Andreas</Antwort4>
+<richtigeAntwort>2</richtigeAntwort>
+<Bibelstelle>Apostelgeschichte 12,2</Bibelstelle>
+<SchwierigkeitZahl>10</SchwierigkeitZahl>
+<SchwierigkeitText>16.000 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>802</ID>
+<Fragestellung>Wie wurde Daniel in Babylon genannt?</Fragestellung>
+<Antwort1>Asarja</Antwort1>
+<Antwort2>Alles Quatsch!</Antwort2>
+<Antwort3>Belsazar</Antwort3>
+<Antwort4>Belschazar</Antwort4>
+<richtigeAntwort>4</richtigeAntwort>
+<Bibelstelle>Dan 1,7</Bibelstelle>
+<SchwierigkeitZahl>11</SchwierigkeitZahl>
+<SchwierigkeitText>32.000 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>922</ID>
+<Fragestellung>Wer war kein Sohn von Lea?</Fragestellung>
+<Antwort1>Juda</Antwort1>
+<Antwort2>Levi</Antwort2>
+<Antwort3>Simeon</Antwort3>
+<Antwort4>Gad</Antwort4>
+<richtigeAntwort>4</richtigeAntwort>
+<Bibelstelle>Gen. 30,10+11</Bibelstelle>
+<SchwierigkeitZahl>12</SchwierigkeitZahl>
+<SchwierigkeitText>64.000 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>736</ID>
+<Fragestellung>(Vervollständigen Sie) Wer seine Hand an den Pflug legt und sieht zurück, der...</Fragestellung>
+<Antwort1>... wird es zu nichts bringen.</Antwort1>
+<Antwort2>... ist faul.</Antwort2>
+<Antwort3>... kommt nicht ins Himmelreich.</Antwort3>
+<Antwort4>... ist ein Wolf in seinem Volk.</Antwort4>
+<richtigeAntwort>3</richtigeAntwort>
+<Bibelstelle>Lukas 9,62</Bibelstelle>
+<SchwierigkeitZahl>13</SchwierigkeitZahl>
+<SchwierigkeitText>125.000 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>169</ID>
+<Fragestellung>Der gute alte Turm von Babel... aber, wo wurde der eigentlich gebaut?</Fragestellung>
+<Antwort1>Lasha</Antwort1>
+<Antwort2>Chaldäa</Antwort2>
+<Antwort3>Schinar</Antwort3>
+<Antwort4>Edom</Antwort4>
+<richtigeAntwort>3</richtigeAntwort>
+<Bibelstelle>Gen 11,2 puh, ganz schön schwer, gell</Bibelstelle>
+<SchwierigkeitZahl>14</SchwierigkeitZahl>
+<SchwierigkeitText>500.000 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>192</ID>
+<Fragestellung>Welche zwei Männer gerieten im Lager und nicht im Offenbarungszelt in prophetische Verzückung?</Fragestellung>
+<Antwort1>Jered und Levi</Antwort1>
+<Antwort2>Nun und Schelach</Antwort2>
+<Antwort3>Eldad und Medad</Antwort3>
+<Antwort4>Almodad, Schelef</Antwort4>
+<richtigeAntwort>3</richtigeAntwort>
+<Bibelstelle>Num 11,25-29</Bibelstelle>
+<SchwierigkeitZahl>15</SchwierigkeitZahl>
+<SchwierigkeitText>1.000.000 Euro</SchwierigkeitText>
+</Frage>
+</Fragenkatalog>
