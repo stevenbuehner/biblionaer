@@ -1,181 +1,181 @@
 <?xml version="1.0" encoding="UTF-8"?><Fragenkatalog>
 <Frage>
-<ID>385</ID>
-<Fragestellung>Wer oder was f√ºhrte die Weisen nach Bethlehem?</Fragestellung>
-<Antwort1>Ein Stern</Antwort1>
-<Antwort2>Ein Krokodil</Antwort2>
-<Antwort3>Das Schnarchger√§usch von Josef</Antwort3>
-<Antwort4>Ein Raumschiff</Antwort4>
-<richtigeAntwort>1</richtigeAntwort>
-<Bibelstelle>Mat 2,2</Bibelstelle>
+<ID>707</ID>
+<Fragestellung>Was tat Pilatus, bevor er Jesus kreuzigen ließ?</Fragestellung>
+<Antwort1>Er erzählte Jesus einen Söldnerwitz</Antwort1>
+<Antwort2>Er ging aufs Klo</Antwort2>
+<Antwort3>Er trank noch ein Glas Wein mit Jesus</Antwort3>
+<Antwort4>Er wusch sich die Hände</Antwort4>
+<richtigeAntwort>4</richtigeAntwort>
+<Bibelstelle>Mat 27,24</Bibelstelle>
 <SchwierigkeitZahl>1</SchwierigkeitZahl>
 <SchwierigkeitText>50 Euro</SchwierigkeitText>
 </Frage>
 <Frage>
-<ID>268</ID>
-<Fragestellung>Wieso waren die Br√ºder Josefs sauer auf diesen?</Fragestellung>
-<Antwort1>Ihr Vater schenkte ihm einen Esel.</Antwort1>
-<Antwort2>Josef hatte die sch√∂nste Frau.</Antwort2>
-<Antwort3>Josef erhielt eine reiche Erbschaft.</Antwort3>
-<Antwort4>Ihr Vater liebte Josef mehr als sie.</Antwort4>
-<richtigeAntwort>4</richtigeAntwort>
-<Bibelstelle>Gen 37,3ff</Bibelstelle>
+<ID>935</ID>
+<Fragestellung>Zu wem sagte Mose: "Sei getrost und unverzagt."?</Fragestellung>
+<Antwort1>zu Josua</Antwort1>
+<Antwort2>zu Abraham</Antwort2>
+<Antwort3>zu Kaleb</Antwort3>
+<Antwort4>zu Gideon</Antwort4>
+<richtigeAntwort>1</richtigeAntwort>
+<Bibelstelle>5.Mose 34,1-8</Bibelstelle>
 <SchwierigkeitZahl>2</SchwierigkeitZahl>
 <SchwierigkeitText>100 Euro</SchwierigkeitText>
 </Frage>
 <Frage>
-<ID>404</ID>
-<Fragestellung>Wie hie√ü der j√ºngste Sohn von Jakob?</Fragestellung>
-<Antwort1>Abraham</Antwort1>
-<Antwort2>Jakob hatte blo√ü einen Sohn.</Antwort2>
-<Antwort3>Benjamin</Antwort3>
-<Antwort4>Isaak</Antwort4>
-<richtigeAntwort>3</richtigeAntwort>
-<Bibelstelle>Gen 29,31ff</Bibelstelle>
+<ID>437</ID>
+<Fragestellung>Welches ist das letzte Buch der Bibel?</Fragestellung>
+<Antwort1>Das Lukas-Evangelium</Antwort1>
+<Antwort2>Der Prophet Micha</Antwort2>
+<Antwort3>Der Brief des Judas</Antwort3>
+<Antwort4>Die Offenbarung des Johannes</Antwort4>
+<richtigeAntwort>4</richtigeAntwort>
+<Bibelstelle>(Im Inhaltsverzeichnis der Bibel nachschauen ;-) )</Bibelstelle>
 <SchwierigkeitZahl>3</SchwierigkeitZahl>
 <SchwierigkeitText>200 Euro</SchwierigkeitText>
 </Frage>
 <Frage>
-<ID>989</ID>
-<Fragestellung>Welches Buch kommt vor Matth√É¬§us?</Fragestellung>
-<Antwort1>Obadja</Antwort1>
-<Antwort2>Sacharja</Antwort2>
-<Antwort3>Maleachi</Antwort3>
-<Antwort4>Lukas</Antwort4>
-<richtigeAntwort>3</richtigeAntwort>
-<Bibelstelle>Maleachi 1</Bibelstelle>
+<ID>389</ID>
+<Fragestellung>Bei Juden ist es Brauch sich mit "Schalom" zu begrüßen. Was bedeutet das?</Fragestellung>
+<Antwort1>Wurde bis heute nicht genau festgestellt.</Antwort1>
+<Antwort2>Gott wache über dir!</Antwort2>
+<Antwort3>(Ich wünsche dir) Gesundheit!</Antwort3>
+<Antwort4>Friede (sei mit Dir)!</Antwort4>
+<richtigeAntwort>4</richtigeAntwort>
+<Bibelstelle>Richter 6,23</Bibelstelle>
 <SchwierigkeitZahl>4</SchwierigkeitZahl>
 <SchwierigkeitText>300 Euro</SchwierigkeitText>
 </Frage>
 <Frage>
-<ID>642</ID>
-<Fragestellung>(Bitte vervollst√§ndigen Sie) Himmel und Erde werden vergehen, meine Worte aber ...</Fragestellung>
-<Antwort1>haben noch keinem geschadet.</Antwort1>
-<Antwort2>sind wie Granit.</Antwort2>
-<Antwort3>gelten bis zu meinem Tod.</Antwort3>
-<Antwort4>werden nie vergehen.</Antwort4>
+<ID>436</ID>
+<Fragestellung>Wann wird der Heilige Geist zum ersten Mal in der Bibel erwähnt?</Fragestellung>
+<Antwort1>Gar nicht</Antwort1>
+<Antwort2>Apostelgeschichte</Antwort2>
+<Antwort3>Offenbarung</Antwort3>
+<Antwort4>1. Mose</Antwort4>
 <richtigeAntwort>4</richtigeAntwort>
-<Bibelstelle>Mat 24.35</Bibelstelle>
+<Bibelstelle>1Mo 1,2</Bibelstelle>
 <SchwierigkeitZahl>5</SchwierigkeitZahl>
 <SchwierigkeitText>500 Euro</SchwierigkeitText>
 </Frage>
 <Frage>
-<ID>945</ID>
-<Fragestellung>In welchem Buch der Bibel kommt die Geschichte</Fragestellung>
-<Antwort1>2. Moses</Antwort1>
-<Antwort2>1.Moses</Antwort2>
-<Antwort3>Samuel</Antwort3>
-<Antwort4>Johannes</Antwort4>
-<richtigeAntwort>2</richtigeAntwort>
-<Bibelstelle>1. Mose 38</Bibelstelle>
+<ID>451</ID>
+<Fragestellung>Vervollständige!: Denn für mich ist Christus das Leben, und das Sterben ist ...</Fragestellung>
+<Antwort1>... mein Ziel.</Antwort1>
+<Antwort2>... mein Sieg.</Antwort2>
+<Antwort3>... mein Gewinn.</Antwort3>
+<Antwort4>... meine Freude.</Antwort4>
+<richtigeAntwort>3</richtigeAntwort>
+<Bibelstelle>Phil 1,21</Bibelstelle>
 <SchwierigkeitZahl>6</SchwierigkeitZahl>
 <SchwierigkeitText>1.000 Euro</SchwierigkeitText>
 </Frage>
 <Frage>
-<ID>91</ID>
-<Fragestellung>Welchen Beruf hatte Paulus gelernt?</Fragestellung>
-<Antwort1>Sch√§fer</Antwort1>
-<Antwort2>Zeltmacher</Antwort2>
-<Antwort3>Fischer</Antwort3>
-<Antwort4>Priester</Antwort4>
-<richtigeAntwort>2</richtigeAntwort>
-<Bibelstelle>Apg 18,3</Bibelstelle>
+<ID>528</ID>
+<Fragestellung>Wer wird uns in der Bibel als (Ver)Mittler zwischen Gott und den Menschen beschrieben?</Fragestellung>
+<Antwort1>Der Glaube</Antwort1>
+<Antwort2>Der Heilige Geist</Antwort2>
+<Antwort3>Jesus Christus</Antwort3>
+<Antwort4>Die Apostel</Antwort4>
+<richtigeAntwort>3</richtigeAntwort>
+<Bibelstelle>1.Tim 2,5</Bibelstelle>
 <SchwierigkeitZahl>7</SchwierigkeitZahl>
 <SchwierigkeitText>2.000 Euro</SchwierigkeitText>
 </Frage>
 <Frage>
-<ID>280</ID>
-<Fragestellung>Wer oder was ist Horeb?</Fragestellung>
-<Antwort1>Ein weiser Mann, im Alten Testament</Antwort1>
-<Antwort2>Ein See</Antwort2>
-<Antwort3>Ein Berg</Antwort3>
-<Antwort4>Ein Bruder des Petrus</Antwort4>
-<richtigeAntwort>3</richtigeAntwort>
-<Bibelstelle>Ex 33,6</Bibelstelle>
+<ID>871</ID>
+<Fragestellung>In dem Moment als Jesus im Garten Gethsemane verhaftet wurde, waren wie viele seiner Leute noch anwesend?</Fragestellung>
+<Antwort1>Einer</Antwort1>
+<Antwort2>Keiner mehr</Antwort2>
+<Antwort3>Alle 12 Jünger</Antwort3>
+<Antwort4>Nur Maria Magdala</Antwort4>
+<richtigeAntwort>1</richtigeAntwort>
+<Bibelstelle>Mark 14,51</Bibelstelle>
 <SchwierigkeitZahl>8</SchwierigkeitZahl>
 <SchwierigkeitText>4.000 Euro</SchwierigkeitText>
 </Frage>
 <Frage>
-<ID>176</ID>
-<Fragestellung>Welches ist das einzige Evangelium, in dem uns Jesus vom verlorenen Sohn berichtet?</Fragestellung>
-<Antwort1>Lukas</Antwort1>
-<Antwort2>Matth√§us</Antwort2>
-<Antwort3>Johannes</Antwort3>
-<Antwort4>Markus</Antwort4>
-<richtigeAntwort>1</richtigeAntwort>
-<Bibelstelle>Luk 15,11-32</Bibelstelle>
+<ID>161</ID>
+<Fragestellung>Wieviel Silbergroschen (Drachmen) besitzt eine Frau in einem von Jesu Gleichnissen?</Fragestellung>
+<Antwort1>33</Antwort1>
+<Antwort2>12</Antwort2>
+<Antwort3>100</Antwort3>
+<Antwort4>10</Antwort4>
+<richtigeAntwort>4</richtigeAntwort>
+<Bibelstelle>Lk 15,8 (Die Drachme war eine griechische Silbermünze; sie entsprach einem Denar, dem Tagesverdienst.)</Bibelstelle>
 <SchwierigkeitZahl>9</SchwierigkeitZahl>
 <SchwierigkeitText>8.000 Euro</SchwierigkeitText>
 </Frage>
 <Frage>
-<ID>487</ID>
-<Fragestellung>Welchen J√ºnger Jesu lies der K√∂nig Herodes umbringen?</Fragestellung>
-<Antwort1>Markus</Antwort1>
-<Antwort2>Jakobus</Antwort2>
-<Antwort3>Petrus</Antwort3>
-<Antwort4>Andreas</Antwort4>
-<richtigeAntwort>2</richtigeAntwort>
-<Bibelstelle>Apostelgeschichte 12,2</Bibelstelle>
+<ID>197</ID>
+<Fragestellung>Wie hieß der Mann, der sich um Ester kümmerte bevor sie ins Königshaus kam?</Fragestellung>
+<Antwort1>Melchisedesch</Antwort1>
+<Antwort2>Malachias</Antwort2>
+<Antwort3>Menasse</Antwort3>
+<Antwort4>Mordechai</Antwort4>
+<richtigeAntwort>4</richtigeAntwort>
+<Bibelstelle>Ester 2</Bibelstelle>
 <SchwierigkeitZahl>10</SchwierigkeitZahl>
 <SchwierigkeitText>16.000 Euro</SchwierigkeitText>
 </Frage>
 <Frage>
-<ID>802</ID>
-<Fragestellung>Wie wurde Daniel in Babylon genannt?</Fragestellung>
-<Antwort1>Asarja</Antwort1>
-<Antwort2>Alles Quatsch!</Antwort2>
-<Antwort3>Belsazar</Antwort3>
-<Antwort4>Belschazar</Antwort4>
-<richtigeAntwort>4</richtigeAntwort>
-<Bibelstelle>Dan 1,7</Bibelstelle>
+<ID>878</ID>
+<Fragestellung>Welcher Mann war als erster Mensch, in der Bibel festgehalten, betrunken?</Fragestellung>
+<Antwort1>Boas</Antwort1>
+<Antwort2>Noah</Antwort2>
+<Antwort3>Abraham</Antwort3>
+<Antwort4>Set</Antwort4>
+<richtigeAntwort>2</richtigeAntwort>
+<Bibelstelle>1Mo 9,21</Bibelstelle>
 <SchwierigkeitZahl>11</SchwierigkeitZahl>
 <SchwierigkeitText>32.000 Euro</SchwierigkeitText>
 </Frage>
 <Frage>
-<ID>922</ID>
-<Fragestellung>Wer war kein Sohn von Lea?</Fragestellung>
-<Antwort1>Juda</Antwort1>
-<Antwort2>Levi</Antwort2>
-<Antwort3>Simeon</Antwort3>
-<Antwort4>Gad</Antwort4>
-<richtigeAntwort>4</richtigeAntwort>
-<Bibelstelle>Gen. 30,10+11</Bibelstelle>
+<ID>904</ID>
+<Fragestellung>In welchem Gebäude berieten sich die Hohepriester und Führer des Volkes um Jesu heimlich zu verhaften und zu töten?</Fragestellung>
+<Antwort1>im hinteren Teil des Tempels</Antwort1>
+<Antwort2>in einem Palast</Antwort2>
+<Antwort3>im jüdischen Gerichtssaal</Antwort3>
+<Antwort4>im Garten Getsemane</Antwort4>
+<richtigeAntwort>2</richtigeAntwort>
+<Bibelstelle>Mat 26,3 (und der gehörte dem Hohepriester Kaiphas)</Bibelstelle>
 <SchwierigkeitZahl>12</SchwierigkeitZahl>
 <SchwierigkeitText>64.000 Euro</SchwierigkeitText>
 </Frage>
 <Frage>
-<ID>736</ID>
-<Fragestellung>(Vervollst√§ndigen Sie) Wer seine Hand an den Pflug legt und sieht zur√ºck, der...</Fragestellung>
-<Antwort1>... wird es zu nichts bringen.</Antwort1>
-<Antwort2>... ist faul.</Antwort2>
-<Antwort3>... kommt nicht ins Himmelreich.</Antwort3>
-<Antwort4>... ist ein Wolf in seinem Volk.</Antwort4>
-<richtigeAntwort>3</richtigeAntwort>
-<Bibelstelle>Lukas 9,62</Bibelstelle>
+<ID>78</ID>
+<Fragestellung>Wie hieß die Mutter von Samuel aus der Bibel?</Fragestellung>
+<Antwort1>Rebekka</Antwort1>
+<Antwort2>Hanna</Antwort2>
+<Antwort3>Debora</Antwort3>
+<Antwort4>Ruth</Antwort4>
+<richtigeAntwort>2</richtigeAntwort>
+<Bibelstelle>1. Samuel 1,20</Bibelstelle>
 <SchwierigkeitZahl>13</SchwierigkeitZahl>
 <SchwierigkeitText>125.000 Euro</SchwierigkeitText>
 </Frage>
 <Frage>
-<ID>169</ID>
-<Fragestellung>Der gute alte Turm von Babel... aber, wo wurde der eigentlich gebaut?</Fragestellung>
-<Antwort1>Lasha</Antwort1>
-<Antwort2>Chald√§a</Antwort2>
-<Antwort3>Schinar</Antwort3>
-<Antwort4>Edom</Antwort4>
-<richtigeAntwort>3</richtigeAntwort>
-<Bibelstelle>Gen 11,2 puh, ganz sch√∂n schwer, gell</Bibelstelle>
+<ID>58</ID>
+<Fragestellung>Welche Verheißung gibt Jesus der Gemeinde in Ephesus?</Fragestellung>
+<Antwort1>Du wirst ein weißes Kleid tragen</Antwort1>
+<Antwort2>Der ewige Tod wird Dir nichts anhaben</Antwort2>
+<Antwort3>Du wirst Macht über die Völer der Erde haben</Antwort3>
+<Antwort4>Du wirst Früchte vom Baum des Lebens essen</Antwort4>
+<richtigeAntwort>4</richtigeAntwort>
+<Bibelstelle>Off 2,7</Bibelstelle>
 <SchwierigkeitZahl>14</SchwierigkeitZahl>
 <SchwierigkeitText>500.000 Euro</SchwierigkeitText>
 </Frage>
 <Frage>
-<ID>192</ID>
-<Fragestellung>Welche zwei M√§nner gerieten im Lager und nicht im Offenbarungszelt in prophetische Verz√ºckung?</Fragestellung>
-<Antwort1>Jered und Levi</Antwort1>
-<Antwort2>Nun und Schelach</Antwort2>
-<Antwort3>Eldad und Medad</Antwort3>
-<Antwort4>Almodad, Schelef</Antwort4>
-<richtigeAntwort>3</richtigeAntwort>
-<Bibelstelle>Num 11,25-29</Bibelstelle>
+<ID>733</ID>
+<Fragestellung>Was passt nicht zu dem ersten Reiter in der Offenbarung?</Fragestellung>
+<Antwort1>Er hatte einen Bogen</Antwort1>
+<Antwort2>Er hatte eine Krone</Antwort2>
+<Antwort3>Sein Pferd war weiß</Antwort3>
+<Antwort4>Er hatte die Macht den Frieden zu nehmen</Antwort4>
+<richtigeAntwort>4</richtigeAntwort>
+<Bibelstelle>Offb 6,2</Bibelstelle>
 <SchwierigkeitZahl>15</SchwierigkeitZahl>
 <SchwierigkeitText>1.000.000 Euro</SchwierigkeitText>
 </Frage>
