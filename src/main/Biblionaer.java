@@ -4,6 +4,7 @@ import quiz.Steuerung;
 import GUI.Einstellungen;
 import GUI.Hauptfenster;
 import GUI.Konsole;
+import GUI.SinglePlayerSchirm;
 
 public class Biblionaer {
 
@@ -19,7 +20,7 @@ public class Biblionaer {
 
 		// Alle anderen Fenster und Objekte erstellen
 		meineEinstellungen = new Einstellungen( "Einstellungen", meineSteuerung );
-		meinHauptfenster = new Hauptfenster( "Hauptfenster", 678, 549, meineSteuerung );
+		meinHauptfenster = new SinglePlayerSchirm( "Hauptfenster", 678, 549, meineSteuerung );
 		meineKonsole = new Konsole( meineSteuerung );
 
 		// Steuerung mit den nötigen Objekten verknüpfen

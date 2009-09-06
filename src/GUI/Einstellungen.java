@@ -294,7 +294,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 		// Ping anzeigen
 		lbl = new JLabel( "Ping anzeigen" );
 		quizDebugging.add( lbl );
-		quizPingAnzeigen = new JCheckBox( "Ping anzeigen", true );
+		quizPingAnzeigen = new JCheckBox( "Ping anzeigen", false );
 		quizPingAnzeigen
 				.setToolTipText( "Zeigt die Verzšgerung des Computers im rechten oberen Eck des Fensters an. Je kleiner die Zahl, desto besser." );
 		quizDebugging.add( quizPingAnzeigen );
