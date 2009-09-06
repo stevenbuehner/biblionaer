@@ -74,19 +74,19 @@ public class SinglePlayerSchirm extends Hauptfenster implements Runnable, MouseL
 		this.ecLogoPanel = new QuizRoundLogo( ecLogo, 15, 15, -1, this );
 
 		BufferedImage[] quizImgQuestionBlau = lib.getSprite( "img/fragePanelBlau.png", 3, 1 );
-		quizQuestionPanel = new quizPanelFrage( quizImgQuestionBlau, -1, this, null );
+		quizQuestionPanel = new QuizPanelFrage( quizImgQuestionBlau, -1, this, null );
 		quizQuestionPanel.setLoop( QuizPanel.BLAU, QuizPanel.BLAU );
 
 		int antPosY = 300; // Antwortpositionierung
 
 		BufferedImage[] quizAnswerPanelBlau = lib.getSprite( "img/antwortPanelBlau.png", 3, 1 );
-		quizAnswerPanel1 = new quizPanelAntwort( quizAnswerPanelBlau, -quizAnswerPanelBlau[0]
+		quizAnswerPanel1 = new QuizPanelAntwort( quizAnswerPanelBlau, -quizAnswerPanelBlau[0]
 				.getWidth(), antPosY, 10, antPosY, -1, this, null );
-		quizAnswerPanel3 = new quizPanelAntwort( quizAnswerPanelBlau, -quizAnswerPanelBlau[0]
+		quizAnswerPanel3 = new QuizPanelAntwort( quizAnswerPanelBlau, -quizAnswerPanelBlau[0]
 				.getWidth(), (antPosY + 50), 10, (antPosY + 50), -1, this, null );
-		quizAnswerPanel2 = new quizPanelAntwort( quizAnswerPanelBlau, this.frame.getWidth(),
+		quizAnswerPanel2 = new QuizPanelAntwort( quizAnswerPanelBlau, this.frame.getWidth(),
 				antPosY, quizAnswerPanelBlau[0].getWidth(), antPosY, -1, this, null );
-		quizAnswerPanel4 = new quizPanelAntwort( quizAnswerPanelBlau, this.frame.getWidth(),
+		quizAnswerPanel4 = new QuizPanelAntwort( quizAnswerPanelBlau, this.frame.getWidth(),
 				(antPosY + 50), quizAnswerPanelBlau[0].getWidth(), (antPosY + 50), -1, this, null );
 
 		quizAnswerPanel1.setLoop( QuizPanel.BLAU, QuizPanel.BLAU );
@@ -97,13 +97,13 @@ public class SinglePlayerSchirm extends Hauptfenster implements Runnable, MouseL
 		// Joker initialisieren
 		int JokerPosX = 400;
 		int JokerPosY = 17;
-		quizFiftyJokerPanel = new quizPanelJoker( lib.getSprite( "img/fiftyJoker.png", 3, 1 ),
+		quizFiftyJokerPanel = new QuizPanelJoker( lib.getSprite( "img/fiftyJoker.png", 3, 1 ),
 				JokerPosX, JokerPosY, this );
-		quizTippJokerPanel = new quizPanelJoker( lib.getSprite( "img/tippJoker.png", 3, 1 ),
+		quizTippJokerPanel = new QuizPanelJoker( lib.getSprite( "img/tippJoker.png", 3, 1 ),
 				JokerPosX + 90, JokerPosY, this );
 		// quizStatistikJokerPanel = new quizPanelJoker( lib.getSprite(
 		// "img/statistikJoker.png", 3, 1 ), JokerPosX + 180, JokerPosY, this );
-		quizPubplikumsJoker = new quizPanelJoker( lib.getSprite( "img/puplikumsJoker.png", 3, 1 ),
+		quizPubplikumsJoker = new QuizPanelJoker( lib.getSprite( "img/puplikumsJoker.png", 3, 1 ),
 				JokerPosX + 180, JokerPosY, this );
 
 		// Bibelstelle

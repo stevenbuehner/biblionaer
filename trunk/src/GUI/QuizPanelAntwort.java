@@ -7,12 +7,12 @@ import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.util.Vector;
 
-public class quizPanelAntwort extends QuizPanel {
+public class QuizPanelAntwort extends QuizPanel {
 
 	public final int	SPEED			= 300;
 	private String		ausgabeString	= null;
 
-	public quizPanelAntwort(BufferedImage i, double xPos, double yPos, double xZielPos,
+	public QuizPanelAntwort(BufferedImage i, double xPos, double yPos, double xZielPos,
 			double yZielPos, long delay, Hauptfenster p, String pAusgabeString) {
 		super( i, xPos, yPos, delay, p );
 
@@ -29,7 +29,7 @@ public class quizPanelAntwort extends QuizPanel {
 		}
 	}
 
-	public quizPanelAntwort(BufferedImage[] i, double xPos, double yPos, double xZielPos,
+	public QuizPanelAntwort(BufferedImage[] i, double xPos, double yPos, double xZielPos,
 			double yZielPos, long delay, Hauptfenster p, String pAusgabeString) {
 		super( i, xPos, yPos, delay, p );
 		// TODO Auto-generated constructor stub

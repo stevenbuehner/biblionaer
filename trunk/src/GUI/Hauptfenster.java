@@ -47,18 +47,18 @@ public abstract class Hauptfenster extends Canvas {
 
 	QuizRoundLogo					ecLogoPanel;
 
-	public quizPanelFrage			quizQuestionPanel;
-	public quizPanelAntwort			quizAnswerPanel1;
-	public quizPanelAntwort			quizAnswerPanel2;
-	public quizPanelAntwort			quizAnswerPanel3;
-	public quizPanelAntwort			quizAnswerPanel4;
+	public QuizPanelFrage			quizQuestionPanel;
+	public QuizPanelAntwort			quizAnswerPanel1;
+	public QuizPanelAntwort			quizAnswerPanel2;
+	public QuizPanelAntwort			quizAnswerPanel3;
+	public QuizPanelAntwort			quizAnswerPanel4;
 	public QuizTippPanel			quizTipp;
 	protected QuizStatusTextPanel	quizStatusTextPanel;
 
-	public quizPanelJoker			quizFiftyJokerPanel;
-	public quizPanelJoker			quizTippJokerPanel;
-	public quizPanelJoker			quizStatistikJokerPanel;
-	public quizPanelJoker			quizPubplikumsJoker;
+	public QuizPanelJoker			quizFiftyJokerPanel;
+	public QuizPanelJoker			quizTippJokerPanel;
+	public QuizPanelJoker			quizStatistikJokerPanel;
+	public QuizPanelJoker			quizPubplikumsJoker;
 
 	public Hauptfenster() {
 		// TODO Auto-generated constructor stub
