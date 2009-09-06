@@ -5,7 +5,7 @@ import java.awt.MenuBar;
 
 import quiz.Quizfrage;
 
-public class Vollbildschirm extends Hauptfenster {
+public class VollbildSchirm extends Hauptfenster {
 
 	/**
 	 * 

@@ -9,10 +9,10 @@ import java.util.Vector;
 
 import quiz.Quizfrage;
 
-public class quizPanelFrage extends QuizPanel {
+public class QuizPanelFrage extends QuizPanel {
 	protected Quizfrage	frage;
 
-	public quizPanelFrage(BufferedImage i, long delay, Hauptfenster p, Quizfrage frage) {
+	public QuizPanelFrage(BufferedImage i, long delay, Hauptfenster p, Quizfrage frage) {
 		super( i, 13, (double) i.getHeight() * -1, delay, p );
 
 		this.frage = frage;
@@ -25,7 +25,7 @@ public class quizPanelFrage extends QuizPanel {
 		this.createKlickPolygon();
 	}
 
-	public quizPanelFrage(BufferedImage[] i, long delay, Hauptfenster p, Quizfrage frage) {
+	public QuizPanelFrage(BufferedImage[] i, long delay, Hauptfenster p, Quizfrage frage) {
 		super( i, 13, (double) i[0].getHeight() * -1, delay, p );
 
 		this.frage = frage;

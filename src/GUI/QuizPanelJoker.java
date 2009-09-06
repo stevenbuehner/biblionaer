@@ -3,16 +3,16 @@ package GUI;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 
-public class quizPanelJoker extends QuizPanel {
+public class QuizPanelJoker extends QuizPanel {
 
-	public quizPanelJoker(BufferedImage[] i, double x, double y, Hauptfenster p) {
+	public QuizPanelJoker(BufferedImage[] i, double x, double y, Hauptfenster p) {
 		super( i, x, y, 10, p );
 
 		loop_from = 0;
 		loop_to = 0;
 	}
 
-	public quizPanelJoker(BufferedImage i, double x, double y, Hauptfenster p) {
+	public QuizPanelJoker(BufferedImage i, double x, double y, Hauptfenster p) {
 		super( i, x, y, 10, p );
 
 		loop_from = 0;
