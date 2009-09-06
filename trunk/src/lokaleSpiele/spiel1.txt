@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><Fragenkatalog>
 <Frage>
 <ID>707</ID>
-<Fragestellung>Was tat Pilatus, bevor er Jesus kreuzigen ließ?</Fragestellung>
-<Antwort1>Er erzählte Jesus einen Söldnerwitz</Antwort1>
+<Fragestellung>Was tat Pilatus, bevor er Jesus kreuzigen lie√ü?</Fragestellung>
+<Antwort1>Er erz√§hlte Jesus einen S√∂ldnerwitz</Antwort1>
 <Antwort2>Er ging aufs Klo</Antwort2>
 <Antwort3>Er trank noch ein Glas Wein mit Jesus</Antwort3>
-<Antwort4>Er wusch sich die Hände</Antwort4>
+<Antwort4>Er wusch sich die H√§nde</Antwort4>
 <richtigeAntwort>4</richtigeAntwort>
 <Bibelstelle>Mat 27,24</Bibelstelle>
 <SchwierigkeitZahl>1</SchwierigkeitZahl>
@@ -37,10 +37,10 @@
 </Frage>
 <Frage>
 <ID>389</ID>
-<Fragestellung>Bei Juden ist es Brauch sich mit "Schalom" zu begrüßen. Was bedeutet das?</Fragestellung>
+<Fragestellung>Bei Juden ist es Brauch sich mit "Schalom" zu begr√º√üen. Was bedeutet das?</Fragestellung>
 <Antwort1>Wurde bis heute nicht genau festgestellt.</Antwort1>
-<Antwort2>Gott wache über dir!</Antwort2>
-<Antwort3>(Ich wünsche dir) Gesundheit!</Antwort3>
+<Antwort2>Gott wache √ºber dir!</Antwort2>
+<Antwort3>(Ich w√ºnsche dir) Gesundheit!</Antwort3>
 <Antwort4>Friede (sei mit Dir)!</Antwort4>
 <richtigeAntwort>4</richtigeAntwort>
 <Bibelstelle>Richter 6,23</Bibelstelle>
@@ -49,7 +49,7 @@
 </Frage>
 <Frage>
 <ID>436</ID>
-<Fragestellung>Wann wird der Heilige Geist zum ersten Mal in der Bibel erwähnt?</Fragestellung>
+<Fragestellung>Wann wird der Heilige Geist zum ersten Mal in der Bibel erw√§hnt?</Fragestellung>
 <Antwort1>Gar nicht</Antwort1>
 <Antwort2>Apostelgeschichte</Antwort2>
 <Antwort3>Offenbarung</Antwort3>
@@ -61,7 +61,7 @@
 </Frage>
 <Frage>
 <ID>451</ID>
-<Fragestellung>Vervollständige!: Denn für mich ist Christus das Leben, und das Sterben ist ...</Fragestellung>
+<Fragestellung>Vervollst√§ndige!: Denn f√ºr mich ist Christus das Leben, und das Sterben ist ...</Fragestellung>
 <Antwort1>... mein Ziel.</Antwort1>
 <Antwort2>... mein Sieg.</Antwort2>
 <Antwort3>... mein Gewinn.</Antwort3>
@@ -88,7 +88,7 @@
 <Fragestellung>In dem Moment als Jesus im Garten Gethsemane verhaftet wurde, waren wie viele seiner Leute noch anwesend?</Fragestellung>
 <Antwort1>Einer</Antwort1>
 <Antwort2>Keiner mehr</Antwort2>
-<Antwort3>Alle 12 Jünger</Antwort3>
+<Antwort3>Alle 12 J√ºnger</Antwort3>
 <Antwort4>Nur Maria Magdala</Antwort4>
 <richtigeAntwort>1</richtigeAntwort>
 <Bibelstelle>Mark 14,51</Bibelstelle>
@@ -103,13 +103,13 @@
 <Antwort3>100</Antwort3>
 <Antwort4>10</Antwort4>
 <richtigeAntwort>4</richtigeAntwort>
-<Bibelstelle>Lk 15,8 (Die Drachme war eine griechische Silbermünze; sie entsprach einem Denar, dem Tagesverdienst.)</Bibelstelle>
+<Bibelstelle>Lk 15,8 (Die Drachme war eine griechische Silberm√ºnze; sie entsprach einem Denar, dem Tagesverdienst.)</Bibelstelle>
 <SchwierigkeitZahl>9</SchwierigkeitZahl>
 <SchwierigkeitText>8.000 Euro</SchwierigkeitText>
 </Frage>
 <Frage>
 <ID>197</ID>
-<Fragestellung>Wie hieß der Mann, der sich um Ester kümmerte bevor sie ins Königshaus kam?</Fragestellung>
+<Fragestellung>Wie hie√ü der Mann, der sich um Ester k√ºmmerte bevor sie ins K√∂nigshaus kam?</Fragestellung>
 <Antwort1>Melchisedesch</Antwort1>
 <Antwort2>Malachias</Antwort2>
 <Antwort3>Menasse</Antwort3>
@@ -133,19 +133,19 @@
 </Frage>
 <Frage>
 <ID>904</ID>
-<Fragestellung>In welchem Gebäude berieten sich die Hohepriester und Führer des Volkes um Jesu heimlich zu verhaften und zu töten?</Fragestellung>
+<Fragestellung>In welchem Geb√§ude berieten sich die Hohepriester und F√ºhrer des Volkes um Jesu heimlich zu verhaften und zu t√∂ten?</Fragestellung>
 <Antwort1>im hinteren Teil des Tempels</Antwort1>
 <Antwort2>in einem Palast</Antwort2>
-<Antwort3>im jüdischen Gerichtssaal</Antwort3>
+<Antwort3>im j√ºdischen Gerichtssaal</Antwort3>
 <Antwort4>im Garten Getsemane</Antwort4>
 <richtigeAntwort>2</richtigeAntwort>
-<Bibelstelle>Mat 26,3 (und der gehörte dem Hohepriester Kaiphas)</Bibelstelle>
+<Bibelstelle>Mat 26,3 (und der geh√∂rte dem Hohepriester Kaiphas)</Bibelstelle>
 <SchwierigkeitZahl>12</SchwierigkeitZahl>
 <SchwierigkeitText>64.000 Euro</SchwierigkeitText>
 </Frage>
 <Frage>
 <ID>78</ID>
-<Fragestellung>Wie hieß die Mutter von Samuel aus der Bibel?</Fragestellung>
+<Fragestellung>Wie hie√ü die Mutter von Samuel aus der Bibel?</Fragestellung>
 <Antwort1>Rebekka</Antwort1>
 <Antwort2>Hanna</Antwort2>
 <Antwort3>Debora</Antwort3>
@@ -157,11 +157,11 @@
 </Frage>
 <Frage>
 <ID>58</ID>
-<Fragestellung>Welche Verheißung gibt Jesus der Gemeinde in Ephesus?</Fragestellung>
-<Antwort1>Du wirst ein weißes Kleid tragen</Antwort1>
+<Fragestellung>Welche Verhei√üung gibt Jesus der Gemeinde in Ephesus?</Fragestellung>
+<Antwort1>Du wirst ein wei√ües Kleid tragen</Antwort1>
 <Antwort2>Der ewige Tod wird Dir nichts anhaben</Antwort2>
-<Antwort3>Du wirst Macht über die Völer der Erde haben</Antwort3>
-<Antwort4>Du wirst Früchte vom Baum des Lebens essen</Antwort4>
+<Antwort3>Du wirst Macht √ºber die V√∂ler der Erde haben</Antwort3>
+<Antwort4>Du wirst Fr√ºchte vom Baum des Lebens essen</Antwort4>
 <richtigeAntwort>4</richtigeAntwort>
 <Bibelstelle>Off 2,7</Bibelstelle>
 <SchwierigkeitZahl>14</SchwierigkeitZahl>
@@ -172,7 +172,7 @@
 <Fragestellung>Was passt nicht zu dem ersten Reiter in der Offenbarung?</Fragestellung>
 <Antwort1>Er hatte einen Bogen</Antwort1>
 <Antwort2>Er hatte eine Krone</Antwort2>
-<Antwort3>Sein Pferd war weiß</Antwort3>
+<Antwort3>Sein Pferd war wei√ü</Antwort3>
 <Antwort4>Er hatte die Macht den Frieden zu nehmen</Antwort4>
 <richtigeAntwort>4</richtigeAntwort>
 <Bibelstelle>Offb 6,2</Bibelstelle>
