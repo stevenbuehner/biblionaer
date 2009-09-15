@@ -1,16 +1,15 @@
 package main;
 
 import quiz.Steuerung;
-import GUI.Einstellungen;
-import GUI.Hauptfenster;
-import GUI.Konsole;
-import GUI.SinglePlayerSchirm;
+import window.Einstellungen;
+import window.Konsole;
+import window.SinglePlayerSchirm;
 
 public class Biblionaer {
 
 	public static Steuerung		meineSteuerung;
 	public static Einstellungen	meineEinstellungen;
-	public static Hauptfenster	meinHauptfenster;
+	public static SinglePlayerSchirm	meinHauptfenster;
 	public static Konsole		meineKonsole;
 
 	public static void main(String[] args) {
