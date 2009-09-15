@@ -19,15 +19,15 @@ import javax.swing.filechooser.FileFilter;
 import main.Biblionaer;
 import timer.PuplikumsJokerCountdown;
 import timer.TippJokerCountdown;
-import GUI.Einstellungen;
-import GUI.Hauptfenster;
-import GUI.Konsole;
-import GUI.QuizPanel;
+import window.Einstellungen;
+import window.Konsole;
+import window.SinglePlayerSchirm;
+import windowElements.QuizPanel;
 
 public class Steuerung implements ActionListener, KeyListener {
 
 	protected Einstellungen			meineEinstellungen;
-	protected Hauptfenster			meinHauptfenster;
+	protected SinglePlayerSchirm	meinHauptfenster;
 	protected Konsole				meineKonsole;
 	protected Spiel					meinSpiel;
 
@@ -48,11 +48,11 @@ public class Steuerung implements ActionListener, KeyListener {
 		this.meineEinstellungen = pEinstellungen;
 	}
 
-	public Hauptfenster getHauptfenster() {
+	public SinglePlayerSchirm getHauptfenster() {
 		return meinHauptfenster;
 	}
 
-	public void setHauptfenster(Hauptfenster pHauptfenster) {
+	public void setHauptfenster(SinglePlayerSchirm pHauptfenster) {
 		this.meinHauptfenster = pHauptfenster;
 	}
 
@@ -192,28 +192,15 @@ public class Steuerung implements ActionListener, KeyListener {
 
 			// Falls ein Timer noch läuft, beende ihn
 			this.loescheAlleTimer();
-			meinHauptfenster.setStatusText( "" );
 
 			meinHauptfenster.setStatusText( null );
 
-			if ( meinHauptfenster.quizFiftyJokerPanel != null )
-				meinHauptfenster.quizFiftyJokerPanel.resetJoker();
+			meinHauptfenster.resetAlleJoker();
+			meinHauptfenster.setFrageFeldSichtbar( true );
+			meinHauptfenster.setAntwortenSichtbar( true );
+			meinHauptfenster.setAntwortfelderNormal();
 
-			if ( meinHauptfenster.quizStatistikJokerPanel != null )
-				meinHauptfenster.quizStatistikJokerPanel.resetJoker();
-
-			if ( meinHauptfenster.quizTippJokerPanel != null )
-				meinHauptfenster.quizTippJokerPanel.resetJoker();
-
-			if ( meinHauptfenster.quizPubplikumsJoker != null )
-				meinHauptfenster.quizPubplikumsJoker.resetJoker();
-
-			meinHauptfenster.quizAnswerPanel1.zeigeBlau();
-			meinHauptfenster.quizAnswerPanel2.zeigeBlau();
-			meinHauptfenster.quizAnswerPanel3.zeigeBlau();
-			meinHauptfenster.quizAnswerPanel4.zeigeBlau();
-
-			meinHauptfenster.frageAnzeigen( meinSpiel.getAktuelleFrageAnzuzeigen(), true );
+			meinHauptfenster.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), true );
 		}
 		else {
 			Biblionaer.meineKonsole
@@ -250,7 +237,7 @@ public class Steuerung implements ActionListener, KeyListener {
 			// neue Fragen laden
 
 			if ( meinSpiel.setNaechsteFrage() ) {
-				meinHauptfenster.frageAnzeigen( meinSpiel.getAktuelleFrageAnzuzeigen(), true );
+				meinHauptfenster.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), true );
 			}
 		}
 
@@ -281,11 +268,13 @@ public class Steuerung implements ActionListener, KeyListener {
 			if ( meinSpiel.istAktuelleAntwort( klickFeld ) ) {
 				// Frage richtig beantwortet
 				klickAufRichtigeAntwort();
+				meinHauptfenster.playFrageRichtig();
 			}
 
 			else {
 				// Frage falsch beantwortet
 				klickAufFalscheAntwort();
+				meinHauptfenster.playFrageFalsch();
 			}
 		}
 		else {
@@ -313,37 +302,16 @@ public class Steuerung implements ActionListener, KeyListener {
 		if ( meinSpiel != null ) {
 			switch (meinSpiel.getAktuelleRichtigeAntwort()) {
 				case 1:
-					meinHauptfenster.quizAnswerPanel1.zeigeGelb();
+					meinHauptfenster.setAntwortFeld1Markiert();
 					break;
 				case 2:
-					meinHauptfenster.quizAnswerPanel2.zeigeGelb();
+					meinHauptfenster.setAntwortFeld2Markiert();
 					break;
 				case 3:
-					meinHauptfenster.quizAnswerPanel3.zeigeGelb();
+					meinHauptfenster.setAntwortFeld3Markiert();
 					break;
 				case 4:
-					meinHauptfenster.quizAnswerPanel4.zeigeGelb();
-					break;
-				default:
-					break;
-			}
-		}
-	}
-
-	private void zeigeRichtigeAntwortGelbFuer(int pMillesekungen) {
-		if ( meinSpiel != null ) {
-			switch (meinSpiel.getAktuelleRichtigeAntwort()) {
-				case 1:
-					meinHauptfenster.quizAnswerPanel1.zeigeGelbFuer( pMillesekungen );
-					break;
-				case 2:
-					meinHauptfenster.quizAnswerPanel2.zeigeGelbFuer( pMillesekungen );
-					break;
-				case 3:
-					meinHauptfenster.quizAnswerPanel3.zeigeGelbFuer( pMillesekungen );
-					break;
-				case 4:
-					meinHauptfenster.quizAnswerPanel4.zeigeGelbFuer( pMillesekungen );
+					meinHauptfenster.setAntwortFeld4Markiert();
 					break;
 				default:
 					break;
@@ -355,61 +323,28 @@ public class Steuerung implements ActionListener, KeyListener {
 		if ( meinSpiel != null ) {
 			switch (meinSpiel.getAktuelleRichtigeAntwort()) {
 				case 1:
-					meinHauptfenster.quizAnswerPanel1.zeigeGruen();
+					meinHauptfenster.setAntwortFeld1Richtig();
 					break;
 				case 2:
-					meinHauptfenster.quizAnswerPanel2.zeigeGruen();
+					meinHauptfenster.setAntwortFeld2Richtig();
 					break;
 				case 3:
-					meinHauptfenster.quizAnswerPanel3.zeigeGruen();
+					meinHauptfenster.setAntwortFeld3Richtig();
 					break;
 				case 4:
-					meinHauptfenster.quizAnswerPanel4.zeigeGruen();
+					meinHauptfenster.setAntwortFeld4Richtig();
 					break;
 				default:
 					break;
 			}
 		}
-	}
-
-	private void zeigeRichtigeAntwortGruenFuer(int pMillesekungen) {
-		if ( meinSpiel != null ) {
-			switch (meinSpiel.getAktuelleRichtigeAntwort()) {
-				case 1:
-					meinHauptfenster.quizAnswerPanel1.zeigeGruenFuer( pMillesekungen );
-					break;
-				case 2:
-					meinHauptfenster.quizAnswerPanel2.zeigeGruenFuer( pMillesekungen );
-					break;
-				case 3:
-					meinHauptfenster.quizAnswerPanel3.zeigeGruenFuer( pMillesekungen );
-					break;
-				case 4:
-					meinHauptfenster.quizAnswerPanel4.zeigeGruenFuer( pMillesekungen );
-					break;
-				default:
-					break;
-			}
-		}
-	}
-
-	private void zeigeAlleAntwortenBlau() {
-		meinHauptfenster.quizAnswerPanel1.zeigeBlau();
-		meinHauptfenster.quizAnswerPanel2.zeigeBlau();
-		meinHauptfenster.quizAnswerPanel3.zeigeBlau();
-		meinHauptfenster.quizAnswerPanel4.zeigeBlau();
 	}
 
 	private void klickAufRichtigeAntwort() {
 		if ( meinSpiel.istGeradeLetzteFrage() ) {
 			// gewonnen
 			meinHauptfenster.setStatusText( "GEWONNEN - Gratuliere" );
-			meinHauptfenster.quizQuestionPanel.setLoop( QuizPanel.GELB, QuizPanel.GELB );
-			meinHauptfenster.quizAnswerPanel1.setLoop( QuizPanel.GELB, QuizPanel.GELB );
-			meinHauptfenster.quizAnswerPanel2.setLoop( QuizPanel.GELB, QuizPanel.GELB );
-			meinHauptfenster.quizAnswerPanel3.setLoop( QuizPanel.GELB, QuizPanel.GELB );
-			meinHauptfenster.quizAnswerPanel4.setLoop( QuizPanel.GELB, QuizPanel.GELB );
-
+			meinHauptfenster.playSpielGewonnen();
 		}
 		else {
 
@@ -423,8 +358,8 @@ public class Steuerung implements ActionListener, KeyListener {
 
 			meinSpiel.setNaechsteFrage();
 			// Play: RICHTIIIGGG ...
-			this.zeigeAlleAntwortenBlau();
-			meinHauptfenster.frageAnzeigen( meinSpiel.getAktuelleFrageAnzuzeigen(), true );
+			meinHauptfenster.setAntwortfelderNormal();
+			meinHauptfenster.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), true );
 		}
 	}
 
@@ -468,11 +403,11 @@ public class Steuerung implements ActionListener, KeyListener {
 			return;
 
 		if ( meinSpiel.laeufDasSpiel() && !meinSpiel.tippJokerSchonVerwendet() ) {
-			meinHauptfenster.quizTippJokerPanel.setLoop( 2, 2 );
-
-			tippJokerTimer = new TippJokerCountdown( true );
+			meinHauptfenster.setTippJokerBenutzt( true );
 			meinSpiel.setTippJokerSchonVerwendet( true );
-			meinHauptfenster.frageAnzeigen( meinSpiel.getAktuelleFrageAnzuzeigen(), false );
+			tippJokerTimer = new TippJokerCountdown( true );
+
+			meinHauptfenster.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), false );
 		}
 		else {
 			meineKonsole.println( "Tipp-Joker schon verwendet oder Spiel beendet.", 3 );
@@ -486,31 +421,13 @@ public class Steuerung implements ActionListener, KeyListener {
 			return;
 
 		if ( meinSpiel.laeufDasSpiel() && !meinSpiel.fiftyJokerSchonVerwendet() ) {
-			meinHauptfenster.quizFiftyJokerPanel.setLoop( 2, 2 );
+			meinHauptfenster.setFiftyJokerBenutzt( true );
 			meinSpiel.setFiftyJokerVerwendet( true );
 
-			meinHauptfenster.frageAnzeigen( meinSpiel.getAktuelleFrageAnzuzeigen(), false );
-
+			meinHauptfenster.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), false );
 		}
 		else {
 			meineKonsole.println( "Fifty-Joker schon verwendet oder Spiel beendet.", 3 );
-		}
-	}
-
-	public void klickAufStatistikJoker() {
-		meineKonsole.println( "Klick auf Statistik-Joker", 4 );
-
-		if ( meinSpiel == null )
-			return;
-
-		if ( meinSpiel.laeufDasSpiel() && !meinSpiel.puplikumsJokerSchonVerwendet() ) {
-			meinHauptfenster.quizStatistikJokerPanel.setLoop( 2, 2 );
-			meinSpiel.setPuplikumsJokerSchonVerwendet( true );
-
-			// Aktion
-		}
-		else {
-			meineKonsole.println( "Statistik-Joker schon verwendet oder Spiel beendet.", 3 );
 		}
 	}
 
@@ -521,11 +438,9 @@ public class Steuerung implements ActionListener, KeyListener {
 			return;
 
 		if ( meinSpiel.laeufDasSpiel() && !meinSpiel.puplikumsJokerSchonVerwendet() ) {
-			meinHauptfenster.quizPubplikumsJoker.setLoop( 2, 2 );
-
+			meinHauptfenster.setPublikumsJokerBenutzt( true );
 			puplikumsJokerTimer = new PuplikumsJokerCountdown( true );
 			meinSpiel.setPuplikumsJokerSchonVerwendet( true );
-
 		}
 		else {
 			meineKonsole.println( "Puplikums-Joker schon verwendet oder Spiel beendet.", 3 );

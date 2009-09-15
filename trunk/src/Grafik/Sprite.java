@@ -10,7 +10,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
-import GUI.Hauptfenster;
+import window.SinglePlayerSchirm;
+
 
 
 
@@ -18,7 +19,7 @@ public abstract class Sprite extends Rectangle2D.Double implements Drawable, Mov
 
 	long delay;
 	long animation = 0;
-	Hauptfenster parent;
+	SinglePlayerSchirm parent;
 	protected BufferedImage[] pics;
 	protected int currentpic = 0;
 	
@@ -35,7 +36,7 @@ public abstract class Sprite extends Rectangle2D.Double implements Drawable, Mov
 	
 	public boolean remove = false;
   
-	public Sprite(BufferedImage[] i, double x, double y, long delay, Hauptfenster p ){
+	public Sprite(BufferedImage[] i, double x, double y, long delay, SinglePlayerSchirm p ){
 		pics = i;
 		this.x = x;
 		this.y = y;
@@ -50,7 +51,7 @@ public abstract class Sprite extends Rectangle2D.Double implements Drawable, Mov
 	  rotationy = (int) (height/2);
 	}
 
-	public Sprite(BufferedImage i, double x, double y, long delay, Hauptfenster p ){
+	public Sprite(BufferedImage i, double x, double y, long delay, SinglePlayerSchirm p ){
 		pics = new BufferedImage[1];
 		pics[0] = i;
 		this.x = x;
