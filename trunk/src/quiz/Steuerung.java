@@ -2,6 +2,7 @@ package quiz;
 
 import importer.XmlToSpiel;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -21,13 +22,13 @@ import timer.PuplikumsJokerCountdown;
 import timer.TippJokerCountdown;
 import window.Einstellungen;
 import window.Konsole;
-import window.SinglePlayerSchirm;
+import window.WindowController;
 import windowElements.QuizPanel;
 
 public class Steuerung implements ActionListener, KeyListener {
 
 	protected Einstellungen			meineEinstellungen;
-	protected SinglePlayerSchirm	meinHauptfenster;
+	protected WindowController	meinWindowController;
 	protected Konsole				meineKonsole;
 	protected Spiel					meinSpiel;
 
@@ -48,12 +49,12 @@ public class Steuerung implements ActionListener, KeyListener {
 		this.meineEinstellungen = pEinstellungen;
 	}
 
-	public SinglePlayerSchirm getHauptfenster() {
-		return meinHauptfenster;
+	public WindowController getWindowController() {
+		return meinWindowController;
 	}
 
-	public void setHauptfenster(SinglePlayerSchirm pHauptfenster) {
-		this.meinHauptfenster = pHauptfenster;
+	public void setWindowController(WindowController pHauptfenster) {
+		this.meinWindowController = pHauptfenster;
 	}
 
 	public Konsole getKonsole() {
@@ -67,7 +68,7 @@ public class Steuerung implements ActionListener, KeyListener {
 	public Steuerung() {
 		// TODO Auto-generated constructor stub
 		meineEinstellungen = null;
-		meinHauptfenster = null;
+		meinWindowController = null;
 		meineKonsole = null;
 		meinSpiel = null;
 
@@ -78,7 +79,7 @@ public class Steuerung implements ActionListener, KeyListener {
 		JOptionPane startDialog = new JOptionPane();
 		int returnOptionDialog = startDialog
 				.showOptionDialog(
-						meinHauptfenster,
+						(Component) meinWindowController.getFrontendFenster(),
 						"Herzlich Willkommen zu \"Wer wird Biblionär\". Zu Beginn wird ein Standardspiel geladen. \nWeitere Spiele können über das Menü geladen werden. Hierzu ist allerdings eine Verbindung zum Internet nötig. \nMit der Verwendung dieses Programmes stimmen Sie zu, nichts davon kommerziell zu verwenden.\n\nViel Spaß beim Spielen, \nIhr Biblionär-Team.",
 						"Herzlich Willkommen", JOptionPane.OK_CANCEL_OPTION,
 						JOptionPane.INFORMATION_MESSAGE, null, null, JOptionPane.OK_OPTION );
@@ -140,7 +141,7 @@ public class Steuerung implements ActionListener, KeyListener {
 				}
 			} );
 
-			if ( derFC.showOpenDialog( meinHauptfenster ) == JFileChooser.APPROVE_OPTION ) {
+			if ( derFC.showOpenDialog( (Component) meinWindowController.getFrontendFenster() ) == JFileChooser.APPROVE_OPTION ) {
 
 				XmlToSpiel dasFile = new XmlToSpiel( derFC.getSelectedFile() );
 				meinSpiel = dasFile.getSpiel();
@@ -193,14 +194,14 @@ public class Steuerung implements ActionListener, KeyListener {
 			// Falls ein Timer noch läuft, beende ihn
 			this.loescheAlleTimer();
 
-			meinHauptfenster.setStatusText( null );
+			meinWindowController.setStatusText( null );
 
-			meinHauptfenster.resetAlleJoker();
-			meinHauptfenster.setFrageFeldSichtbar( true );
-			meinHauptfenster.setAntwortenSichtbar( true );
-			meinHauptfenster.setAntwortfelderNormal();
+			meinWindowController.resetAlleJoker();
+			meinWindowController.setFrageFeldSichtbar( true );
+			meinWindowController.setAntwortenSichtbar( true );
+			meinWindowController.setAntwortfelderNormal();
 
-			meinHauptfenster.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), true );
+			meinWindowController.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), true );
 		}
 		else {
 			Biblionaer.meineKonsole
@@ -237,7 +238,7 @@ public class Steuerung implements ActionListener, KeyListener {
 			// neue Fragen laden
 
 			if ( meinSpiel.setNaechsteFrage() ) {
-				meinHauptfenster.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), true );
+				meinWindowController.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), true );
 			}
 		}
 
@@ -261,20 +262,20 @@ public class Steuerung implements ActionListener, KeyListener {
 		if ( meinSpiel.laeufDasSpiel() ) {
 
 			this.loescheAlleTimer();
-			meinHauptfenster.setStatusText( "" );
+			meinWindowController.setStatusText( "" );
 
 			meinSpiel.aktuelleFrageBeantwortet();
 
 			if ( meinSpiel.istAktuelleAntwort( klickFeld ) ) {
 				// Frage richtig beantwortet
 				klickAufRichtigeAntwort();
-				meinHauptfenster.playFrageRichtig();
+				meinWindowController.playFrageRichtig();
 			}
 
 			else {
 				// Frage falsch beantwortet
 				klickAufFalscheAntwort();
-				meinHauptfenster.playFrageFalsch();
+				meinWindowController.playFrageFalsch();
 			}
 		}
 		else {
@@ -294,7 +295,7 @@ public class Steuerung implements ActionListener, KeyListener {
 		if ( puplikumsJokerTimer != null ) {
 			puplikumsJokerTimer.stoppeCountdown();
 			puplikumsJokerTimer = null;
-			meinHauptfenster.setStatusText( "" );
+			meinWindowController.setStatusText( "" );
 		}
 	}
 
@@ -302,16 +303,16 @@ public class Steuerung implements ActionListener, KeyListener {
 		if ( meinSpiel != null ) {
 			switch (meinSpiel.getAktuelleRichtigeAntwort()) {
 				case 1:
-					meinHauptfenster.setAntwortFeld1Markiert();
+					meinWindowController.setAntwortFeld1Markiert();
 					break;
 				case 2:
-					meinHauptfenster.setAntwortFeld2Markiert();
+					meinWindowController.setAntwortFeld2Markiert();
 					break;
 				case 3:
-					meinHauptfenster.setAntwortFeld3Markiert();
+					meinWindowController.setAntwortFeld3Markiert();
 					break;
 				case 4:
-					meinHauptfenster.setAntwortFeld4Markiert();
+					meinWindowController.setAntwortFeld4Markiert();
 					break;
 				default:
 					break;
@@ -323,16 +324,16 @@ public class Steuerung implements ActionListener, KeyListener {
 		if ( meinSpiel != null ) {
 			switch (meinSpiel.getAktuelleRichtigeAntwort()) {
 				case 1:
-					meinHauptfenster.setAntwortFeld1Richtig();
+					meinWindowController.setAntwortFeld1Richtig();
 					break;
 				case 2:
-					meinHauptfenster.setAntwortFeld2Richtig();
+					meinWindowController.setAntwortFeld2Richtig();
 					break;
 				case 3:
-					meinHauptfenster.setAntwortFeld3Richtig();
+					meinWindowController.setAntwortFeld3Richtig();
 					break;
 				case 4:
-					meinHauptfenster.setAntwortFeld4Richtig();
+					meinWindowController.setAntwortFeld4Richtig();
 					break;
 				default:
 					break;
@@ -343,8 +344,8 @@ public class Steuerung implements ActionListener, KeyListener {
 	private void klickAufRichtigeAntwort() {
 		if ( meinSpiel.istGeradeLetzteFrage() ) {
 			// gewonnen
-			meinHauptfenster.setStatusText( "GEWONNEN - Gratuliere" );
-			meinHauptfenster.playSpielGewonnen();
+			meinWindowController.setStatusText( "GEWONNEN - Gratuliere" );
+			meinWindowController.playSpielGewonnen();
 		}
 		else {
 
@@ -358,14 +359,14 @@ public class Steuerung implements ActionListener, KeyListener {
 
 			meinSpiel.setNaechsteFrage();
 			// Play: RICHTIIIGGG ...
-			meinHauptfenster.setAntwortfelderNormal();
-			meinHauptfenster.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), true );
+			meinWindowController.setAntwortfelderNormal();
+			meinWindowController.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), true );
 		}
 	}
 
 	private void klickAufFalscheAntwort() {
 		meinSpiel.setEnde();
-		meinHauptfenster.setStatusText( "Falsche Antwort - Spiel beendet" );
+		meinWindowController.setStatusText( "Falsche Antwort - Spiel beendet" );
 
 		zeigeRichtigeAntwortGelb();
 	}
@@ -376,7 +377,7 @@ public class Steuerung implements ActionListener, KeyListener {
 		if ( meinSpiel != null ) {
 			meinSpiel.setEnde();
 			this.zeigeRichtigeAntwortGelb();
-			meinHauptfenster
+			meinWindowController
 					.setStatusText( "Zeit für den Tippjoker abgelaufen - Spiel beendet! ..." );
 		}
 	}
@@ -387,7 +388,7 @@ public class Steuerung implements ActionListener, KeyListener {
 		if ( meinSpiel != null ) {
 			meinSpiel.setEnde();
 			this.zeigeRichtigeAntwortGelb();
-			meinHauptfenster
+			meinWindowController
 					.setStatusText( "Zeit für den Puplikumsjoker abgelaufen - Spiel beendet! ..." );
 		}
 	}
@@ -403,11 +404,11 @@ public class Steuerung implements ActionListener, KeyListener {
 			return;
 
 		if ( meinSpiel.laeufDasSpiel() && !meinSpiel.tippJokerSchonVerwendet() ) {
-			meinHauptfenster.setTippJokerBenutzt( true );
+			meinWindowController.setTippJokerBenutzt( true );
 			meinSpiel.setTippJokerSchonVerwendet( true );
 			tippJokerTimer = new TippJokerCountdown( true );
 
-			meinHauptfenster.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), false );
+			meinWindowController.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), false );
 		}
 		else {
 			meineKonsole.println( "Tipp-Joker schon verwendet oder Spiel beendet.", 3 );
@@ -421,10 +422,10 @@ public class Steuerung implements ActionListener, KeyListener {
 			return;
 
 		if ( meinSpiel.laeufDasSpiel() && !meinSpiel.fiftyJokerSchonVerwendet() ) {
-			meinHauptfenster.setFiftyJokerBenutzt( true );
+			meinWindowController.setFiftyJokerBenutzt( true );
 			meinSpiel.setFiftyJokerVerwendet( true );
 
-			meinHauptfenster.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), false );
+			meinWindowController.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), false );
 		}
 		else {
 			meineKonsole.println( "Fifty-Joker schon verwendet oder Spiel beendet.", 3 );
@@ -438,7 +439,7 @@ public class Steuerung implements ActionListener, KeyListener {
 			return;
 
 		if ( meinSpiel.laeufDasSpiel() && !meinSpiel.puplikumsJokerSchonVerwendet() ) {
-			meinHauptfenster.setPublikumsJokerBenutzt( true );
+			meinWindowController.setPublikumsJokerBenutzt( true );
 			puplikumsJokerTimer = new PuplikumsJokerCountdown( true );
 			meinSpiel.setPuplikumsJokerSchonVerwendet( true );
 		}

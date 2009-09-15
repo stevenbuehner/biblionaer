@@ -32,7 +32,7 @@ public class PuplikumsJokerCountdown extends Countdown {
 				break;
 		}
 
-		Biblionaer.meinHauptfenster.setStatusText( ausgabe );
+		Biblionaer.meinWindowController.setStatusText( ausgabe );
 	}
 
 	@Override

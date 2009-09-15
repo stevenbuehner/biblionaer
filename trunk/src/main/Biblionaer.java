@@ -4,13 +4,20 @@ import quiz.Steuerung;
 import window.Einstellungen;
 import window.Konsole;
 import window.SinglePlayerSchirm;
+import window.WindowController;
 
+/**
+ * Diese Klasse ist eine statische Bibliothek zur Verwaltung der Referenzen auf
+ * die wichtigsten Objekte
+ * 
+ * @author steven
+ */
 public class Biblionaer {
 
-	public static Steuerung		meineSteuerung;
-	public static Einstellungen	meineEinstellungen;
-	public static SinglePlayerSchirm	meinHauptfenster;
-	public static Konsole		meineKonsole;
+	public static Steuerung			meineSteuerung;
+	public static Einstellungen		meineEinstellungen;
+	public static WindowController	meinWindowController;
+	public static Konsole			meineKonsole;
 
 	public static void main(String[] args) {
 		// Steuerung erstellen und initiieren
@@ -19,12 +26,15 @@ public class Biblionaer {
 
 		// Alle anderen Fenster und Objekte erstellen
 		meineEinstellungen = new Einstellungen( "Einstellungen", meineSteuerung );
-		meinHauptfenster = new SinglePlayerSchirm( "Hauptfenster", 678, 549, meineSteuerung );
+		meinWindowController = new WindowController();
+		meinWindowController.addFrontendFenster( new SinglePlayerSchirm( "Hauptfenster", 678, 549,
+				meineSteuerung ) );
+
 		meineKonsole = new Konsole( meineSteuerung );
 
 		// Steuerung mit den nötigen Objekten verknüpfen
 		meineSteuerung.setEinstellungen( meineEinstellungen );
-		meineSteuerung.setHauptfenster( meinHauptfenster );
+		meineSteuerung.setWindowController( meinWindowController );
 		meineSteuerung.setKonsole( meineKonsole );
 
 		// Weiter Einstellungen
