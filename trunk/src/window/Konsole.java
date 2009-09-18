@@ -1,11 +1,8 @@
 package window;
 
 import main.Biblionaer;
-import quiz.Steuerung;
 
 public class Konsole {
-
-	private Steuerung	meineSteuerung;
 
 	/*
 	 * 0 = nichts ausgeben, außer Sachen mit Prio 0; 1 = Nur Wichtige
@@ -23,32 +20,13 @@ public class Konsole {
 		Biblionaer.meineEinstellungen.setKonsolenModus( ausgabeZustand );
 	}
 
-	public Steuerung getSteuerung() {
-		return meineSteuerung;
-	}
-
-	public void setSteuerung(Steuerung pSteuerung) {
-		this.meineSteuerung = pSteuerung;
-	}
-
 	public Konsole() {
-		this( null );
-	}
-
-	public Konsole(Steuerung pSteuerung) {
-		this( pSteuerung, 1 ); // Defaultwert für Ausgabe ist System.out.println
-
 		// Wenn beim Start des Programms auf der Parameter -D übergeben wurde,
 		// dann debuggen wir
 		String prop = System.getProperty( "DEBUG" );
 		if ( Boolean.getBoolean( prop ) ) {
 			Biblionaer.meineEinstellungen.setKonsolenModus( 4 );
 		}
-	}
-
-	Konsole(Steuerung pSteuerung, int pAusgabeModus) {
-		Biblionaer.meineEinstellungen.setKonsolenAusgabeModus( pAusgabeModus );
-		meineSteuerung = (pSteuerung == null) ? meineSteuerung : pSteuerung;
 	}
 
 	public void println(String pAusgabe) {

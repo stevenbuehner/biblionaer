@@ -30,11 +30,6 @@ public interface QuizFenster {
 	public void setFrageFeldSichtbar(boolean sichtbar);
 
 	/**
-	 * Setze alle Antwortfelder auf sichtbar.
-	 */
-	public void setAntwortenSichtbar(boolean sichtbar);
-
-	/**
 	 * Alle Antwortfelder auf einmal anzeigen oder ausblenden.
 	 * 
 	 * @param anzeigen

@@ -42,6 +42,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 	private JCheckBox			quizPingAnzeigen;
 	private JFormattedTextField	quizKonsolenModus;
 	private JComboBox			quizKonsolenAusgabeModus;
+	
 
 	private int					cheat				= 0;
 	private boolean				zeigeQuizfrageID	= true;

@@ -20,16 +20,9 @@ import javax.swing.filechooser.FileFilter;
 import main.Biblionaer;
 import timer.PuplikumsJokerCountdown;
 import timer.TippJokerCountdown;
-import window.Einstellungen;
-import window.Konsole;
-import window.WindowController;
-import windowElements.QuizPanel;
 
 public class Steuerung implements ActionListener, KeyListener {
 
-	protected Einstellungen			meineEinstellungen;
-	protected WindowController	meinWindowController;
-	protected Konsole				meineKonsole;
 	protected Spiel					meinSpiel;
 
 	private static final long		serialVersionUID	= 1L;
@@ -41,37 +34,8 @@ public class Steuerung implements ActionListener, KeyListener {
 	// Timer für den Puplikums-Joker
 	private PuplikumsJokerCountdown	puplikumsJokerTimer;
 
-	public Einstellungen getEinstellungen() {
-		return meineEinstellungen;
-	}
-
-	public void setEinstellungen(Einstellungen pEinstellungen) {
-		this.meineEinstellungen = pEinstellungen;
-	}
-
-	public WindowController getWindowController() {
-		return meinWindowController;
-	}
-
-	public void setWindowController(WindowController pHauptfenster) {
-		this.meinWindowController = pHauptfenster;
-	}
-
-	public Konsole getKonsole() {
-		return meineKonsole;
-	}
-
-	public void setKonsole(Konsole pKonsole) {
-		this.meineKonsole = pKonsole;
-	}
-
 	public Steuerung() {
-		// TODO Auto-generated constructor stub
-		meineEinstellungen = null;
-		meinWindowController = null;
-		meineKonsole = null;
 		meinSpiel = null;
-
 	}
 
 	public void erstAufrufDerSteuerung() {
@@ -79,7 +43,7 @@ public class Steuerung implements ActionListener, KeyListener {
 		JOptionPane startDialog = new JOptionPane();
 		int returnOptionDialog = startDialog
 				.showOptionDialog(
-						(Component) meinWindowController.getFrontendFenster(),
+						(Component) Biblionaer.meinWindowController.getFrontendFenster(),
 						"Herzlich Willkommen zu \"Wer wird Biblionär\". Zu Beginn wird ein Standardspiel geladen. \nWeitere Spiele können über das Menü geladen werden. Hierzu ist allerdings eine Verbindung zum Internet nötig. \nMit der Verwendung dieses Programmes stimmen Sie zu, nichts davon kommerziell zu verwenden.\n\nViel Spaß beim Spielen, \nIhr Biblionär-Team.",
 						"Herzlich Willkommen", JOptionPane.OK_CANCEL_OPTION,
 						JOptionPane.INFORMATION_MESSAGE, null, null, JOptionPane.OK_OPTION );
@@ -99,18 +63,19 @@ public class Steuerung implements ActionListener, KeyListener {
 		// *** Klicks aus dem Hauptfenster ***//
 		// Fenster Einstellungen öffnen
 		if ( e.getActionCommand().equals( "Einstellungen" ) ) {
-			meineEinstellungen.setVisible( true );
+			Biblionaer.meineEinstellungen.setVisible( true );
 		}
 		else if ( e.getActionCommand().equals( "Neues Spiel aus dem Internet" ) ) {
 
 			// meinSpiel = new Spiel( 15 );
 			try {
-				XmlToSpiel dasFile = new XmlToSpiel( new URL( meineEinstellungen.getXMLquelle() ) );
+				XmlToSpiel dasFile = new XmlToSpiel( new URL( Biblionaer.meineEinstellungen
+						.getXMLquelle() ) );
 				this.meinSpiel = dasFile.getSpiel();
 
 			}
 			catch (MalformedURLException e1) {
-				meineKonsole.println( "Die URL zum XML-File ist falsch!" );
+				Biblionaer.meineKonsole.println( "Die URL zum XML-File ist falsch!" );
 				e1.printStackTrace();
 			}
 			finally {
@@ -141,7 +106,8 @@ public class Steuerung implements ActionListener, KeyListener {
 				}
 			} );
 
-			if ( derFC.showOpenDialog( (Component) meinWindowController.getFrontendFenster() ) == JFileChooser.APPROVE_OPTION ) {
+			if ( derFC.showOpenDialog( (Component) Biblionaer.meinWindowController
+					.getFrontendFenster() ) == JFileChooser.APPROVE_OPTION ) {
 
 				XmlToSpiel dasFile = new XmlToSpiel( derFC.getSelectedFile() );
 				meinSpiel = dasFile.getSpiel();
@@ -154,7 +120,7 @@ public class Steuerung implements ActionListener, KeyListener {
 		else if ( e.getActionCommand().equals( "Neues Standard-Spiel" ) ) {
 			// Das Spiel direkt aus der SRC-Quelltext-Datei laden
 			XmlToSpiel dasFile = new XmlToSpiel( getClass().getClassLoader().getResource(
-					"lokaleSpiele/spiel1.txt" ) );
+					"lokaleSpiele/spielTest.txt" ) );
 			meinSpiel = dasFile.getSpiel();
 
 			this.starteNeuesSpiel();
@@ -166,15 +132,15 @@ public class Steuerung implements ActionListener, KeyListener {
 				System.out.println( con );
 			}
 			catch (MalformedURLException e1) {
-				meineKonsole.println( "MalformedURLException:", 3 );
+				Biblionaer.meineKonsole.println( "MalformedURLException:", 3 );
 				e1.printStackTrace();
 			}
 			catch (IOException e1) {
-				meineKonsole.println( "IOException:", 3 );
+				Biblionaer.meineKonsole.println( "IOException:", 3 );
 				e1.printStackTrace();
 			}
 			finally {
-				meineKonsole.println( "Es besteht eine Verbindung zum Internet", 3 );
+				Biblionaer.meineKonsole.println( "Es besteht eine Verbindung zum Internet", 3 );
 			}
 
 		}
@@ -194,14 +160,14 @@ public class Steuerung implements ActionListener, KeyListener {
 			// Falls ein Timer noch läuft, beende ihn
 			this.loescheAlleTimer();
 
-			meinWindowController.setStatusText( null );
+			Biblionaer.meinWindowController.setStatusText( null );
 
-			meinWindowController.resetAlleJoker();
-			meinWindowController.setFrageFeldSichtbar( true );
-			meinWindowController.setAntwortenSichtbar( true );
-			meinWindowController.setAntwortfelderNormal();
+			Biblionaer.meinWindowController.resetAlleJoker();
+			Biblionaer.meinWindowController.setFrageFeldSichtbar( true );
+			Biblionaer.meinWindowController.setAntwortFelderSichtbar( true );
+			Biblionaer.meinWindowController.setAntwortfelderNormal();
 
-			meinWindowController.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), true );
+			Biblionaer.meinWindowController.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), true );
 		}
 		else {
 			Biblionaer.meineKonsole
@@ -225,8 +191,10 @@ public class Steuerung implements ActionListener, KeyListener {
 	public void keyPressed(KeyEvent e) {
 
 		// Zum Testen
-		// System.setProperty( "proxyHost", meineEinstellungen.getProxyHost() );
-		// System.setProperty( "proxyPort", meineEinstellungen.getProxyPort() );
+		// System.setProperty( "proxyHost",
+		// Biblionaer.meineEinstellungen.getProxyHost() );
+		// System.setProperty( "proxyPort",
+		// Biblionaer.meineEinstellungen.getProxyPort() );
 		// System.setProperty( "proxySet", "false" ); // Proxy aktivieren
 
 		if ( e.getKeyCode() == KeyEvent.VK_ESCAPE ) {
@@ -234,11 +202,13 @@ public class Steuerung implements ActionListener, KeyListener {
 			System.exit( 0 );
 		}
 
-		else if ( e.getKeyCode() == KeyEvent.VK_SPACE && meineEinstellungen.darfGechetetWerden() ) {
+		else if ( e.getKeyCode() == KeyEvent.VK_SPACE
+				&& Biblionaer.meineEinstellungen.darfGechetetWerden() ) {
 			// neue Fragen laden
 
 			if ( meinSpiel.setNaechsteFrage() ) {
-				meinWindowController.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), true );
+				Biblionaer.meinWindowController.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(),
+						true );
 			}
 		}
 
@@ -254,7 +224,7 @@ public class Steuerung implements ActionListener, KeyListener {
 	}
 
 	public void klickAufAntwortFeld(int klickFeld) {
-		meineKonsole.println( "Klick auf Antwortfeld " + klickFeld, 4 );
+		Biblionaer.meineKonsole.println( "Klick auf Antwortfeld " + klickFeld, 4 );
 
 		if ( meinSpiel == null )
 			return;
@@ -262,20 +232,20 @@ public class Steuerung implements ActionListener, KeyListener {
 		if ( meinSpiel.laeufDasSpiel() ) {
 
 			this.loescheAlleTimer();
-			meinWindowController.setStatusText( "" );
+			Biblionaer.meinWindowController.setStatusText( "" );
 
 			meinSpiel.aktuelleFrageBeantwortet();
 
 			if ( meinSpiel.istAktuelleAntwort( klickFeld ) ) {
 				// Frage richtig beantwortet
 				klickAufRichtigeAntwort();
-				meinWindowController.playFrageRichtig();
+				Biblionaer.meinWindowController.playFrageRichtig();
 			}
 
 			else {
 				// Frage falsch beantwortet
 				klickAufFalscheAntwort();
-				meinWindowController.playFrageFalsch();
+				Biblionaer.meinWindowController.playFrageFalsch();
 			}
 		}
 		else {
@@ -295,7 +265,7 @@ public class Steuerung implements ActionListener, KeyListener {
 		if ( puplikumsJokerTimer != null ) {
 			puplikumsJokerTimer.stoppeCountdown();
 			puplikumsJokerTimer = null;
-			meinWindowController.setStatusText( "" );
+			Biblionaer.meinWindowController.setStatusText( "" );
 		}
 	}
 
@@ -303,16 +273,16 @@ public class Steuerung implements ActionListener, KeyListener {
 		if ( meinSpiel != null ) {
 			switch (meinSpiel.getAktuelleRichtigeAntwort()) {
 				case 1:
-					meinWindowController.setAntwortFeld1Markiert();
+					Biblionaer.meinWindowController.setAntwortFeld1Markiert();
 					break;
 				case 2:
-					meinWindowController.setAntwortFeld2Markiert();
+					Biblionaer.meinWindowController.setAntwortFeld2Markiert();
 					break;
 				case 3:
-					meinWindowController.setAntwortFeld3Markiert();
+					Biblionaer.meinWindowController.setAntwortFeld3Markiert();
 					break;
 				case 4:
-					meinWindowController.setAntwortFeld4Markiert();
+					Biblionaer.meinWindowController.setAntwortFeld4Markiert();
 					break;
 				default:
 					break;
@@ -324,16 +294,16 @@ public class Steuerung implements ActionListener, KeyListener {
 		if ( meinSpiel != null ) {
 			switch (meinSpiel.getAktuelleRichtigeAntwort()) {
 				case 1:
-					meinWindowController.setAntwortFeld1Richtig();
+					Biblionaer.meinWindowController.setAntwortFeld1Richtig();
 					break;
 				case 2:
-					meinWindowController.setAntwortFeld2Richtig();
+					Biblionaer.meinWindowController.setAntwortFeld2Richtig();
 					break;
 				case 3:
-					meinWindowController.setAntwortFeld3Richtig();
+					Biblionaer.meinWindowController.setAntwortFeld3Richtig();
 					break;
 				case 4:
-					meinWindowController.setAntwortFeld4Richtig();
+					Biblionaer.meinWindowController.setAntwortFeld4Richtig();
 					break;
 				default:
 					break;
@@ -344,8 +314,8 @@ public class Steuerung implements ActionListener, KeyListener {
 	private void klickAufRichtigeAntwort() {
 		if ( meinSpiel.istGeradeLetzteFrage() ) {
 			// gewonnen
-			meinWindowController.setStatusText( "GEWONNEN - Gratuliere" );
-			meinWindowController.playSpielGewonnen();
+			Biblionaer.meinWindowController.setStatusText( "GEWONNEN - Gratuliere" );
+			Biblionaer.meinWindowController.playSpielGewonnen();
 		}
 		else {
 
@@ -359,110 +329,113 @@ public class Steuerung implements ActionListener, KeyListener {
 
 			meinSpiel.setNaechsteFrage();
 			// Play: RICHTIIIGGG ...
-			meinWindowController.setAntwortfelderNormal();
-			meinWindowController.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), true );
+			Biblionaer.meinWindowController.setAntwortfelderNormal();
+			Biblionaer.meinWindowController.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), true );
 		}
 	}
 
 	private void klickAufFalscheAntwort() {
 		meinSpiel.setEnde();
-		meinWindowController.setStatusText( "Falsche Antwort - Spiel beendet" );
+		Biblionaer.meinWindowController.setStatusText( "Falsche Antwort - Spiel beendet" );
 
 		zeigeRichtigeAntwortGelb();
 	}
 
 	public void tippJokerZeitAbgelaufen() {
-		meineKonsole.println( "tippJokerZeitAbgelaufen() wurde auferufen", 4 );
+		Biblionaer.meineKonsole.println( "tippJokerZeitAbgelaufen() wurde auferufen", 4 );
 
 		if ( meinSpiel != null ) {
 			meinSpiel.setEnde();
 			this.zeigeRichtigeAntwortGelb();
-			meinWindowController
+			Biblionaer.meinWindowController
 					.setStatusText( "Zeit für den Tippjoker abgelaufen - Spiel beendet! ..." );
 		}
 	}
 
 	public void puplikumsJokerZeitAbgelaufen() {
-		meineKonsole.println( "puplikumsJokerZeitAbgelaufen() wurde auferufen", 4 );
+		Biblionaer.meineKonsole.println( "puplikumsJokerZeitAbgelaufen() wurde auferufen", 4 );
 
 		if ( meinSpiel != null ) {
 			meinSpiel.setEnde();
 			this.zeigeRichtigeAntwortGelb();
-			meinWindowController
+			Biblionaer.meinWindowController
 					.setStatusText( "Zeit für den Puplikumsjoker abgelaufen - Spiel beendet! ..." );
 		}
 	}
 
 	public void klickAufFrageFeld() {
-		meineKonsole.println( "Klick auf Fragefeld", 4 );
+		Biblionaer.meineKonsole.println( "Klick auf Fragefeld", 4 );
 	}
 
 	public void klickAufTippJoker() {
-		meineKonsole.println( "Klick auf Tipp-Joker", 4 );
+		Biblionaer.meineKonsole.println( "Klick auf Tipp-Joker", 4 );
 
 		if ( meinSpiel == null )
 			return;
 
 		if ( meinSpiel.laeufDasSpiel() && !meinSpiel.tippJokerSchonVerwendet() ) {
-			meinWindowController.setTippJokerBenutzt( true );
+			Biblionaer.meinWindowController.setTippJokerBenutzt( true );
 			meinSpiel.setTippJokerSchonVerwendet( true );
 			tippJokerTimer = new TippJokerCountdown( true );
 
-			meinWindowController.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), false );
+			Biblionaer.meinWindowController
+					.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), false );
 		}
 		else {
-			meineKonsole.println( "Tipp-Joker schon verwendet oder Spiel beendet.", 3 );
+			Biblionaer.meineKonsole.println( "Tipp-Joker schon verwendet oder Spiel beendet.", 3 );
 		}
 	}
 
 	public void klickAufFiftyJoker() {
-		meineKonsole.println( "Klick auf Fifty-Joker", 4 );
+		Biblionaer.meineKonsole.println( "Klick auf Fifty-Joker", 4 );
 
 		if ( meinSpiel == null )
 			return;
 
 		if ( meinSpiel.laeufDasSpiel() && !meinSpiel.fiftyJokerSchonVerwendet() ) {
-			meinWindowController.setFiftyJokerBenutzt( true );
+			Biblionaer.meinWindowController.setFiftyJokerBenutzt( true );
 			meinSpiel.setFiftyJokerVerwendet( true );
 
-			meinWindowController.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), false );
+			Biblionaer.meinWindowController
+					.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), false );
 		}
 		else {
-			meineKonsole.println( "Fifty-Joker schon verwendet oder Spiel beendet.", 3 );
+			Biblionaer.meineKonsole.println( "Fifty-Joker schon verwendet oder Spiel beendet.", 3 );
 		}
 	}
 
 	public void klickAufPuplikumsJoker() {
-		meineKonsole.println( "Klick auf Puplikums-Joker", 4 );
+		Biblionaer.meineKonsole.println( "Klick auf Puplikums-Joker", 4 );
 
 		if ( meinSpiel == null )
 			return;
 
 		if ( meinSpiel.laeufDasSpiel() && !meinSpiel.puplikumsJokerSchonVerwendet() ) {
-			meinWindowController.setPublikumsJokerBenutzt( true );
+			Biblionaer.meinWindowController.setPublikumsJokerBenutzt( true );
 			puplikumsJokerTimer = new PuplikumsJokerCountdown( true );
 			meinSpiel.setPuplikumsJokerSchonVerwendet( true );
 		}
 		else {
-			meineKonsole.println( "Puplikums-Joker schon verwendet oder Spiel beendet.", 3 );
+			Biblionaer.meineKonsole.println( "Puplikums-Joker schon verwendet oder Spiel beendet.",
+					3 );
 		}
 	}
 
 	public void klickAufECLogo() {
-		meineKonsole.println( "Klick auf EC-Logo", 4 );
+		Biblionaer.meineKonsole.println( "Klick auf EC-Logo", 4 );
 
 		// Geht nur ab Java Version 6
 		/*
 		 * try { Desktop.getDesktop().browse( new URI( "http://www.sv-ec.de/" )
-		 * ); } catch (Exception e) { // e.printStackTrace(); meineKonsole
-		 * .println(
+		 * ); } catch (Exception e) { // e.printStackTrace();
+		 * Biblionaer.meineKonsole .println(
 		 * "Der Link zur EC-Site kann nicht geöffnet werden. Vermutlich wird eine Java-Version < 6 verwendet."
 		 * , 3 ); }
 		 */
 	}
 
 	public void klickAufQuizLogo() {
-		meineKonsole.println( "Klick auf Quizlogo", 4 );
+		Biblionaer.meineKonsole.println( "Klick auf Quizlogo", 4 );
 
 	}
 

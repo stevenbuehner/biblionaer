@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="UTF-8"?><Fragenkatalog>
+<Frage>
+<ID>887</ID>
+<Fragestellung>Was aßen Adam und Eva im Garten Eden?</Fragestellung>
+<Antwort1>Pflanzen und Früchte (und noch was)</Antwort1>
+<Antwort2>Cornflakes mit Milch (und noch was</Antwort2>
+<Antwort3>Heuschrecken mit wildem Honig (und noch was</Antwort3>
+<Antwort4>Kekse und Nudelauflauf (und noch was</Antwort4>
+<richtigeAntwort>1</richtigeAntwort>
+<Bibelstelle>1. Mose 1,29</Bibelstelle>
+<SchwierigkeitZahl>1</SchwierigkeitZahl>
+<SchwierigkeitText>50 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>403</ID>
+<Fragestellung>Wie lange war Jesus in der Wüste?</Fragestellung>
+<Antwort1>Immer</Antwort1>
+<Antwort2>40 Tage</Antwort2>
+<Antwort3>70 Tage</Antwort3>
+<Antwort4>Jesus war doch nicht in der Wüste.</Antwort4>
+<richtigeAntwort>2</richtigeAntwort>
+<Bibelstelle>Mk 1,13</Bibelstelle>
+<SchwierigkeitZahl>2</SchwierigkeitZahl>
+<SchwierigkeitText>100 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>74</ID>
+<Fragestellung>Welchen Tieren wurde Daniel zum Fraß vorgeworfen?</Fragestellung>
+<Antwort1>Krokodilen</Antwort1>
+<Antwort2>Löwen</Antwort2>
+<Antwort3>Tiger</Antwort3>
+<Antwort4>Wildkatzen</Antwort4>
+<richtigeAntwort>2</richtigeAntwort>
+<Bibelstelle>Dan 6,17</Bibelstelle>
+<SchwierigkeitZahl>3</SchwierigkeitZahl>
+<SchwierigkeitText>200 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>131</ID>
+<Fragestellung>Wie hieß der berühmte König Israels, der Nachfolger Sauls wurde?</Fragestellung>
+<Antwort1>Herodes</Antwort1>
+<Antwort2>Jakob</Antwort2>
+<Antwort3>Jonathan</Antwort3>
+<Antwort4>David</Antwort4>
+<richtigeAntwort>4</richtigeAntwort>
+<Bibelstelle>2. Sam 2,4</Bibelstelle>
+<SchwierigkeitZahl>4</SchwierigkeitZahl>
+<SchwierigkeitText>300 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>950</ID>
+<Fragestellung>Wo wohnte Josef, der Mann von Maria?</Fragestellung>
+<Antwort1>Bonn</Antwort1>
+<Antwort2>Bethlehem</Antwort2>
+<Antwort3>Jerusalem</Antwort3>
+<Antwort4>Nazareth</Antwort4>
+<richtigeAntwort>4</richtigeAntwort>
+<Bibelstelle>Lk2,4</Bibelstelle>
+<SchwierigkeitZahl>5</SchwierigkeitZahl>
+<SchwierigkeitText>500 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>435</ID>
+<Fragestellung>Wofür sind (nach Spr 1,2) die Sprüche Salomos aufgeschrieben worden?</Fragestellung>
+<Antwort1>Um der Liebe willen.</Antwort1>
+<Antwort2>Um Zucht und Ordnung zu lernen.</Antwort2>
+<Antwort3>Um Weisheit zu lernen.</Antwort3>
+<Antwort4>Um verständige Reden halten zu können.</Antwort4>
+<richtigeAntwort>3</richtigeAntwort>
+<Bibelstelle>Spr 1,2</Bibelstelle>
+<SchwierigkeitZahl>6</SchwierigkeitZahl>
+<SchwierigkeitText>1.000 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>91</ID>
+<Fragestellung>Welchen Beruf hatte Paulus gelernt?</Fragestellung>
+<Antwort1>Schäfer</Antwort1>
+<Antwort2>Zeltmacher</Antwort2>
+<Antwort3>Fischer</Antwort3>
+<Antwort4>Priester</Antwort4>
+<richtigeAntwort>2</richtigeAntwort>
+<Bibelstelle>Apg 18,3</Bibelstelle>
+<SchwierigkeitZahl>7</SchwierigkeitZahl>
+<SchwierigkeitText>2.000 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>224</ID>
+<Fragestellung>(Bitte vervollständigen Sie) "Im Anfang war das Wort, und das Wort war bei Gott, und Gott ..."</Fragestellung>
+<Antwort1>... war der Geist, der über den Wassern schwebte.</Antwort1>
+<Antwort2>... war das Wort.</Antwort2>
+<Antwort3>... war das Licht und die Finsternis ihm untertan.</Antwort3>
+<Antwort4>... freute sich über seine Welt.</Antwort4>
+<richtigeAntwort>2</richtigeAntwort>
+<Bibelstelle>Joh 1,1</Bibelstelle>
+<SchwierigkeitZahl>8</SchwierigkeitZahl>
+<SchwierigkeitText>4.000 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>1001</ID>
+<Fragestellung>Welches Volk kommt in der Bibel nicht vor?</Fragestellung>
+<Antwort1>Amoriter</Antwort1>
+<Antwort2>Hiwiter</Antwort2>
+<Antwort3>Perisiter</Antwort3>
+<Antwort4>Jeburiter</Antwort4>
+<richtigeAntwort>4</richtigeAntwort>
+<Bibelstelle>1.KÃ¶nige 9.20/21</Bibelstelle>
+<SchwierigkeitZahl>9</SchwierigkeitZahl>
+<SchwierigkeitText>8.000 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>109</ID>
+<Fragestellung>Wo steht der Satz: "Wer dem Geringen Gewalt antut, lästert Gott?"</Fragestellung>
+<Antwort1>Psalm 14</Antwort1>
+<Antwort2>Markus 16</Antwort2>
+<Antwort3>Römer 6</Antwort3>
+<Antwort4>2. Petrus 3</Antwort4>
+<richtigeAntwort>1</richtigeAntwort>
+<Bibelstelle>Psalm 14,31</Bibelstelle>
+<SchwierigkeitZahl>10</SchwierigkeitZahl>
+<SchwierigkeitText>16.000 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>448</ID>
+<Fragestellung>Wen oder was verfluchte Jesus einmal?</Fragestellung>
+<Antwort1>Einen Menschen</Antwort1>
+<Antwort2>Ein Tier</Antwort2>
+<Antwort3>Eine Pflanze</Antwort3>
+<Antwort4>Jesus und jemand verfluchen??? Quatsch!!!</Antwort4>
+<richtigeAntwort>3</richtigeAntwort>
+<Bibelstelle>Mk 11,12ff</Bibelstelle>
+<SchwierigkeitZahl>11</SchwierigkeitZahl>
+<SchwierigkeitText>32.000 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>1003</ID>
+<Fragestellung>Wie lange regierte KÃ¶nig Salomo?</Fragestellung>
+<Antwort1>30 Jahre</Antwort1>
+<Antwort2>40 Jahre</Antwort2>
+<Antwort3>45 Jahre</Antwort3>
+<Antwort4>50 Jahre</Antwort4>
+<richtigeAntwort>2</richtigeAntwort>
+<Bibelstelle>1. KÃ¶nige 11.42</Bibelstelle>
+<SchwierigkeitZahl>12</SchwierigkeitZahl>
+<SchwierigkeitText>64.000 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>824</ID>
+<Fragestellung>Welchem Stamm ging sein Gebiet verloren?</Fragestellung>
+<Antwort1>Dan</Antwort1>
+<Antwort2>Levi</Antwort2>
+<Antwort3>Juda</Antwort3>
+<Antwort4>Gad</Antwort4>
+<richtigeAntwort>1</richtigeAntwort>
+<Bibelstelle>Jos 19,47</Bibelstelle>
+<SchwierigkeitZahl>13</SchwierigkeitZahl>
+<SchwierigkeitText>125.000 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>516</ID>
+<Fragestellung>Früher hat doch tatsächlich jemand mal den Namen "Schaaf" bekommen. Wer war das wohl?</Fragestellung>
+<Antwort1>Ein Sohn Kalebs</Antwort1>
+<Antwort2>Ein Sohn Sauls</Antwort2>
+<Antwort3>Ein Bruder Josuas</Antwort3>
+<Antwort4>Ein Bruder Nuns</Antwort4>
+<richtigeAntwort>1</richtigeAntwort>
+<Bibelstelle>1Chr 2,49</Bibelstelle>
+<SchwierigkeitZahl>14</SchwierigkeitZahl>
+<SchwierigkeitText>500.000 Euro</SchwierigkeitText>
+</Frage>
+<Frage>
+<ID>79</ID>
+<Fragestellung>In welchem Buch der Bibel steht geschrieben: ?Kommt her zu mir, alle, die ihr mühselig und beladen seid, ich will euch erquicken.??</Fragestellung>
+<Antwort1>Johannes</Antwort1>
+<Antwort2>Markus</Antwort2>
+<Antwort3>Matthäus</Antwort3>
+<Antwort4>Psalmen</Antwort4>
+<richtigeAntwort>3</richtigeAntwort>
+<Bibelstelle>Matthäus 11, 28</Bibelstelle>
+<SchwierigkeitZahl>15</SchwierigkeitZahl>
+<SchwierigkeitText>1.000.000 Euro</SchwierigkeitText>
+</Frage>
+</Fragenkatalog>
