@@ -10,11 +10,11 @@ import java.util.Vector;
 import quiz.Quizfrage;
 import window.SinglePlayerSchirm;
 
-public class QuizPanelFrage extends QuizPanel {
+public class QuizPanelFrage extends QuizImagePanel {
 	protected Quizfrage	frage;
 
-	public QuizPanelFrage(BufferedImage i, long delay, SinglePlayerSchirm p, Quizfrage frage) {
-		super( i, 13, (double) i.getHeight() * -1, delay, p );
+	public QuizPanelFrage(BufferedImage i, long delay, Quizfrage frage) {
+		super( i, 13, (double) i.getHeight() * -1, delay );
 
 		this.frage = frage;
 
@@ -26,8 +26,8 @@ public class QuizPanelFrage extends QuizPanel {
 		this.createKlickPolygon();
 	}
 
-	public QuizPanelFrage(BufferedImage[] i, long delay, SinglePlayerSchirm p, Quizfrage frage) {
-		super( i, 13, (double) i[0].getHeight() * -1, delay, p );
+	public QuizPanelFrage(BufferedImage[] i, long delay, Quizfrage frage) {
+		super( i, 13, (double) i[0].getHeight() * -1, delay );
 
 		this.frage = frage;
 
@@ -37,12 +37,6 @@ public class QuizPanelFrage extends QuizPanel {
 		this.endPositionY = 100;
 
 		this.createKlickPolygon();
-	}
-
-	@Override
-	public boolean collidedWith(QuizPanel s) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	public void setFrage(Quizfrage frage) {

@@ -1,5 +1,7 @@
 package window;
 
+import interfaces.BackendWindow;
+import interfaces.FrontendWindow;
 import interfaces.QuizFenster;
 
 import java.awt.Canvas;
@@ -23,21 +25,20 @@ import java.awt.image.VolatileImage;
 
 import javax.swing.JFrame;
 
+import main.Biblionaer;
 import quiz.Quizfrage;
 import quiz.Steuerung;
-import windowElements.QuizPanel;
+import windowElements.QuizImagePanel;
 import windowElements.QuizPanelAntwort;
 import windowElements.QuizPanelFrage;
 import windowElements.QuizPanelJoker;
 import windowElements.QuizRoundLogo;
 import windowElements.QuizStatusTextPanel;
 import windowElements.QuizTippPanel;
-
-import main.Biblionaer;
-
 import Grafik.GrafikLib;
 
-public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListener, QuizFenster {
+public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListener, QuizFenster,
+		FrontendWindow {
 
 	private static final long		serialVersionUID	= 8869415625961638325L;
 
@@ -54,8 +55,9 @@ public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListene
 	private long					last				= 0;
 	private long					fps					= 0;
 
-	Frame							frame;
-	boolean							once				= false;
+	protected Frame					frame;
+	protected boolean				once				= false;
+	protected boolean				blackScreen			= false;
 
 	private BufferedImage			backgroundQuizScreen;						// Hintergrundbild
 	private BufferedImage			backgroundQuizRahmen;						// Rahmen
@@ -104,7 +106,6 @@ public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListene
 
 		createBufferStrategy( 2 );
 		strategy = getBufferStrategy();
-
 		createBackbuffer();
 
 		doInitializations();
@@ -148,6 +149,16 @@ public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListene
 		g.clearRect( 0, 0, getWidth(), getHeight() );
 		render( g ); // alle Zeichenoperationen: Map, Player, etc.
 		g.dispose(); // Graphics-Objekt verwerfen
+
+		// Nur dann die Bildchens zeichnen, wenn nicht von Außen der
+		// "Black-Screen"-Command gegeben wurde
+		if ( !this.blackScreen ) {
+			render( g ); // alle Zeichenoperationen: Map, Player, etc.
+		}
+		else {
+			g.setColor( Color.BLACK );
+			g.fillRect( 0, 0, getWidth(), getHeight() );
+		}
 
 		Graphics g2 = strategy.getDrawGraphics(); // Zeichenobjekt der
 		// BufferStrategy holen
@@ -199,40 +210,40 @@ public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListene
 
 		// Das EC-Logo
 		BufferedImage ecLogo = lib.getSprite( "img/ECLogoKleiner.png" );
-		this.ecLogoPanel = new QuizRoundLogo( ecLogo, 15, 15, -1, this );
+		this.ecLogoPanel = new QuizRoundLogo( ecLogo, 15, 15, -1 );
 
 		BufferedImage[] quizImgQuestionBlau = lib.getSprite( "img/fragePanelBlau.png", 3, 1 );
-		quizQuestionPanel = new QuizPanelFrage( quizImgQuestionBlau, -1, this, null );
-		quizQuestionPanel.setLoop( QuizPanel.BLAU, QuizPanel.BLAU );
+		quizQuestionPanel = new QuizPanelFrage( quizImgQuestionBlau, -1, null );
+		quizQuestionPanel.setLoop( QuizImagePanel.BLAU, QuizImagePanel.BLAU );
 
 		int antPosY = 300; // Antwortpositionierung
 
 		BufferedImage[] quizAnswerPanelBlau = lib.getSprite( "img/antwortPanelBlau.png", 3, 1 );
 		quizAnswerPanel1 = new QuizPanelAntwort( quizAnswerPanelBlau, -quizAnswerPanelBlau[0]
-				.getWidth(), antPosY, 10, antPosY, -1, this, null );
+				.getWidth(), antPosY, 10, antPosY, -1, null );
 		quizAnswerPanel3 = new QuizPanelAntwort( quizAnswerPanelBlau, -quizAnswerPanelBlau[0]
-				.getWidth(), (antPosY + 50), 10, (antPosY + 50), -1, this, null );
+				.getWidth(), (antPosY + 50), 10, (antPosY + 50), -1, null );
 		quizAnswerPanel2 = new QuizPanelAntwort( quizAnswerPanelBlau, this.frame.getWidth(),
-				antPosY, quizAnswerPanelBlau[0].getWidth(), antPosY, -1, this, null );
+				antPosY, quizAnswerPanelBlau[0].getWidth(), antPosY, -1, null );
 		quizAnswerPanel4 = new QuizPanelAntwort( quizAnswerPanelBlau, this.frame.getWidth(),
-				(antPosY + 50), quizAnswerPanelBlau[0].getWidth(), (antPosY + 50), -1, this, null );
+				(antPosY + 50), quizAnswerPanelBlau[0].getWidth(), (antPosY + 50), -1, null );
 
-		quizAnswerPanel1.setLoop( QuizPanel.BLAU, QuizPanel.BLAU );
-		quizAnswerPanel2.setLoop( QuizPanel.BLAU, QuizPanel.BLAU );
-		quizAnswerPanel3.setLoop( QuizPanel.BLAU, QuizPanel.BLAU );
-		quizAnswerPanel4.setLoop( QuizPanel.BLAU, QuizPanel.BLAU );
+		quizAnswerPanel1.setLoop( QuizImagePanel.BLAU, QuizImagePanel.BLAU );
+		quizAnswerPanel2.setLoop( QuizImagePanel.BLAU, QuizImagePanel.BLAU );
+		quizAnswerPanel3.setLoop( QuizImagePanel.BLAU, QuizImagePanel.BLAU );
+		quizAnswerPanel4.setLoop( QuizImagePanel.BLAU, QuizImagePanel.BLAU );
 
 		// Joker initialisieren
 		int JokerPosX = 400;
 		int JokerPosY = 17;
 		quizFiftyJokerPanel = new QuizPanelJoker( lib.getSprite( "img/fiftyJoker.png", 3, 1 ),
-				JokerPosX, JokerPosY, this );
+				JokerPosX, JokerPosY );
 		quizTippJokerPanel = new QuizPanelJoker( lib.getSprite( "img/tippJoker.png", 3, 1 ),
-				JokerPosX + 90, JokerPosY, this );
+				JokerPosX + 90, JokerPosY );
 		// quizStatistikJokerPanel = new quizPanelJoker( lib.getSprite(
 		// "img/statistikJoker.png", 3, 1 ), JokerPosX + 180, JokerPosY, this );
 		quizPublikumsJoker = new QuizPanelJoker( lib.getSprite( "img/puplikumsJoker.png", 3, 1 ),
-				JokerPosX + 180, JokerPosY, this );
+				JokerPosX + 180, JokerPosY );
 
 		// Bibelstelle
 		quizTipp = new QuizTippPanel( null );
@@ -371,6 +382,13 @@ public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListene
 			}
 
 			doPainting();
+
+			// Auch dem AdministratorSchirm ein aktuelles Bild senden
+			if ( Biblionaer.meinWindowController.getBackendFenster() != null
+					&& Biblionaer.meinWindowController.getFrontendFenster() == this ) {
+				((BackendWindow) Biblionaer.meinWindowController.getBackendFenster())
+						.setFrontendScreenImage( this.backbuffer );
+			}
 
 			try {
 				Thread.sleep( 10 );
@@ -649,13 +667,6 @@ public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListene
 		this.quizStatusTextPanel.setText( text );
 	}
 
-	public void setAntwortenSichtbar(boolean sichtbar) {
-		this.quizAnswerPanel1.setVisible( sichtbar );
-		this.quizAnswerPanel2.setVisible( sichtbar );
-		this.quizAnswerPanel3.setVisible( sichtbar );
-		this.quizAnswerPanel4.setVisible( sichtbar );
-	}
-
 	public void setAntwortfelderFalsch() {
 		this.quizAnswerPanel1.zeigeBlau();
 		this.quizAnswerPanel2.zeigeBlau();
@@ -702,6 +713,11 @@ public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListene
 		this.quizQuestionPanel.setLoop( 2, 2 );
 
 		// Eventuell hier noch einen Sound abspielen
+	}
+
+	// * Ab hier die Interfacemethoden für FrontendWindow
+	public void setBildschirmSchwarz(boolean schwarzerBildschirm) {
+		this.blackScreen = schwarzerBildschirm;
 	}
 
 }

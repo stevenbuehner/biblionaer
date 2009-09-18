@@ -9,14 +9,14 @@ import java.util.Vector;
 
 import window.SinglePlayerSchirm;
 
-public class QuizPanelAntwort extends QuizPanel {
+public class QuizPanelAntwort extends QuizImagePanel {
 
 	public final int	SPEED			= 300;
 	private String		ausgabeString	= null;
 
 	public QuizPanelAntwort(BufferedImage i, double xPos, double yPos, double xZielPos,
-			double yZielPos, long delay, SinglePlayerSchirm p, String pAusgabeString) {
-		super( i, xPos, yPos, delay, p );
+			double yZielPos, long delay, String pAusgabeString) {
+		super( i, xPos, yPos, delay );
 
 		this.endPositionX = xZielPos;
 		this.endPositionY = yZielPos;
@@ -32,8 +32,8 @@ public class QuizPanelAntwort extends QuizPanel {
 	}
 
 	public QuizPanelAntwort(BufferedImage[] i, double xPos, double yPos, double xZielPos,
-			double yZielPos, long delay, SinglePlayerSchirm p, String pAusgabeString) {
-		super( i, xPos, yPos, delay, p );
+			double yZielPos, long delay, String pAusgabeString) {
+		super( i, xPos, yPos, delay );
 		// TODO Auto-generated constructor stub
 
 		this.endPositionX = xZielPos;
@@ -92,13 +92,6 @@ public class QuizPanelAntwort extends QuizPanel {
 		else {
 			// tue nichts
 		}
-
-	}
-
-	@Override
-	public boolean collidedWith(QuizPanel s) {
-		// wird nicht benoetigt
-		return false;
 	}
 
 	public String getAusgabeString() {

@@ -1,9 +1,13 @@
 package main;
 
+import java.awt.GraphicsEnvironment;
+
 import quiz.Steuerung;
+import window.AdministratorSchirm;
 import window.Einstellungen;
 import window.Konsole;
 import window.SinglePlayerSchirm;
+import window.VollbildSchirm;
 import window.WindowController;
 
 /**
@@ -24,18 +28,27 @@ public class Biblionaer {
 
 		meineSteuerung = new Steuerung();
 
+		meineKonsole = new Konsole();
+
 		// Alle anderen Fenster und Objekte erstellen
 		meineEinstellungen = new Einstellungen( "Einstellungen", meineSteuerung );
 		meinWindowController = new WindowController();
-		meinWindowController.addFrontendFenster( new SinglePlayerSchirm( "Hauptfenster", 678, 549,
-				meineSteuerung ) );
+		// meinWindowController.addFrontendFenster( new SinglePlayerSchirm(
+		// "Hauptfenster", 678, 549,
+		// meineSteuerung ) );
+		// meinWindowController.addBackendFenster( new VollbildSchirm(
+		// "Administrationsfenster",
+		// GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[1]
+		// ) );
+		meinWindowController.addBackendFenster( new AdministratorSchirm( "Administrationsfenster",
+				GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice(), true ) );
 
-		meineKonsole = new Konsole( meineSteuerung );
+		meinWindowController.addFrontendFenster( new VollbildSchirm( "Vollbildschirm",
+				GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[1], true ) );
 
-		// Steuerung mit den nötigen Objekten verknüpfen
-		meineSteuerung.setEinstellungen( meineEinstellungen );
-		meineSteuerung.setWindowController( meinWindowController );
-		meineSteuerung.setKonsole( meineKonsole );
+		// meinWindowController.addFrontendFenster( new SinglePlayerSchirm(
+		// "Hauptfenster", 678, 549,
+		// meineSteuerung ) );
 
 		// Weiter Einstellungen
 		// meinHauptfenster.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );

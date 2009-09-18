@@ -122,7 +122,7 @@ public class QuizTextPanel implements Drawable {
 			// Nur dann eine Betrachtung der Breite machen, wenn width > 0
 			if ( width > 1 ) {
 				Vector<String> derTextVektor = new Vector<String>();
-				derTextVektor = QuizPanel.wrapText( this.text, this.width, g.getFontMetrics() );
+				derTextVektor = QuizImagePanel.wrapText( this.text, this.width, g.getFontMetrics() );
 
 				for (int i = 0; i < derTextVektor.size(); i++) {
 					this.zeichneTeilstring( this.xPos, this.yPos + i

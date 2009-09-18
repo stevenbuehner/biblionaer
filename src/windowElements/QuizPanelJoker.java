@@ -5,17 +5,17 @@ import java.awt.image.BufferedImage;
 
 import window.SinglePlayerSchirm;
 
-public class QuizPanelJoker extends QuizPanel {
+public class QuizPanelJoker extends QuizImagePanel {
 
-	public QuizPanelJoker(BufferedImage[] i, double x, double y, SinglePlayerSchirm p) {
-		super( i, x, y, 10, p );
+	public QuizPanelJoker(BufferedImage[] i, double x, double y) {
+		super( i, x, y, 10);
 
 		loop_from = 0;
 		loop_to = 0;
 	}
 
-	public QuizPanelJoker(BufferedImage i, double x, double y, SinglePlayerSchirm p) {
-		super( i, x, y, 10, p );
+	public QuizPanelJoker(BufferedImage i, double x, double y) {
+		super( i, x, y, 10 );
 
 		loop_from = 0;
 		loop_to = 0;
@@ -26,8 +26,7 @@ public class QuizPanelJoker extends QuizPanel {
 			loop_from = 0;
 			loop_to = 0;
 		}
-		else
-		{
+		else {
 			loop_from = 2;
 			loop_to = 2;
 		}
@@ -53,12 +52,6 @@ public class QuizPanelJoker extends QuizPanel {
 	public void resetJoker() {
 		loop_from = 0;
 		loop_to = 0;
-	}
-
-	@Override
-	public boolean collidedWith(QuizPanel s) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override

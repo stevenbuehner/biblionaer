@@ -167,7 +167,7 @@ public class DisplayModeTest extends JFrame implements ActionListener, ListSelec
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice[] devices = env.getScreenDevices();
 		// REMIND : Multi-monitor full-screen mode not yet supported
-		for (int i = 0; i < 1 /* devices.length */; i++) {
+		for (int i = 0; i < devices.length ; i++) {
 			DisplayModeTest test = new DisplayModeTest( devices[i] );
 			test.initComponents( test.getContentPane() );
 			test.begin();

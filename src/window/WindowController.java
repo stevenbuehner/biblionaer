@@ -44,16 +44,34 @@ public class WindowController implements QuizFenster {
 	 * @param neuesFenster
 	 */
 	public void addFrontendFenster(QuizFenster neuesFenster) {
-		if ( this.meineQuizFenster.contains( neuesFenster ) ) {
-			Biblionaer.meineKonsole
-					.println(
-							"Es wurde versucht ein Fenster das zweite Mal zum Controller hinzuzufügen!!",
-							2 );
+		boolean isFrontend = false;
+
+		if ( neuesFenster != null ) {
+			Class[] interfaces = neuesFenster.getClass().getInterfaces();
+			for (int i = 0; i < interfaces.length; ++i) {
+				if ( interfaces[i].getName().equals( "interfaces.FrontendWindow" ) ) {
+					isFrontend = true;
+					break;
+				}
+			}
+
+			if ( this.meineQuizFenster.contains( neuesFenster ) ) {
+				Biblionaer.meineKonsole
+						.println(
+								"Es wurde versucht ein Fenster das zweite Mal zum Controller hinzuzufügen!!",
+								2 );
+			}
+			else if ( isFrontend ) {
+				meineQuizFenster.addLast( neuesFenster );
+				this.frontendFenster = neuesFenster;
+			}
+			else {
+				Biblionaer.meineKonsole
+						.println(
+								"Es wurde versucht ein Fenster das als FrontendFenster zum Controller hinzuzufügen - doch es enthält nicht die nötigen Interfaces!!",
+								2 );
+			}
 		}
-		else {
-			meineQuizFenster.addLast( neuesFenster );
-		}
-		this.frontendFenster = neuesFenster;
 	}
 
 	/**
@@ -62,16 +80,34 @@ public class WindowController implements QuizFenster {
 	 * @param neuesFenster
 	 */
 	public void addBackendFenster(QuizFenster neuesFenster) {
-		if ( this.meineQuizFenster.contains( neuesFenster ) ) {
-			Biblionaer.meineKonsole
-					.println(
-							"Es wurde versucht ein Fenster das zweite Mal zum Controller hinzuzufügen!!",
-							2 );
+		boolean isBackend = false;
+
+		if ( neuesFenster != null ) {
+			Class[] interfaces = neuesFenster.getClass().getInterfaces();
+			for (int i = 0; i < interfaces.length; ++i) {
+				if ( interfaces[i].getName().equals( "interfaces.BackendWindow" ) ) {
+					isBackend = true;
+					break;
+				}
+			}
+
+			if ( this.meineQuizFenster.contains( neuesFenster ) ) {
+				Biblionaer.meineKonsole
+						.println(
+								"Es wurde versucht ein Fenster das zweite Mal zum Controller hinzuzufügen!!",
+								2 );
+			}
+			else if ( isBackend ) {
+				meineQuizFenster.addLast( neuesFenster );
+				this.backendFenster = neuesFenster;
+			}
+			else {
+				Biblionaer.meineKonsole
+						.println(
+								"Es wurde versucht ein Fenster das als FrontendFenster zum Controller hinzuzufügen - doch es enthält nicht die nötigen Interfaces!!",
+								2 );
+			}
 		}
-		else {
-			meineQuizFenster.addLast( neuesFenster );
-		}
-		this.backendFenster = neuesFenster;
 	}
 
 	/**
@@ -281,13 +317,6 @@ public class WindowController implements QuizFenster {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
 			iter.next().setAntwortFelderSichtbar( sichtbar );
-		}
-	}
-
-	public void setAntwortenSichtbar(boolean sichtbar) {
-		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
-		while (iter.hasNext()) {
-			iter.next().setAntwortenSichtbar( sichtbar );
 		}
 	}
 

@@ -5,10 +5,10 @@ import java.awt.image.BufferedImage;
 
 import window.SinglePlayerSchirm;
 
-public class QuizRoundLogo extends QuizPanel {
+public class QuizRoundLogo extends QuizImagePanel {
 
-	public QuizRoundLogo(BufferedImage i, double x, double y, long delay, SinglePlayerSchirm p) {
-		super( i, x, y, delay, p );
+	public QuizRoundLogo(BufferedImage i, double x, double y, long delay) {
+		super( i, x, y, delay );
 
 		this.endPositionX = x;
 		this.endPositionY = y;
@@ -17,21 +17,15 @@ public class QuizRoundLogo extends QuizPanel {
 		this.startPositionY = y;
 	}
 
-	public QuizRoundLogo(BufferedImage[] i, double x, double y, long delay, SinglePlayerSchirm p) {
-		this( i[0], x, y, delay, p ); // Auf zum Superkonstruktor
-	}
-
-	@Override
-	public boolean collidedWith(QuizPanel s) {
-		// Wird hier nicht benoetigt
-		return false;
+	public QuizRoundLogo(BufferedImage[] i, double x, double y, long delay) {
+		this( i[0], x, y, delay); // Auf zum Superkonstruktor
 	}
 
 	@Override
 	protected void createKlickPolygon() {
 		// TODO Auto-generated method stub
 		Rectangle2D.Double klickFlaeche = new Rectangle2D.Double( 0, 0, this.width, this.height );
-		
+
 		this.klickFlaeche = klickFlaeche;
 	}
 }
