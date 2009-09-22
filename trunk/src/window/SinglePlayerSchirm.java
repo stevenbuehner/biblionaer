@@ -371,32 +371,45 @@ public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListene
 
 	public void run() {
 
-		while (frame.isVisible()) {
+		while (frame != null && frame.isVisible()) {
 
-			berechneDelta();
+			try {
 
-			if ( meineSteuerung.getStatus() > 0 ) {
-				// checkKeys();
-				doLogic();
-				moveObjects();
+				berechneDelta();
+
+				if ( meineSteuerung.getStatus() > 0 ) {
+					// checkKeys();
+					doLogic();
+					moveObjects();
+				}
+
+				doPainting();
+
+				// Auch dem AdministratorSchirm ein aktuelles Bild senden
+				if ( Biblionaer.meinWindowController.getBackendFenster() != null
+						&& Biblionaer.meinWindowController.getFrontendFenster() == this ) {
+					((BackendWindow) Biblionaer.meinWindowController.getBackendFenster())
+							.setFrontendScreenImage( this.backbuffer );
+				}
+
 			}
-
-			doPainting();
-
-			// Auch dem AdministratorSchirm ein aktuelles Bild senden
-			if ( Biblionaer.meinWindowController.getBackendFenster() != null
-					&& Biblionaer.meinWindowController.getFrontendFenster() == this ) {
-				((BackendWindow) Biblionaer.meinWindowController.getBackendFenster())
-						.setFrontendScreenImage( this.backbuffer );
+			catch (Exception e1) {
+				Biblionaer.meineKonsole
+						.println(
+								"SinglePlayerWindow warf einen Exeption im Thread.run(). Vermutlich aber nicht weiter tragisch",
+								3 );
 			}
-
 			try {
 				Thread.sleep( 10 );
 			}
 			catch (InterruptedException e) {}
 
 		}
-		System.exit( 0 );
+
+		// Nur dann das ganuze Programm beenden, wenn nicht Ÿber killYourSelf()
+		// versucht wurde das Fenster zu lšschen. Also das frame noch da ist.
+		if ( frame != null )
+			System.exit( 0 );
 
 	}
 
@@ -720,4 +733,11 @@ public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListene
 		this.blackScreen = schwarzerBildschirm;
 	}
 
+	public void killYourSelf() {
+		this.frame.setVisible( false );
+
+		this.frame.dispose();
+		this.setVisible( false ); // ist das noetig??
+		this.frame = null;
+	}
 }

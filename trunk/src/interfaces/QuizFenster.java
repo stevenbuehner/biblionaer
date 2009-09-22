@@ -5,6 +5,12 @@ import quiz.Quizfrage;
 public interface QuizFenster {
 
 	/**
+	 * Alles was getan werden muss, damit das Fenster gekillt wird. In der
+	 * Regel: frm.setVisible(false); frm.dispose(); frm = null;
+	 */
+	public void killYourSelf();
+
+	/**
 	 * Setze die Frage, die angezeigt werden soll. Ist eine Komponente der Frage
 	 * null, wird das ganze Feld nicht angezeigt Ist eine Komponente nur leer
 	 * initialisiert, wird das Feld selbst angezeigt, aber ohne Inhalt.
@@ -25,42 +31,42 @@ public interface QuizFenster {
 	 * Das Element Fragefeld (und Schwerierigkeitsgrad) anzeigen oder
 	 * ausblenden.
 	 * 
-	 * @param anzeigen
+	 * @param sichtbar
 	 */
 	public void setFrageFeldSichtbar(boolean sichtbar);
 
 	/**
 	 * Alle Antwortfelder auf einmal anzeigen oder ausblenden.
 	 * 
-	 * @param anzeigen
+	 * @param sichtbar
 	 */
 	public void setAntwortFelderSichtbar(boolean sichtbar);
 
 	/**
 	 * Das Antwortfeld 1 anzeigen oder ausblenden.
 	 * 
-	 * @param anzeigen
+	 * @param sichtbar
 	 */
 	public void setAntwortFeld1Sichtbar(boolean sichtbar);
 
 	/**
 	 * Das Antwortfeld 2 anzeigen oder ausblenden.
 	 * 
-	 * @param anzeigen
+	 * @param sichtbar
 	 */
 	public void setAntwortFeld2Sichtbar(boolean sichtbar);
 
 	/**
 	 * Das Antwortfeld 3 anzeigen oder ausblenden.
 	 * 
-	 * @param anzeigen
+	 * @param sichtbar
 	 */
 	public void setAntwortFeld3Sichtbar(boolean sichtbar);
 
 	/**
 	 * Das Antwortfeld 4 anzeigen oder ausblenden.
 	 * 
-	 * @param anzeigen
+	 * @param sichtbar
 	 */
 	public void setAntwortFeld4Sichtbar(boolean sichtbar);
 

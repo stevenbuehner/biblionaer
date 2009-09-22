@@ -1,12 +1,12 @@
 package window;
 
+import interfaces.QuizFenster;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import main.Biblionaer;
-
 import quiz.Quizfrage;
-import interfaces.QuizFenster;
 
 public class WindowController implements QuizFenster {
 
@@ -35,6 +35,7 @@ public class WindowController implements QuizFenster {
 		}
 		else {
 			meineQuizFenster.addLast( neuesFenster );
+			Biblionaer.meineSteuerung.windowSituationHasChenged();
 		}
 	}
 
@@ -55,14 +56,8 @@ public class WindowController implements QuizFenster {
 				}
 			}
 
-			if ( this.meineQuizFenster.contains( neuesFenster ) ) {
-				Biblionaer.meineKonsole
-						.println(
-								"Es wurde versucht ein Fenster das zweite Mal zum Controller hinzuzufügen!!",
-								2 );
-			}
-			else if ( isFrontend ) {
-				meineQuizFenster.addLast( neuesFenster );
+			if ( isFrontend ) {
+				this.addQuizFenster( neuesFenster );
 				this.frontendFenster = neuesFenster;
 			}
 			else {
@@ -91,14 +86,8 @@ public class WindowController implements QuizFenster {
 				}
 			}
 
-			if ( this.meineQuizFenster.contains( neuesFenster ) ) {
-				Biblionaer.meineKonsole
-						.println(
-								"Es wurde versucht ein Fenster das zweite Mal zum Controller hinzuzufügen!!",
-								2 );
-			}
-			else if ( isBackend ) {
-				meineQuizFenster.addLast( neuesFenster );
+			if ( isBackend ) {
+				this.addQuizFenster( neuesFenster );
 				this.backendFenster = neuesFenster;
 			}
 			else {
@@ -119,6 +108,18 @@ public class WindowController implements QuizFenster {
 	 */
 	public boolean removeQuizFenster(QuizFenster zuLoeschendeFensterID) {
 		return meineQuizFenster.remove( zuLoeschendeFensterID );
+	}
+
+	public void removAllQuizFensters() {
+		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
+		while (iter.hasNext()) {
+			QuizFenster dasFenster = iter.next();
+			dasFenster.killYourSelf();
+			iter.remove();
+		}
+
+		this.backendFenster = null;
+		this.frontendFenster = null;
 	}
 
 	public QuizFenster getFrontendFenster() {
@@ -416,6 +417,10 @@ public class WindowController implements QuizFenster {
 		while (iter.hasNext()) {
 			iter.next().setTippJokerSichtbar( sichtbar );
 		}
+	}
+
+	public void killYourSelf() {
+	// Dieses Teil hier killt sich nicht :-) - Keine Chance
 	}
 
 }

@@ -526,4 +526,9 @@ public class VollbildSchirm extends JFrame implements QuizFenster, Runnable, Fro
 		this.tippJokerPanel.setVisible( sichtbar );
 	}
 
+	public void killYourSelf() {
+		this.setVisible( false );
+		this.dispose();
+	}
+
 }

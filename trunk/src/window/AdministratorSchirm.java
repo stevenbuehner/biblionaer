@@ -9,71 +9,61 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.VolatileImage;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 
+import lokaleSpiele.QuizFileModel;
 import main.Biblionaer;
-
 import quiz.Quizfrage;
-import Grafik.GrafikLib;
 
 public class AdministratorSchirm extends JFrame implements QuizFenster, BackendWindow,
 		ActionListener {
 
-	private static final long		serialVersionUID		= 1L;
+	private static final long	serialVersionUID		= 1L;
 
-	protected JPanel				monitorPanel;																			// links
+	protected JPanel			monitorPanel;																// links
 	// oben
-	protected JPanel				steuerungPanel;																		// rechts
+	protected JPanel			steuerungPanel;															// rechts
 	// oben
-	protected JPanel				dateiPanel;																			// links
+	protected JPanel			dateiPanel;																// links
 	// unten
-	protected JPanel				weiteresPanel;																			// rechts
+	protected JPanel			weiteresPanel;																// rechts
 	// unten
 
-	private GraphicsDevice			device;
-	private boolean					isFullScreen			= false;
-
-	private GraphicsEnvironment		ge;
-	private GraphicsConfiguration	gc;
-
-	// Grafikverwaltung
-	private GrafikLib				lib;
+	private GraphicsDevice		device;
+	private boolean				isFullScreen			= false;
 
 	// SteuerungPanel Material
-	JButton							auswahlBestaetigenBtn	= new JButton( "Auswahl Bestätigen" );
-	JButton							antwort1KlickenBtn		= new JButton( "Antwort A" );
-	JButton							antwort2KlickenBtn		= new JButton( "Antwort B" );
-	JButton							antwort3KlickenBtn		= new JButton( "Antwort C" );
-	JButton							antwort4KlickenBtn		= new JButton( "Antwort D" );
-	JLabel							bibelstelleLabel		= new JLabel( "Bibelstelle" );
+	JButton						auswahlBestaetigenBtn	= new JButton( "Auswahl Bestätigen" );
+	JButton						antwort1KlickenBtn		= new JButton( "Antwort A" );
+	JButton						antwort2KlickenBtn		= new JButton( "Antwort B" );
+	JButton						antwort3KlickenBtn		= new JButton( "Antwort C" );
+	JButton						antwort4KlickenBtn		= new JButton( "Antwort D" );
+	JLabel						bibelstelleLabel		= new JLabel( "Bibelstelle" );
 
-	JButton							fiftyJoker				= new JButton( "50:50 Joker" );
-	JButton							tippJokerBtn			= new JButton( "Tipp Joker" );
-	JButton							puplikumsJokerBtn		= new JButton( "Puplikums Joker" );
+	JButton						fiftyJoker				= new JButton( "50:50 Joker" );
+	JButton						tippJokerBtn			= new JButton( "Tipp Joker" );
+	JButton						puplikumsJokerBtn		= new JButton( "Puplikums Joker" );
 
 	// DateiPanel Material
-	JButton							neuesSpielStartenBtn	= new JButton( "Neues Spiel starten" );
-	JButton							laufendsSpielBeendenBtn	= new JButton(
-																	"laufendes Spiel beenden" );
-	JButton							neuesSpielAusInternBtn	= new JButton(
-																	"Neues Spiel aus dem Intert zur Liste hinzufügen" );
+	JTable						spielListeTable			= new JTable( new QuizFileModel() );
+	JButton						neuesSpielStartenBtn	= new JButton( "Neues Spiel starten" );
+	JButton						laufendsSpielBeendenBtn	= new JButton( "laufendes Spiel beenden" );
+	JButton						neuesSpielAusInternBtn	= new JButton(
+																"Neues Spiel aus dem Internet starten" );
 
 	// WeiteresPanel Material
-	JButton							leisteEinblendenBtn		= new JButton( "Leiste einblenden" );
-	JButton							schwarzerBildschirmBtn	= new JButton( "schwarzer Bildschirm" );
+	JButton						leisteEinblendenBtn		= new JButton( "Leiste einblenden" );
+	JButton						schwarzerBildschirmBtn	= new JButton( "schwarzer Bildschirm" );
 
 	public AdministratorSchirm(String fenstername, GraphicsDevice device, boolean vollbildModus) {
 		super( fenstername );
@@ -159,7 +149,9 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		this.dateiPanel.setBackground( Color.BLACK );
 
 		JPanel dateiLinkesPanel = new JPanel( new FlowLayout() );
-		dateiLinkesPanel.add( new JLabel( "offline Spiel Liste" ) );
+		// dateiLinkesPanel.add( new JLabel( "offline Spiel Liste" ) );
+		spielListeTable.setToolTipText( "Spielanzahl: " + spielListeTable.getModel().getRowCount() );
+		dateiLinkesPanel.add( spielListeTable );
 
 		JPanel dateiRechtesPanel = new JPanel( new GridLayout( 3, 1 ) );
 		// Buttons
@@ -247,7 +239,8 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 		}
 		else if ( e.getSource() == neuesSpielAusInternBtn ) {
-
+			Biblionaer.meineSteuerung.actionPerformed( new ActionEvent( this, 1,
+					"Neues Spiel aus dem Internet" ) );
 		}
 		else if ( e.getSource() == leisteEinblendenBtn ) {
 
@@ -518,6 +511,11 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 	public void setTippJokerSichtbar(boolean sichtbar) {
 		this.tippJokerBtn.setEnabled( sichtbar );
 
+	}
+
+	public void killYourSelf() {
+		this.setVisible( false );
+		this.dispose();
 	}
 
 }
