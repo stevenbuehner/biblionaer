@@ -1,13 +1,9 @@
 package main;
 
-import java.awt.GraphicsEnvironment;
-
 import quiz.Steuerung;
-import window.AdministratorSchirm;
 import window.Einstellungen;
 import window.Konsole;
 import window.SinglePlayerSchirm;
-import window.VollbildSchirm;
 import window.WindowController;
 
 /**
@@ -33,18 +29,18 @@ public class Biblionaer {
 		// Alle anderen Fenster und Objekte erstellen
 		meineEinstellungen = new Einstellungen( "Einstellungen", meineSteuerung );
 		meinWindowController = new WindowController();
-		// meinWindowController.addFrontendFenster( new SinglePlayerSchirm(
-		// "Hauptfenster", 678, 549,
-		// meineSteuerung ) );
+		 meinWindowController.addFrontendFenster( new SinglePlayerSchirm(
+		 "Hauptfenster", 678, 549,
+		 meineSteuerung ) );
 		// meinWindowController.addBackendFenster( new VollbildSchirm(
 		// "Administrationsfenster",
 		// GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[1]
 		// ) );
-		meinWindowController.addBackendFenster( new AdministratorSchirm( "Administrationsfenster",
-				GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice(), true ) );
+		//meinWindowController.addBackendFenster( new AdministratorSchirm( "Administrationsfenster",
+		//		GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice(), true ) );
 
-		meinWindowController.addFrontendFenster( new VollbildSchirm( "Vollbildschirm",
-				GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[1], true ) );
+		//meinWindowController.addFrontendFenster( new VollbildSchirm( "Vollbildschirm",
+		//		GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[1], true ) );
 
 		// meinWindowController.addFrontendFenster( new SinglePlayerSchirm(
 		// "Hauptfenster", 678, 549,

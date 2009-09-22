@@ -40,8 +40,7 @@ public class Steuerung implements ActionListener, KeyListener {
 
 	public void erstAufrufDerSteuerung() {
 		// Startdialog
-		JOptionPane startDialog = new JOptionPane();
-		int returnOptionDialog = startDialog
+		int returnOptionDialog = JOptionPane
 				.showOptionDialog(
 						(Component) Biblionaer.meinWindowController.getFrontendFenster(),
 						"Herzlich Willkommen zu \"Wer wird Biblionär\". Zu Beginn wird ein Standardspiel geladen. \nWeitere Spiele können über das Menü geladen werden. Hierzu ist allerdings eine Verbindung zum Internet nötig. \nMit der Verwendung dieses Programmes stimmen Sie zu, nichts davon kommerziell zu verwenden.\n\nViel Spaß beim Spielen, \nIhr Biblionär-Team.",
@@ -470,4 +469,26 @@ public class Steuerung implements ActionListener, KeyListener {
 
 	}
 
+	/**
+	 * Wird vom WindowController aufgerufen, wenn sich etwas an der aktuellen
+	 * Fensterkonstellation geändert hat. So können anzeigeOperationen erneut an
+	 * alle Fenster gesendet werden.
+	 */
+	public void windowSituationHasChenged() {
+		if ( meinSpiel != null ) {
+			if ( meinSpiel.laeufDasSpiel() ) {
+				Biblionaer.meinWindowController.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(),
+						false );
+
+				Biblionaer.meinWindowController.setFiftyJokerBenutzt( meinSpiel
+						.fiftyJokerSchonVerwendet() );
+				Biblionaer.meinWindowController.setTippJokerBenutzt( meinSpiel
+						.tippJokerSchonVerwendet() );
+				Biblionaer.meinWindowController.setPublikumsJokerBenutzt( meinSpiel
+						.puplikumsJokerSchonVerwendet() );
+			}
+			else {}
+		}
+
+	}
 }

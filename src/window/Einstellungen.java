@@ -3,6 +3,7 @@ package window;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,16 +37,24 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 	private JTextField			xmlQuelle;
 	private JFormattedTextField	tippJokerZeitInSekunden;
 	private JFormattedTextField	puplikumsJokerZeitInSekunden;
+	private JComboBox			quizScreenModus;
+	public static String		quizScreenModusSingleWindow				= "SingleWindow GUI";
+	public static String		quizScreenModusMultiWindow1FullScreen	= "MultiWindow Vollbild GUI (1. Monit = Admin)";
+	public static String		quizScreenModusMultiWindow1Windowed		= "MultiWindow Fenster GUI (1. Monit = Admin)";
+	public static String		quizScreenModusMultiWindow2FullScreen	= "MultiWindow Vollbild GUI (2. Monit = Admin)";
+	private String				quizScreenModusLetzteAuswahl;
 
 	// Debugging
 	private JCheckBox			quizIdAnzeigen;
 	private JCheckBox			quizPingAnzeigen;
 	private JFormattedTextField	quizKonsolenModus;
 	private JComboBox			quizKonsolenAusgabeModus;
-	
 
-	private int					cheat				= 0;
-	private boolean				zeigeQuizfrageID	= true;
+	private int					cheat									= 0;
+	private boolean				zeigeQuizfrageID						= true;
+
+	private static final long	serialVersionUID						= 5848161982883056362L;
+	protected Steuerung			meineSteuerung;
 
 	public String getProxyHost() {
 		return proxyHost.getText();
@@ -71,9 +80,6 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 		this.xmlQuelle.setText( pXMLquelle );
 	}
 
-	private static final long	serialVersionUID	= 5848161982883056362L;
-	protected Steuerung			meineSteuerung;
-
 	public Steuerung getMeineSteuerung() {
 		return meineSteuerung;
 	}
@@ -96,6 +102,131 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 
 	public int getPuplikumsJokerZeitInSekunden() {
 		return Integer.valueOf( puplikumsJokerZeitInSekunden.getText() );
+	}
+
+	public String getQuizScreenModus() {
+		return (String) this.quizScreenModus.getSelectedItem();
+		// Oder: return quizScreenModusLetzteAuswahl;
+	}
+
+	public void setQuizScreenModus(String quizScreenModus) {
+
+		// Nur die Auswahl ändern, wenn Sie sich wirklich auch geändert hat
+		if ( quizScreenModus != this.quizScreenModusLetzteAuswahl ) {
+
+			if ( quizScreenModus.equals( quizScreenModusSingleWindow )
+					|| quizScreenModus == Einstellungen.quizScreenModusSingleWindow ) {
+				this.quizScreenModus.setSelectedItem( quizScreenModusSingleWindow );
+				this.quizScreenModusLetzteAuswahl = quizScreenModusSingleWindow;
+
+				Biblionaer.meinWindowController.removAllQuizFensters();
+				Biblionaer.meinWindowController.addFrontendFenster( new SinglePlayerSchirm(
+						"Hauptfenster", 678, 549, meineSteuerung ) );
+			}
+			else if ( quizScreenModus.equals( quizScreenModusMultiWindow1FullScreen )
+			// Admin Fenster auf den ersten Monitor legen. Frontendfenster auf
+					// den zweiten Monitor
+					|| quizScreenModus == Einstellungen.quizScreenModusMultiWindow1FullScreen ) {
+				this.quizScreenModus.setSelectedItem( quizScreenModusMultiWindow1FullScreen );
+				this.quizScreenModusLetzteAuswahl = quizScreenModusMultiWindow1FullScreen;
+
+				// Prüfen ob ueberhaupt ein zweiter Monitor angeschlossen ist
+				if ( GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 1 ) {
+					// Mindestens zwei Monitore. ... alles aber im Vollbildmodus
+					Biblionaer.meinWindowController.removAllQuizFensters();
+
+					Biblionaer.meinWindowController
+							.addBackendFenster( new AdministratorSchirm( "Administrationsfenster",
+									GraphicsEnvironment.getLocalGraphicsEnvironment()
+											.getDefaultScreenDevice(), true ) );
+
+					Biblionaer.meinWindowController.addFrontendFenster( new VollbildSchirm(
+							"Vollbildschirm", GraphicsEnvironment.getLocalGraphicsEnvironment()
+									.getScreenDevices()[1], true ) );
+
+				}
+				else {
+					// Nur ein Monitor
+					Biblionaer.meineKonsole
+							.println(
+									"Es ist nur ein Monitor angeschlossen => Zweimonitorbetrieb nicht möglich",
+									2 );
+				}
+			}
+			else if ( quizScreenModus.equals( quizScreenModusMultiWindow1Windowed )
+			// Admin Fenster auf den ersten Monitor legen. Frontendfenster auf
+					// den zweiten Monitor ... alles aber NICHT im Vollbildmodus
+					|| quizScreenModus == Einstellungen.quizScreenModusMultiWindow1Windowed ) {
+				this.quizScreenModus.setSelectedItem( quizScreenModusMultiWindow1Windowed );
+				this.quizScreenModusLetzteAuswahl = quizScreenModusMultiWindow1Windowed;
+
+				// Prüfen ob ueberhaupt ein zweiter Monitor angeschlossen ist
+				if ( GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 1 ) {
+					// Mindestens zwei Monitore
+					Biblionaer.meinWindowController.removAllQuizFensters();
+
+					Biblionaer.meinWindowController
+							.addBackendFenster( new AdministratorSchirm( "Administrationsfenster",
+									GraphicsEnvironment.getLocalGraphicsEnvironment()
+											.getDefaultScreenDevice(), false ) );
+
+					Biblionaer.meinWindowController.addFrontendFenster( new VollbildSchirm(
+							"Vollbildschirm", GraphicsEnvironment.getLocalGraphicsEnvironment()
+									.getScreenDevices()[1], false ) );
+
+				}
+				else {
+					// Nur ein Monitor
+					Biblionaer.meineKonsole
+							.println(
+									"Es ist nur ein Monitor angeschlossen => Zweimonitorbetrieb nicht möglich",
+									2 );
+				}
+			}
+			else if ( quizScreenModus.equals( quizScreenModusMultiWindow2FullScreen )
+			// Admin Fenster auf den zweiten Monitor legen. Frontendfenster auf
+					// den ersten Monitor
+					|| quizScreenModus == Einstellungen.quizScreenModusMultiWindow2FullScreen ) {
+				this.quizScreenModus.setSelectedItem( quizScreenModusMultiWindow2FullScreen );
+				this.quizScreenModusLetzteAuswahl = quizScreenModusMultiWindow2FullScreen;
+
+				// Prüfen ob ueberhaupt ein zweiter Monitor angeschlossen ist
+				if ( GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 1 ) {
+					// Mindestens zwei Monitore
+					Biblionaer.meinWindowController.removAllQuizFensters();
+
+					Biblionaer.meinWindowController.addBackendFenster( new AdministratorSchirm(
+							"Administrationsfenster", GraphicsEnvironment
+									.getLocalGraphicsEnvironment().getScreenDevices()[1], true ) );
+
+					Biblionaer.meinWindowController.addFrontendFenster( new VollbildSchirm(
+							"Vollbildschirm", GraphicsEnvironment.getLocalGraphicsEnvironment()
+									.getDefaultScreenDevice(), true ) );
+
+				}
+				else {
+					// Nur ein Monitor
+					Biblionaer.meineKonsole
+							.println(
+									"Es ist nur ein Monitor angeschlossen => Zweimonitorbetrieb nicht möglich",
+									2 );
+				}
+
+			}
+			else {
+				// Wenn nichts ausgewählt wurde, dann nimm Standardmäßig den
+				// SingleModus
+				Biblionaer.meineKonsole.println( "Dieser quizScreenModus existiert nicht: "
+						+ quizScreenModus + "\nEs wird der Standardmodus verwendet: "
+						+ quizScreenModusSingleWindow, 2 );
+				this.quizScreenModus.setSelectedItem( quizScreenModusSingleWindow );
+				this.quizScreenModusLetzteAuswahl = quizScreenModusSingleWindow;
+
+				Biblionaer.meinWindowController.removAllQuizFensters();
+				Biblionaer.meinWindowController.addFrontendFenster( new SinglePlayerSchirm(
+						"Hauptfenster", 678, 549, meineSteuerung ) );
+			}
+		}
 	}
 
 	public void setQuizIdAnzeigen(boolean anzeigen) {
@@ -282,6 +413,19 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 		puplikumsJokerZeitInSekunden.setText( "20" ); // Default-Sekunden-Wert
 		quizEinstellungen.add( puplikumsJokerZeitInSekunden );
 
+		// ScreenModus
+		quizScreenModus = new JComboBox();
+		quizScreenModus.addItem( quizScreenModusSingleWindow );
+		quizScreenModus.addItem( quizScreenModusMultiWindow1FullScreen );
+		quizScreenModus.addItem( quizScreenModusMultiWindow2FullScreen );
+		this.quizScreenModus.setSelectedItem( quizScreenModusSingleWindow );
+		quizScreenModusLetzteAuswahl = quizScreenModusSingleWindow; // nie
+		// vergessen
+		// das hier
+		// mitzuändern
+		quizScreenModus.addActionListener( this );
+		quizEinstellungen.add( quizScreenModus );
+
 		// Debugging-Anzeige
 		JPanel quizDebugging = new JPanel( new GridLayout( 0, 2, 6, 3 ) );
 		// Id anzeigen
@@ -386,6 +530,10 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 				System.setProperty( "proxySet", "false" ); // Proxy aktivieren
 				Biblionaer.meineKonsole.println( "Proxy wurde deaktiviert", 3 );
 			}
+		}
+		else if ( e.getSource() == this.quizScreenModus ) {
+			this.setQuizScreenModus( (String) this.quizScreenModus.getSelectedItem() );
+
 		}
 		else if ( e.getActionCommand().equals( "Einstellungen speichern" ) ) {
 			// Proxy-Änderungen eintragen und wenn kein Fehler, dann übernehmen
