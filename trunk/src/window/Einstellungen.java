@@ -122,6 +122,8 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 				Biblionaer.meinWindowController.removAllQuizFensters();
 				Biblionaer.meinWindowController.addFrontendFenster( new SinglePlayerSchirm(
 						"Hauptfenster", 678, 549, meineSteuerung ) );
+
+				Biblionaer.meineSteuerung.windowSituationHasChanged();
 			}
 			else if ( quizScreenModus.equals( quizScreenModusMultiWindow1FullScreen )
 			// Admin Fenster auf den ersten Monitor legen. Frontendfenster auf
@@ -144,6 +146,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 							"Vollbildschirm", GraphicsEnvironment.getLocalGraphicsEnvironment()
 									.getScreenDevices()[1], true ) );
 
+					Biblionaer.meineSteuerung.windowSituationHasChanged();
 				}
 				else {
 					// Nur ein Monitor
@@ -151,37 +154,42 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 							.println(
 									"Es ist nur ein Monitor angeschlossen => Zweimonitorbetrieb nicht mšglich",
 									2 );
+					this.quizScreenModus
+							.setSelectedItem( Einstellungen.quizScreenModusSingleWindow );
 				}
 			}
 			else if ( quizScreenModus.equals( quizScreenModusMultiWindow1Windowed )
-			// Admin Fenster auf den ersten Monitor legen. Frontendfenster auf
-					// den zweiten Monitor ... alles aber NICHT im Vollbildmodus
+			// Egal wie viele Screens ... einfach zwei Fenster
+					// ... alles aber NICHT im Vollbildmodus
 					|| quizScreenModus == Einstellungen.quizScreenModusMultiWindow1Windowed ) {
 				this.quizScreenModus.setSelectedItem( quizScreenModusMultiWindow1Windowed );
 				this.quizScreenModusLetzteAuswahl = quizScreenModusMultiWindow1Windowed;
 
 				// PrŸfen ob ueberhaupt ein zweiter Monitor angeschlossen ist
+				// Mindestens zwei Monitore
+				Biblionaer.meinWindowController.removAllQuizFensters();
+
+				Biblionaer.meinWindowController.addBackendFenster( new AdministratorSchirm(
+						"Administrationsfenster", GraphicsEnvironment.getLocalGraphicsEnvironment()
+								.getDefaultScreenDevice(), false ) );
+
 				if ( GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 1 ) {
-					// Mindestens zwei Monitore
-					Biblionaer.meinWindowController.removAllQuizFensters();
-
-					Biblionaer.meinWindowController
-							.addBackendFenster( new AdministratorSchirm( "Administrationsfenster",
-									GraphicsEnvironment.getLocalGraphicsEnvironment()
-											.getDefaultScreenDevice(), false ) );
-
+					// Wenn es zwei Screens gibt, versuche den Vollbildschirm
+					// auf dem zweiten Screen zu erstellen
 					Biblionaer.meinWindowController.addFrontendFenster( new VollbildSchirm(
 							"Vollbildschirm", GraphicsEnvironment.getLocalGraphicsEnvironment()
 									.getScreenDevices()[1], false ) );
-
 				}
 				else {
-					// Nur ein Monitor
-					Biblionaer.meineKonsole
-							.println(
-									"Es ist nur ein Monitor angeschlossen => Zweimonitorbetrieb nicht mšglich",
-									2 );
+					// Wenn es nur einen Screen gibt, erstelle das zweite
+					// Fenster auch auf dem ersten Screen
+					Biblionaer.meinWindowController.addFrontendFenster( new VollbildSchirm(
+							"Vollbildschirm", GraphicsEnvironment.getLocalGraphicsEnvironment()
+									.getDefaultScreenDevice(), false ) );
+
+					Biblionaer.meineSteuerung.windowSituationHasChanged();
 				}
+
 			}
 			else if ( quizScreenModus.equals( quizScreenModusMultiWindow2FullScreen )
 			// Admin Fenster auf den zweiten Monitor legen. Frontendfenster auf
@@ -203,6 +211,8 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 							"Vollbildschirm", GraphicsEnvironment.getLocalGraphicsEnvironment()
 									.getDefaultScreenDevice(), true ) );
 
+					Biblionaer.meineSteuerung.windowSituationHasChanged();
+
 				}
 				else {
 					// Nur ein Monitor
@@ -210,6 +220,8 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 							.println(
 									"Es ist nur ein Monitor angeschlossen => Zweimonitorbetrieb nicht mšglich",
 									2 );
+					this.quizScreenModus
+							.setSelectedItem( Einstellungen.quizScreenModusSingleWindow );
 				}
 
 			}
@@ -418,6 +430,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 		quizScreenModus.addItem( quizScreenModusSingleWindow );
 		quizScreenModus.addItem( quizScreenModusMultiWindow1FullScreen );
 		quizScreenModus.addItem( quizScreenModusMultiWindow2FullScreen );
+		quizScreenModus.addItem( quizScreenModusMultiWindow1Windowed );
 		this.quizScreenModus.setSelectedItem( quizScreenModusSingleWindow );
 		quizScreenModusLetzteAuswahl = quizScreenModusSingleWindow; // nie
 		// vergessen

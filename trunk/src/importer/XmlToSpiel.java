@@ -3,6 +3,7 @@ package importer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -12,14 +13,18 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.jdom.output.XMLOutputter;
 
 import quiz.Quizfrage;
 import quiz.Spiel;
 
 public class XmlToSpiel {
 
-	private Spiel	meinSpiel;
-	private int		anzahlFragen;
+	private Spiel		meinSpiel;
+	private int			anzahlFragen;
+
+	// Redundante abspeicherung des ganzen als Dokument
+	private Document	doc	= null;
 
 	/**
 	 * Verwende das StandardSpiel, immer das Selbe
@@ -29,7 +34,7 @@ public class XmlToSpiel {
 
 		this.meinSpiel = null;
 		this.anzahlFragen = 0;
-		Document doc = null;
+		doc = null;
 		SAXBuilder builder = new SAXBuilder();
 
 		InputStream in;
@@ -50,7 +55,7 @@ public class XmlToSpiel {
 			e.printStackTrace();
 		}
 		finally {
-			this.documentToSpiel( doc );
+			this.documentToSpiel();
 		}
 
 	}
@@ -58,7 +63,7 @@ public class XmlToSpiel {
 	public XmlToSpiel(File pPathToXMLFile) {
 		this.meinSpiel = null;
 		this.anzahlFragen = 0;
-		Document doc = null;
+		doc = null;
 		SAXBuilder builder = new SAXBuilder();
 
 		try {
@@ -73,7 +78,7 @@ public class XmlToSpiel {
 			e.printStackTrace();
 		}
 		finally {
-			this.documentToSpiel( doc );
+			this.documentToSpiel();
 		}
 
 	}
@@ -84,7 +89,7 @@ public class XmlToSpiel {
 		this.anzahlFragen = 0;
 
 		SAXBuilder builder = new SAXBuilder();
-		Document doc = null;
+		doc = null;
 
 		// document derBuilder = new SAXBuilder().build( "mein.xml" );
 		try {
@@ -100,11 +105,11 @@ public class XmlToSpiel {
 			e2.printStackTrace();
 		}
 		finally {
-			this.documentToSpiel( doc );
+			this.documentToSpiel();
 		}
 	}
 
-	private void documentToSpiel(Document doc) {
+	private void documentToSpiel() {
 		// initialisieren
 
 		Element root = null;
@@ -113,9 +118,8 @@ public class XmlToSpiel {
 			root = doc.getRootElement();
 
 			// Anzahl der Fragenelemente zaehlen
-			List<Quizfrage> zumZaehlen = root.getChildren( "Frage" );
-
-			this.anzahlFragen = zumZaehlen.size();
+			List<Element> fragen = root.getChildren( "Frage" );
+			this.anzahlFragen = fragen.size();
 
 			if ( this.anzahlFragen > 0 ) {
 				this.meinSpiel = new Spiel( this.anzahlFragen );
@@ -124,9 +128,9 @@ public class XmlToSpiel {
 				// Alle XML-Fragen in das Quizfragenobjekt konvertieren
 				int i = 0;
 				Element pXmlFrage;
-				while ((pXmlFrage = root.getChild( "Frage" )) != null) {
-					meinSpiel.setFrage( i++, xmlFrageToQuizfrage( pXmlFrage ) );
-					root.removeChild( "Frage" );
+
+				for (java.util.Iterator<Element> dieFrage = fragen.iterator(); dieFrage.hasNext();) {
+					meinSpiel.setFrage( i++, xmlFrageToQuizfrage( dieFrage.next() ) );
 				}
 			}
 			else {
@@ -161,6 +165,11 @@ public class XmlToSpiel {
 
 	public Spiel getSpiel() {
 		return meinSpiel;
+	}
+
+	public void saveSpielToFile(File path) throws IOException {
+		XMLOutputter out = new XMLOutputter();
+		out.output( doc, new FileOutputStream( path ) );
 	}
 
 }

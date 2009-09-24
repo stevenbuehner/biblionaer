@@ -28,7 +28,7 @@ public class VollbildSchirm extends JFrame implements QuizFenster, Runnable, Fro
 
 	private static final long		serialVersionUID	= 5136010910135552829L;
 	private GraphicsDevice			device;
-	private DisplayMode				originalDM;
+	private DisplayMode				originalDM;								// Zukunftsorientiert
 	private boolean					isFullScreen		= false;
 
 	private VolatileImage			backbuffer;
@@ -303,20 +303,19 @@ public class VollbildSchirm extends JFrame implements QuizFenster, Runnable, Fro
 
 			doPainting();
 
-			// Auch dem AdministratorSchirm ein aktuelles Bild senden
-			if ( Biblionaer.meinWindowController.getBackendFenster() != null
-					&& Biblionaer.meinWindowController.getFrontendFenster() == this ) {
-				((BackendWindow) Biblionaer.meinWindowController.getBackendFenster())
-						.setFrontendScreenImage( this.backbuffer );
-			}
 			try {
+				// Auch dem AdministratorSchirm ein aktuelles Bild senden
+				if ( Biblionaer.meinWindowController.getBackendFenster() != null
+						&& Biblionaer.meinWindowController.getFrontendFenster() == this ) {
+					((BackendWindow) Biblionaer.meinWindowController.getBackendFenster())
+							.setFrontendScreenImage( this.backbuffer );
+				}
 				Thread.sleep( 10 );
 			}
 			catch (InterruptedException e) {}
 
 		}
-		System.exit( 0 );
-
+		this.dispose();
 	}
 
 	public void setBildschirmSchwarz(boolean schwarzerBildschirm) {
@@ -485,7 +484,7 @@ public class VollbildSchirm extends JFrame implements QuizFenster, Runnable, Fro
 		this.fiftyJokerPanel.setVisible( sichtbar );
 	}
 
-	public void setFrage(Quizfrage frage, boolean mitAnimation) {
+	public void setFrageAnzuzeigen(Quizfrage frage, boolean mitAnimation) {
 		if ( frage != null ) {
 			this.frage.setFrage( frage );
 
@@ -528,7 +527,11 @@ public class VollbildSchirm extends JFrame implements QuizFenster, Runnable, Fro
 
 	public void killYourSelf() {
 		this.setVisible( false );
-		this.dispose();
+	}
+
+	public void playStarteSpiel() {
+	// TODO Auto-generated method stub
+
 	}
 
 }

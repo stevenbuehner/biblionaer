@@ -16,9 +16,9 @@ public class QuizPolygonPanelAntwort extends QuizPanel {
 	protected Polygon				polyBackground;
 
 	protected Color					backgroundColorNormal	= new Color( 59, 111, 241 );
-	protected Color					backgroundColorMarkiert	= new Color( 59, 111, 241 );
-	protected Color					backgroundColorFalsch	= new Color( 254, 74, 46 );
-	protected Color					backgroundColorRichtig	= new Color( 242, 254, 46 );
+	protected Color					backgroundColorMarkiert	= new Color( 150, 126, 18 );
+	protected Color					backgroundColorFalsch	= new Color( 150, 23, 18 );
+	protected Color					backgroundColorRichtig	= new Color( 24, 150, 42 );
 
 	protected Color					lineColorNormal			= Color.WHITE;
 	protected Color					lineColorMarkiert		= Color.WHITE;

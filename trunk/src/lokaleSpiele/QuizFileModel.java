@@ -1,7 +1,12 @@
 package lokaleSpiele;
 
+import importer.XmlToSpiel;
+
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
@@ -14,45 +19,41 @@ public class QuizFileModel extends AbstractTableModel {
 	 * 
 	 */
 	private static final long	serialVersionUID		= -7040042367775652371L;
-	private String				speicherOrtFuerSpiele	= "Biblionaer";
+	public static String		speicherOrtFuerSpiele	= "Biblionaer";
 
-	String						titles[]				= new String[] { "Quizname", "Laufzeit" };
+	private String				titles[]				= new String[] { "Quizname", "Laufzeit" };
 
-	Class						types[]					= new Class[] { String.class, String.class };
+	private Class<?>			types[]					= new Class[] { String.class, String.class };
 
-	Object						data[][];
+	private Object				data[][];
+	private File				dateiPfad[];
 
 	public QuizFileModel() {
 		// System herausfinden und falls noch nicht vorhanden den Ordner anlegen
-		this( FileSystemView.getFileSystemView().getHomeDirectory() );
+
+		setFileStats( getSpeicherortSpiele() );
 	}
 
-	public QuizFileModel(String dir) {
-		// System herausfinden und falls noch nicht vorhanden den Ordner anlegen
-		this( new File( dir ) );
-	}
-
-	public QuizFileModel(File pwd) {
-		// System herausfinden und falls noch nicht vorhanden den Ordner anlegen
-
+	public static File getSpeicherortSpiele() {
 		String subDir = null;
+		File homeDir = FileSystemView.getFileSystemView().getHomeDirectory();
 
 		if ( isMac() ) {
-			subDir = "Library/Application Support/" + this.speicherOrtFuerSpiele;
+			subDir = "Library/Application Support/" + QuizFileModel.speicherOrtFuerSpiele;
 		}
 
 		else if ( isWindows() ) {
-			subDir = "Application Data/" + this.speicherOrtFuerSpiele;
+			subDir = "Application Data/" + QuizFileModel.speicherOrtFuerSpiele;
 
 		}
 		else if ( isUnix() ) {
-			subDir = "." + this.speicherOrtFuerSpiele;
+			subDir = "." + QuizFileModel.speicherOrtFuerSpiele;
 		}
 		else {
-			subDir = this.speicherOrtFuerSpiele;
+			subDir = QuizFileModel.speicherOrtFuerSpiele;
 		}
 
-		File dir = new File( pwd, subDir );
+		File dir = new File( homeDir, subDir );
 		if ( dir.exists() ) {
 			if ( dir.isDirectory() ) {
 				Biblionaer.meineKonsole.println( "Quiz Home-Dir ist: '" + dir.getAbsolutePath()
@@ -67,12 +68,10 @@ public class QuizFileModel extends AbstractTableModel {
 			else {
 				Biblionaer.meineKonsole.println(
 						"Verzeichnis zur Quizablage konte nicht erstellt werden.", 2 );
-
 			}
 		}
 
-		setFileStats( dir );
-
+		return dir;
 	}
 
 	// Implement the methods of the TableModel interface we're interested
@@ -90,12 +89,24 @@ public class QuizFileModel extends AbstractTableModel {
 		return titles[c];
 	}
 
-	public Class getColumnClass(int c) {
+	public Class<?> getColumnClass(int c) {
 		return types[c];
 	}
 
 	public Object getValueAt(int r, int c) {
 		return data[r][c];
+	}
+
+	/**
+	 * Gibt abhängig zur übergebenen Zeile, den Pfad zurück, wo dieses File
+	 * gespeichert ist.
+	 * 
+	 * @param row
+	 * @return PfadZurDatei
+	 */
+	public File getQuizFileLocationAt(int row) {
+		return (File) dateiPfad[row];
+
 	}
 
 	// Our own method for setting/changing the current directory
@@ -111,15 +122,90 @@ public class QuizFileModel extends AbstractTableModel {
 		} );
 
 		data = new Object[files.length][titles.length];
+		dateiPfad = new File[files.length];
+		File rootPfad = getSpeicherortSpiele();
 
 		for (int i = 0; i < files.length; i++) {
-			File tmp = new File( files[i] );
+			// File tmp = new File( files[i] );
 			data[i][0] = files[i];
 			data[i][1] = "unused";
+			dateiPfad[i] = new File( rootPfad, files[i] );
 		}
 
 		// Just in case anyone's listening...
 		fireTableDataChanged();
+	}
+
+	public boolean addQuizFile(XmlToSpiel xmlImporterFile) {
+
+		try {
+			XmlToSpiel dasXMLImporterFile = xmlImporterFile;
+
+			// Finde den nächsten freien Speichernamen
+			int i = 0;
+			File saveTo = null;
+			while (saveTo == null && i < 50) {
+				i++;
+				saveTo = new File( getSpeicherortSpiele().getAbsolutePath() + "/neuesSpiel_"
+						+ Integer.toString( i ) + ".bqxml" );
+
+				if ( saveTo.exists() ) {
+					saveTo = null;
+				}
+			}
+
+			if ( i >= 50 ) {
+				Biblionaer.meineKonsole.println( "Es wurde nach " + Integer.toString( i )
+						+ " versuchen abgebrochen, das Spiel zu speichern.", 2 );
+			}
+			else {
+				if ( dasXMLImporterFile.getAnzahlFragen() > 0 ) {
+					dasXMLImporterFile.saveSpielToFile( saveTo );
+					Biblionaer.meineKonsole.println( "Es wurde noch ein neues Spiel angelegt.", 3 );
+				}
+				else {
+					Biblionaer.meineKonsole.println(
+							"Es wurde kein neues Spiel importiert, weil nur "
+									+ Integer.toString( dasXMLImporterFile.getAnzahlFragen() )
+									+ " Fragen zur heruntergeladen wurden.", 2 );
+				}
+			}
+		}
+		catch (MalformedURLException e) {
+			Biblionaer.meineKonsole
+					.println(
+							"Beim Versuch ein neues Spiel herunterzuladen (im AdministratorSchirm), ist die falsche URL verwendet worden.\n"
+									+ e.getMessage(), 1 );
+			return false;
+		}
+		catch (IOException e2) {
+			Biblionaer.meineKonsole.println(
+					"Es trat ein Fehler beim speichern eines heruntergeladenen Spieles (im AdministratorSchirm) auf:\n"
+							+ e2.getMessage(), 1 );
+			return false;
+
+		}
+		finally {
+			this.refreshInhalte();
+		}
+
+		return true;
+	}
+
+	public boolean removeQuizFile(int row) {
+
+		if ( row <= dateiPfad.length ) {
+			if ( dateiPfad[row].exists() ) {
+				dateiPfad[row].delete();
+				this.refreshInhalte();
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void refreshInhalte() {
+		setFileStats( getSpeicherortSpiele() );
 	}
 
 	public static boolean isWindows() {
@@ -145,4 +231,5 @@ public class QuizFileModel extends AbstractTableModel {
 		return (os.indexOf( "nix" ) >= 0 || os.indexOf( "nux" ) >= 0);
 
 	}
+
 }
