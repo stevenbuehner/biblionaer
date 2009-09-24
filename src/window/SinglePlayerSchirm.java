@@ -174,7 +174,8 @@ public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListene
 		delta = System.nanoTime() - last;
 		last = System.nanoTime();
 
-		fps = ((long) 1e9) / delta;
+		if ( delta != 0 )
+			fps = ((long) 1e9) / delta;
 	}
 
 	protected void doInitializations() {
@@ -371,7 +372,7 @@ public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListene
 
 	public void run() {
 
-		while (frame != null && frame.isVisible()) {
+		while (frame.isVisible()) {
 
 			try {
 
@@ -406,10 +407,12 @@ public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListene
 
 		}
 
-		// Nur dann das ganuze Programm beenden, wenn nicht Ÿber killYourSelf()
+		this.frame.dispose();
+
+		// Nur dann das ganze Programm beenden, wenn nicht Ÿber killYourSelf()
 		// versucht wurde das Fenster zu lšschen. Also das frame noch da ist.
-		if ( frame != null )
-			System.exit( 0 );
+		// if ( frame != null )
+		// System.exit( 0 );
 
 	}
 
@@ -625,7 +628,7 @@ public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListene
 		this.quizFiftyJokerPanel.setVisible( sichtbar );
 	}
 
-	public void setFrage(Quizfrage frage, boolean mitAnimation) {
+	public void setFrageAnzuzeigen(Quizfrage frage, boolean mitAnimation) {
 		if ( mitAnimation ) {
 			quizQuestionPanel.resetAnimation();
 			quizAnswerPanel1.resetAnimation();
@@ -735,9 +738,13 @@ public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListene
 
 	public void killYourSelf() {
 		this.frame.setVisible( false );
+	//	this.setVisible( false ); // ist das noetig??
 
-		this.frame.dispose();
-		this.setVisible( false ); // ist das noetig??
-		this.frame = null;
 	}
+
+	public void playStarteSpiel() {
+	// TODO Auto-generated method stub
+
+	}
+
 }

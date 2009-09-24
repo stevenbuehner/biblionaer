@@ -1,10 +1,12 @@
 package window;
 
+import importer.XmlToSpiel;
 import interfaces.BackendWindow;
 import interfaces.FrontendWindow;
 import interfaces.QuizFenster;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -14,6 +16,10 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.VolatileImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -28,42 +34,44 @@ import quiz.Quizfrage;
 public class AdministratorSchirm extends JFrame implements QuizFenster, BackendWindow,
 		ActionListener {
 
-	private static final long	serialVersionUID		= 1L;
+	private static final long	serialVersionUID			= 1L;
 
-	protected JPanel			monitorPanel;																// links
-	// oben
-	protected JPanel			steuerungPanel;															// rechts
-	// oben
-	protected JPanel			dateiPanel;																// links
-	// unten
-	protected JPanel			weiteresPanel;																// rechts
-	// unten
+	// links oben
+	protected JPanel			monitorPanel;
+	// rechts oben
+	protected JPanel			steuerungPanel;
+	// links unten
+	protected JPanel			dateiPanel;
+	// rechts unten
+	protected JPanel			weiteresPanel;
 
 	private GraphicsDevice		device;
-	private boolean				isFullScreen			= false;
+	private boolean				isFullScreen				= false;
 
 	// SteuerungPanel Material
-	JButton						auswahlBestaetigenBtn	= new JButton( "Auswahl Bestätigen" );
-	JButton						antwort1KlickenBtn		= new JButton( "Antwort A" );
-	JButton						antwort2KlickenBtn		= new JButton( "Antwort B" );
-	JButton						antwort3KlickenBtn		= new JButton( "Antwort C" );
-	JButton						antwort4KlickenBtn		= new JButton( "Antwort D" );
-	JLabel						bibelstelleLabel		= new JLabel( "Bibelstelle" );
+	JButton						auswahlBestaetigenBtn		= new JButton( "Auswahl Bestätigen" );
+	JButton						antwort1KlickenBtn			= new JButton( "Antwort A" );
+	JButton						antwort2KlickenBtn			= new JButton( "Antwort B" );
+	JButton						antwort3KlickenBtn			= new JButton( "Antwort C" );
+	JButton						antwort4KlickenBtn			= new JButton( "Antwort D" );
+	JLabel						bibelstelleLabel			= new JLabel( "Bibelstelle" );
 
-	JButton						fiftyJoker				= new JButton( "50:50 Joker" );
-	JButton						tippJokerBtn			= new JButton( "Tipp Joker" );
-	JButton						puplikumsJokerBtn		= new JButton( "Puplikums Joker" );
+	JButton						fiftyJokerBtn				= new JButton( "50:50 Joker" );
+	JButton						tippJokerBtn				= new JButton( "Tipp Joker" );
+	JButton						puplikumsJokerBtn			= new JButton( "Puplikums Joker" );
 
 	// DateiPanel Material
-	JTable						spielListeTable			= new JTable( new QuizFileModel() );
-	JButton						neuesSpielStartenBtn	= new JButton( "Neues Spiel starten" );
-	JButton						laufendsSpielBeendenBtn	= new JButton( "laufendes Spiel beenden" );
-	JButton						neuesSpielAusInternBtn	= new JButton(
-																"Neues Spiel aus dem Internet starten" );
+	JTable						spielListeTable				= new JTable( new QuizFileModel() );
+	JButton						angeklicktesSpielStartenBtn	= new JButton( "Neues Spiel starten" );
+	JButton						angeklickesSpielLoeschenBtn	= new JButton( "Dieses Spiel löschen" );
+	JButton						laufendsSpielBeendenBtn		= new JButton(
+																	"laufendes Spiel beenden" );
+	JButton						neuesSpielAusInternBtn		= new JButton(
+																	"Neues Spiel aus dem Internet importieren" );
 
 	// WeiteresPanel Material
-	JButton						leisteEinblendenBtn		= new JButton( "Leiste einblenden" );
-	JButton						schwarzerBildschirmBtn	= new JButton( "schwarzer Bildschirm" );
+	JButton						leisteEinblendenBtn			= new JButton( "Leiste einblenden" );
+	JButton						schwarzerBildschirmBtn		= new JButton( "schwarzer Bildschirm" );
 
 	public AdministratorSchirm(String fenstername, GraphicsDevice device, boolean vollbildModus) {
 		super( fenstername );
@@ -108,17 +116,17 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		JPanel steuerungTopLeistePanel = new JPanel( new FlowLayout() );
 		// Button
 		auswahlBestaetigenBtn.addActionListener( this );
-		fiftyJoker.addActionListener( this );
+		fiftyJokerBtn.addActionListener( this );
 		tippJokerBtn.addActionListener( this );
 		puplikumsJokerBtn.addActionListener( this );
 
 		auswahlBestaetigenBtn.setEnabled( false );
-		fiftyJoker.setEnabled( false );
+		fiftyJokerBtn.setEnabled( false );
 		tippJokerBtn.setEnabled( false );
 		puplikumsJokerBtn.setEnabled( false );
 
 		steuerungTopLeistePanel.add( auswahlBestaetigenBtn );
-		steuerungTopLeistePanel.add( fiftyJoker );
+		steuerungTopLeistePanel.add( fiftyJokerBtn );
 		steuerungTopLeistePanel.add( tippJokerBtn );
 		steuerungTopLeistePanel.add( puplikumsJokerBtn );
 
@@ -151,19 +159,32 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		JPanel dateiLinkesPanel = new JPanel( new FlowLayout() );
 		// dateiLinkesPanel.add( new JLabel( "offline Spiel Liste" ) );
 		spielListeTable.setToolTipText( "Spielanzahl: " + spielListeTable.getModel().getRowCount() );
+		spielListeTable.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
+		spielListeTable
+				.setToolTipText( "Diese fertigen Spiele sind auf diesem Rechner installiert" );
+		spielListeTable.setAlignmentX( Component.LEFT_ALIGNMENT );
+		// spielListeTable.setColumnSelectionAllowed( false );
+		spielListeTable.getTableHeader().setReorderingAllowed( false );
+		spielListeTable.getTableHeader().setResizingAllowed( false );
+		spielListeTable.getColumnModel().getColumn( 0 ).setPreferredWidth( 150 );
+		// Zeilen und Spaltenabstand:
+		spielListeTable.setIntercellSpacing( new Dimension( 2, 2 ) );
+		// spielListeTable.getTableHeader().setVisible( true );
 		dateiLinkesPanel.add( spielListeTable );
 
 		JPanel dateiRechtesPanel = new JPanel( new GridLayout( 3, 1 ) );
 		// Buttons
-		neuesSpielStartenBtn.addActionListener( this );
+		angeklicktesSpielStartenBtn.addActionListener( this );
 		laufendsSpielBeendenBtn.addActionListener( this );
 		neuesSpielAusInternBtn.addActionListener( this );
+		angeklickesSpielLoeschenBtn.addActionListener( this );
 
 		laufendsSpielBeendenBtn.setEnabled( false );
 
-		dateiRechtesPanel.add( neuesSpielStartenBtn );
+		dateiRechtesPanel.add( angeklicktesSpielStartenBtn );
 		dateiRechtesPanel.add( laufendsSpielBeendenBtn );
 		dateiRechtesPanel.add( neuesSpielAusInternBtn );
+		dateiRechtesPanel.add( angeklickesSpielLoeschenBtn );
 
 		// Zusammenfügen
 		dateiPanel.add( dateiLinkesPanel );
@@ -220,9 +241,9 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		else if ( e.getSource() == auswahlBestaetigenBtn ) {
 
 		}
-		else if ( e.getSource() == fiftyJoker ) {
+		else if ( e.getSource() == fiftyJokerBtn ) {
 			Biblionaer.meineSteuerung.klickAufFiftyJoker();
-			fiftyJoker.setEnabled( false );
+			fiftyJokerBtn.setEnabled( false );
 		}
 		else if ( e.getSource() == tippJokerBtn ) {
 			Biblionaer.meineSteuerung.klickAufTippJoker();
@@ -232,15 +253,35 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 			Biblionaer.meineSteuerung.puplikumsJokerZeitAbgelaufen();
 			puplikumsJokerBtn.setEnabled( false );
 		}
-		else if ( e.getSource() == neuesSpielStartenBtn ) {
+		else if ( e.getSource() == angeklicktesSpielStartenBtn ) {
+			if ( this.spielListeTable.getSelectedRow() >= 0 ) {
+				File quizSpeicherort = ((QuizFileModel) this.spielListeTable.getModel())
+						.getQuizFileLocationAt( this.spielListeTable.getSelectedRow() );
+				Biblionaer.meineSteuerung.starteNeuesSpiel( quizSpeicherort );
+			}
+		}
+		else if ( e.getSource() == angeklickesSpielLoeschenBtn ) {
+			if ( this.spielListeTable.getSelectedRow() >= 0 ) {
 
+				if ( !((QuizFileModel) spielListeTable.getModel())
+						.removeQuizFile( this.spielListeTable.getSelectedRow() ) ) {
+					Biblionaer.meineKonsole.println(
+							"Es trat ein Fehler im TabelModel auf, beim löschen der SpielDatei", 2 );
+				}
+				else {
+					Biblionaer.meineKonsole.println( "SpielDatei erfolgreich gelöscht", 4 );
+				}
+			}
 		}
 		else if ( e.getSource() == laufendsSpielBeendenBtn ) {
-
+			Biblionaer.meineSteuerung.spielBeenden();
+			this.spielButtonsAktivieren( false );
 		}
 		else if ( e.getSource() == neuesSpielAusInternBtn ) {
-			Biblionaer.meineSteuerung.actionPerformed( new ActionEvent( this, 1,
-					"Neues Spiel aus dem Internet" ) );
+			// Biblionaer.meineSteuerung.actionPerformed( new ActionEvent( this,
+			// 1,
+			// "Neues Spiel aus dem Internet" ) );
+			this.neuesSpielImportieren();
 		}
 		else if ( e.getSource() == leisteEinblendenBtn ) {
 
@@ -277,10 +318,76 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		}
 	}
 
+	protected void neuesSpielImportieren() {
+		try {
+			XmlToSpiel dasXMLImporterFile = new XmlToSpiel( new URL( Biblionaer.meineEinstellungen
+					.getXMLquelle() ) );
+
+			// Finde den nächsten freien Speichernamen
+			int i = 0;
+			File saveTo = null;
+			while (saveTo == null && i < 50) {
+				i++;
+				saveTo = new File( QuizFileModel.getSpeicherortSpiele().getAbsolutePath()
+						+ "/neuesSpiel_" + Integer.toString( i ) + ".bqxml" );
+
+				if ( saveTo.exists() ) {
+					saveTo = null;
+				}
+			}
+
+			if ( i >= 50 ) {
+				Biblionaer.meineKonsole.println( "Es wurde nach " + Integer.toString( i )
+						+ " versuchen abgebrochen, das Spiel zu speichern.", 2 );
+			}
+			else {
+				if ( dasXMLImporterFile.getAnzahlFragen() > 0 ) {
+					dasXMLImporterFile.saveSpielToFile( saveTo );
+					Biblionaer.meineKonsole.println( "Es wurde noch ein neues Spiel angelegt.", 3 );
+				}
+				else {
+					Biblionaer.meineKonsole.println(
+							"Es wurde kein neues Spiel importiert, weil nur "
+									+ Integer.toString( dasXMLImporterFile.getAnzahlFragen() )
+									+ " Fragen zur heruntergeladen wurden.", 2 );
+				}
+			}
+		}
+		catch (MalformedURLException e) {
+			Biblionaer.meineKonsole
+					.println(
+							"Beim Versuch ein neues Spiel herunterzuladen (im AdministratorSchirm), ist die falsche URL verwendet worden.\n"
+									+ e.getMessage(), 1 );
+		}
+		catch (IOException e2) {
+			Biblionaer.meineKonsole.println(
+					"Es trat ein Fehler beim speichern eines heruntergeladenen Spieles (im AdministratorSchirm) auf:\n"
+							+ e2.getMessage(), 1 );
+
+		}
+		finally {
+			((QuizFileModel) this.spielListeTable.getModel()).refreshInhalte();
+		}
+
+	}
+
+	protected void spielButtonsAktivieren(boolean spielLauft) {
+		this.laufendsSpielBeendenBtn.setEnabled( spielLauft );
+		this.angeklicktesSpielStartenBtn.setEnabled( !spielLauft );
+
+		this.fiftyJokerBtn.setEnabled( spielLauft );
+		this.tippJokerBtn.setEnabled( spielLauft );
+		this.puplikumsJokerBtn.setEnabled( spielLauft );
+
+		this.antwort1KlickenBtn.setEnabled( spielLauft );
+		this.antwort2KlickenBtn.setEnabled( spielLauft );
+		this.antwort3KlickenBtn.setEnabled( spielLauft );
+		this.antwort4KlickenBtn.setEnabled( spielLauft );
+	}
+
 	// * Ab hier die Methoden zur Ansteuerung über die Steuerung
 	public void playFrageFalsch() {
-	// TODO Auto-generated method stub
-
+		this.spielButtonsAktivieren( false );
 	}
 
 	public void playFrageRichtig() {
@@ -288,13 +395,16 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 	}
 
-	public void playSpielGewonnen() {
-	// TODO Auto-generated method stub
+	public void playStarteSpiel() {
+		spielButtonsAktivieren( true );
+	}
 
+	public void playSpielGewonnen() {
+		this.spielButtonsAktivieren( false );
 	}
 
 	public void resetAlleJoker() {
-		fiftyJoker.setEnabled( true );
+		fiftyJokerBtn.setEnabled( true );
 		tippJokerBtn.setEnabled( true );
 		puplikumsJokerBtn.setEnabled( true );
 	}
@@ -435,14 +545,21 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 	}
 
 	public void setFiftyJokerBenutzt(boolean benutzt) {
-		this.fiftyJoker.setEnabled( !benutzt );
+		this.fiftyJokerBtn.setEnabled( !benutzt );
 	}
 
 	public void setFiftyJokerSichtbar(boolean sichtbar) {
-		this.fiftyJoker.setEnabled( sichtbar );
+		this.fiftyJokerBtn.setEnabled( sichtbar );
 	}
 
-	public void setFrage(Quizfrage frage, boolean mitAnimation) {
+	public void setFrageAnzuzeigen(Quizfrage frage, boolean mitAnimation) {
+	// Wird hier nicht implementiert, wir nutzen stattdessen die Funktion
+	// setFrageKomplett(Quizfrage frage)
+	}
+
+	public void setFrageKomplett(Quizfrage frage) {
+		// Wird hier implementiert, weil es ein Backendfenster ist
+
 		if ( frage != null ) {
 			this.antwort1KlickenBtn.setEnabled( true );
 			this.antwort2KlickenBtn.setEnabled( true );
@@ -481,7 +598,6 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 			this.auswahlBestaetigenBtn.setEnabled( false );
 		}
-
 	}
 
 	public void setFrageFeldSichtbar(boolean sichtbar) {
@@ -515,6 +631,16 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 	public void killYourSelf() {
 		this.setVisible( false );
+
+		try {
+			// Damit auch ja Operationen an den Administrator-Schirm geschickt
+			// wurden, bevor er gelöscht wird
+			Thread.sleep( 100 );
+		}
+		catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.dispose();
 	}
 

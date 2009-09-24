@@ -18,7 +18,7 @@ public interface QuizFenster {
 	 * @param frage
 	 * @param mitAnimation
 	 */
-	public void setFrage(Quizfrage frage, boolean mitAnimation);
+	public void setFrageAnzuzeigen(Quizfrage frage, boolean mitAnimation);
 
 	/**
 	 * Ob der Spielverlauf animiert werden soll
@@ -294,5 +294,11 @@ public interface QuizFenster {
 	 * Hier können jetzt Blinkeffekte oder Soundeffekte eingebettet werden.
 	 */
 	public void playSpielGewonnen();
+
+	/**
+	 * Wird beim Start eines neuen Spieles aufgerufen ... Kann zBsp. zum
+	 * initialisieren einer Oberfläche verwendet werden
+	 */
+	public void playStarteSpiel();
 
 }

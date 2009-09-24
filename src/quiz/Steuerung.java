@@ -78,7 +78,7 @@ public class Steuerung implements ActionListener, KeyListener {
 				e1.printStackTrace();
 			}
 			finally {
-				this.starteNeuesSpiel();
+				this.initialisiereNeuesSpiel();
 			}
 		}
 
@@ -111,18 +111,15 @@ public class Steuerung implements ActionListener, KeyListener {
 				XmlToSpiel dasFile = new XmlToSpiel( derFC.getSelectedFile() );
 				meinSpiel = dasFile.getSpiel();
 
-				this.starteNeuesSpiel();
+				this.initialisiereNeuesSpiel();
 
 			}
 
 		}
 		else if ( e.getActionCommand().equals( "Neues Standard-Spiel" ) ) {
 			// Das Spiel direkt aus der SRC-Quelltext-Datei laden
-			XmlToSpiel dasFile = new XmlToSpiel( getClass().getClassLoader().getResource(
+			this.starteNeuesSpiel( getClass().getClassLoader().getResource(
 					"lokaleSpiele/spielTest.txt" ) );
-			meinSpiel = dasFile.getSpiel();
-
-			this.starteNeuesSpiel();
 		}
 		else if ( e.getActionCommand().equals( "URLtest" ) ) {
 			try {
@@ -152,7 +149,44 @@ public class Steuerung implements ActionListener, KeyListener {
 
 	}
 
-	private void starteNeuesSpiel() {
+	public void starteNeuesSpiel(File quizLocation) {
+		XmlToSpiel dasFile = new XmlToSpiel( quizLocation );
+		meinSpiel = dasFile.getSpiel();
+
+		if ( dasFile != null ) {
+			if ( dasFile.getAnzahlFragen() > 0 ) {
+				meinSpiel = dasFile.getSpiel();
+
+				this.initialisiereNeuesSpiel();
+			}
+		}
+		else {
+			Biblionaer.meineKonsole
+					.println(
+							"Steuerung meldet: Neues Spiel konnte nicht initialisiert werden. Fehlerhafter Pfad.",
+							2 );
+		}
+	}
+
+	public void starteNeuesSpiel(URL quizLocation) {
+		XmlToSpiel dasFile = new XmlToSpiel( quizLocation );
+
+		if ( dasFile != null ) {
+			if ( dasFile.getAnzahlFragen() > 0 ) {
+				meinSpiel = dasFile.getSpiel();
+
+				this.initialisiereNeuesSpiel();
+			}
+		}
+		else {
+			Biblionaer.meineKonsole
+					.println(
+							"Steuerung meldet: Neues Spiel konnte nicht initialisiert werden. Fehlerhafter Pfad.",
+							2 );
+		}
+	}
+
+	private void initialisiereNeuesSpiel() {
 		if ( meinSpiel != null ) {
 			meinSpiel.starteSpiel();
 
@@ -165,8 +199,12 @@ public class Steuerung implements ActionListener, KeyListener {
 			Biblionaer.meinWindowController.setFrageFeldSichtbar( true );
 			Biblionaer.meinWindowController.setAntwortFelderSichtbar( true );
 			Biblionaer.meinWindowController.setAntwortfelderNormal();
+			Biblionaer.meinWindowController.playStarteSpiel();
 
-			Biblionaer.meinWindowController.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), true );
+			Biblionaer.meinWindowController.setFrageAnzuzeigen( meinSpiel
+					.getAktuelleFrageAnzuzeigen(), true );
+			Biblionaer.meinWindowController.setFrageKomplett( this.meinSpiel.getAktuelleFrage() );
+
 		}
 		else {
 			Biblionaer.meineKonsole
@@ -178,6 +216,8 @@ public class Steuerung implements ActionListener, KeyListener {
 	}
 
 	public int getStatus() {
+		// Diese Funktion wurde noch nicht richtig in das Spiel integriert
+
 		/*
 		 * 0 = Initialisierung und Co 1 = Intro 2 = Menu anzeigen 3 = Spiel
 		 * gestartet
@@ -201,13 +241,39 @@ public class Steuerung implements ActionListener, KeyListener {
 			System.exit( 0 );
 		}
 
+		else if ( e.getKeyCode() == KeyEvent.VK_1
+				&& Biblionaer.meineEinstellungen.getKonsolenModus() >= 4 ) {
+			Biblionaer.meineEinstellungen
+					.setQuizScreenModus( Biblionaer.meineEinstellungen.quizScreenModusMultiWindow1FullScreen );
+		}
+		else if ( e.getKeyCode() == KeyEvent.VK_2
+				&& Biblionaer.meineEinstellungen.getKonsolenModus() >= 4 ) {
+			// Wechsle in den Betriebsmodus Windowed Player - Das ist zum
+			// Debuggen ganz nützlich
+			Biblionaer.meineEinstellungen
+					.setQuizScreenModus( Biblionaer.meineEinstellungen.quizScreenModusMultiWindow1Windowed );
+		}
+		else if ( e.getKeyCode() == KeyEvent.VK_3
+				&& Biblionaer.meineEinstellungen.getKonsolenModus() >= 4 ) {
+			Biblionaer.meineEinstellungen
+					.setQuizScreenModus( Biblionaer.meineEinstellungen.quizScreenModusMultiWindow2FullScreen );
+		}
+		else if ( e.getKeyCode() == KeyEvent.VK_4
+				&& Biblionaer.meineEinstellungen.getKonsolenModus() >= 4 ) {
+			Biblionaer.meineEinstellungen
+					.setQuizScreenModus( Biblionaer.meineEinstellungen.quizScreenModusSingleWindow );
+		}
+
 		else if ( e.getKeyCode() == KeyEvent.VK_SPACE
 				&& Biblionaer.meineEinstellungen.darfGechetetWerden() ) {
 			// neue Fragen laden
 
 			if ( meinSpiel.setNaechsteFrage() ) {
-				Biblionaer.meinWindowController.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(),
-						true );
+				Biblionaer.meinWindowController.setFrageAnzuzeigen( meinSpiel
+						.getAktuelleFrageAnzuzeigen(), true );
+				Biblionaer.meinWindowController
+						.setFrageKomplett( this.meinSpiel.getAktuelleFrage() );
+
 			}
 		}
 
@@ -218,7 +284,7 @@ public class Steuerung implements ActionListener, KeyListener {
 		if ( e.getKeyCode() == KeyEvent.VK_T ) {
 			// Nur zum testen
 			meinSpiel = new XmlToSpiel().getSpiel();
-			this.starteNeuesSpiel();
+			this.initialisiereNeuesSpiel();
 		}
 	}
 
@@ -243,7 +309,7 @@ public class Steuerung implements ActionListener, KeyListener {
 
 			else {
 				// Frage falsch beantwortet
-				klickAufFalscheAntwort();
+				klickAufFalscheAntwort( klickFeld );
 				Biblionaer.meinWindowController.playFrageFalsch();
 			}
 		}
@@ -329,15 +395,59 @@ public class Steuerung implements ActionListener, KeyListener {
 			meinSpiel.setNaechsteFrage();
 			// Play: RICHTIIIGGG ...
 			Biblionaer.meinWindowController.setAntwortfelderNormal();
-			Biblionaer.meinWindowController.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), true );
+			Biblionaer.meinWindowController.setFrageAnzuzeigen( meinSpiel
+					.getAktuelleFrageAnzuzeigen(), true );
+			Biblionaer.meinWindowController.setFrageKomplett( this.meinSpiel.getAktuelleFrage() );
+
 		}
 	}
 
-	private void klickAufFalscheAntwort() {
+	private void klickAufFalscheAntwort(int klickFeldFalscheAntwort) {
 		meinSpiel.setEnde();
 		Biblionaer.meinWindowController.setStatusText( "Falsche Antwort - Spiel beendet" );
 
+		// Zeige im Frontend die Frage mit Bibelstelle an
+		Quizfrage mitBibelstelle = this.meinSpiel.getAktuelleFrageAnzuzeigen();
+		mitBibelstelle.setLoesungshinweis( this.meinSpiel.getAktuelleFrage().getLoesungshinweis() );
+
+		Biblionaer.meinWindowController.setFrageAnzuzeigen( mitBibelstelle, false );
+		Biblionaer.meinWindowController.setFrageKomplett( this.meinSpiel.getAktuelleFrage() );
+		Biblionaer.meinWindowController.playFrageFalsch();
+
 		zeigeRichtigeAntwortGelb();
+
+		switch (klickFeldFalscheAntwort) {
+			case 1:
+				Biblionaer.meinWindowController.setAntwortFeld1Falsch();
+				break;
+			case 2:
+				Biblionaer.meinWindowController.setAntwortFeld2Falsch();
+				break;
+			case 3:
+				Biblionaer.meinWindowController.setAntwortFeld3Falsch();
+				break;
+			case 4:
+				Biblionaer.meinWindowController.setAntwortFeld4Falsch();
+				break;
+			default:
+				Biblionaer.meineKonsole
+						.println(
+								"Dieses Antwortfeld gibt es nicht (Steuerung - klickFeldFalscheAntwort)",
+								2 );
+				break;
+
+		}
+	}
+
+	/**
+	 * Zum Aufruf über ein AdministratorPanel ...
+	 */
+	public void spielBeenden() {
+		if ( meinSpiel != null ) {
+			if ( meinSpiel.laeufDasSpiel() ) {
+				meinSpiel.setEnde();
+			}
+		}
 	}
 
 	public void tippJokerZeitAbgelaufen() {
@@ -377,8 +487,10 @@ public class Steuerung implements ActionListener, KeyListener {
 			meinSpiel.setTippJokerSchonVerwendet( true );
 			tippJokerTimer = new TippJokerCountdown( true );
 
-			Biblionaer.meinWindowController
-					.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), false );
+			Biblionaer.meinWindowController.setFrageAnzuzeigen( meinSpiel
+					.getAktuelleFrageAnzuzeigen(), false );
+			Biblionaer.meinWindowController.setFrageKomplett( this.meinSpiel.getAktuelleFrage() );
+
 		}
 		else {
 			Biblionaer.meineKonsole.println( "Tipp-Joker schon verwendet oder Spiel beendet.", 3 );
@@ -395,8 +507,10 @@ public class Steuerung implements ActionListener, KeyListener {
 			Biblionaer.meinWindowController.setFiftyJokerBenutzt( true );
 			meinSpiel.setFiftyJokerVerwendet( true );
 
-			Biblionaer.meinWindowController
-					.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(), false );
+			Biblionaer.meinWindowController.setFrageAnzuzeigen( meinSpiel
+					.getAktuelleFrageAnzuzeigen(), false );
+			Biblionaer.meinWindowController.setFrageKomplett( this.meinSpiel.getAktuelleFrage() );
+
 		}
 		else {
 			Biblionaer.meineKonsole.println( "Fifty-Joker schon verwendet oder Spiel beendet.", 3 );
@@ -474,11 +588,13 @@ public class Steuerung implements ActionListener, KeyListener {
 	 * Fensterkonstellation geändert hat. So können anzeigeOperationen erneut an
 	 * alle Fenster gesendet werden.
 	 */
-	public void windowSituationHasChenged() {
+	public void windowSituationHasChanged() {
 		if ( meinSpiel != null ) {
 			if ( meinSpiel.laeufDasSpiel() ) {
-				Biblionaer.meinWindowController.setFrage( meinSpiel.getAktuelleFrageAnzuzeigen(),
-						false );
+				Biblionaer.meinWindowController.setFrageAnzuzeigen( meinSpiel
+						.getAktuelleFrageAnzuzeigen(), false );
+				Biblionaer.meinWindowController
+						.setFrageKomplett( this.meinSpiel.getAktuelleFrage() );
 
 				Biblionaer.meinWindowController.setFiftyJokerBenutzt( meinSpiel
 						.fiftyJokerSchonVerwendet() );

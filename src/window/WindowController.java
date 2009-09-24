@@ -1,14 +1,17 @@
 package window;
 
+import interfaces.BackendWindow;
+import interfaces.FrontendWindow;
 import interfaces.QuizFenster;
 
+import java.awt.image.VolatileImage;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import main.Biblionaer;
 import quiz.Quizfrage;
 
-public class WindowController implements QuizFenster {
+public class WindowController implements QuizFenster, BackendWindow, FrontendWindow {
 
 	protected LinkedList<QuizFenster>	meineQuizFenster;
 	protected QuizFenster				frontendFenster	= null;
@@ -35,7 +38,7 @@ public class WindowController implements QuizFenster {
 		}
 		else {
 			meineQuizFenster.addLast( neuesFenster );
-			Biblionaer.meineSteuerung.windowSituationHasChenged();
+			Biblionaer.meineSteuerung.windowSituationHasChanged();
 		}
 	}
 
@@ -48,7 +51,7 @@ public class WindowController implements QuizFenster {
 		boolean isFrontend = false;
 
 		if ( neuesFenster != null ) {
-			Class[] interfaces = neuesFenster.getClass().getInterfaces();
+			Class<?>[] interfaces = neuesFenster.getClass().getInterfaces();
 			for (int i = 0; i < interfaces.length; ++i) {
 				if ( interfaces[i].getName().equals( "interfaces.FrontendWindow" ) ) {
 					isFrontend = true;
@@ -78,7 +81,7 @@ public class WindowController implements QuizFenster {
 		boolean isBackend = false;
 
 		if ( neuesFenster != null ) {
-			Class[] interfaces = neuesFenster.getClass().getInterfaces();
+			Class<?>[] interfaces = neuesFenster.getClass().getInterfaces();
 			for (int i = 0; i < interfaces.length; ++i) {
 				if ( interfaces[i].getName().equals( "interfaces.BackendWindow" ) ) {
 					isBackend = true;
@@ -370,10 +373,10 @@ public class WindowController implements QuizFenster {
 		}
 	}
 
-	public void setFrage(Quizfrage frage, boolean mitAnimation) {
+	public void setFrageAnzuzeigen(Quizfrage frage, boolean mitAnimation) {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
-			iter.next().setFrage( frage, mitAnimation );
+			iter.next().setFrageAnzuzeigen( frage, mitAnimation );
 		}
 	}
 
@@ -421,6 +424,32 @@ public class WindowController implements QuizFenster {
 
 	public void killYourSelf() {
 	// Dieses Teil hier killt sich nicht :-) - Keine Chance
+	}
+
+	// Funktionen der FrontendFenster
+	public void setFrontendScreenImage(VolatileImage screen) {
+	// Brauchen wir hier nicht
+	}
+
+	public void setBildschirmSchwarz(boolean schwarzerBildschirm) {
+		// Nur an die Frontendfenster senden
+		if ( this.frontendFenster != null ) {
+			((FrontendWindow) this.frontendFenster).setBildschirmSchwarz( schwarzerBildschirm );
+		}
+	}
+
+	// * Ab hier Funktionen der BackendFenster
+	public void setFrageKomplett(Quizfrage frage) {
+		if ( this.backendFenster != null ) {
+			((BackendWindow) this.backendFenster).setFrageKomplett( frage );
+		}
+	}
+
+	public void playStarteSpiel() {
+		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
+		while (iter.hasNext()) {
+			iter.next().playStarteSpiel();
+		}
 	}
 
 }

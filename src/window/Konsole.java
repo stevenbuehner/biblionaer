@@ -36,11 +36,15 @@ public class Konsole {
 				break;
 			case 1:
 				// Ausgabe Ÿber die System-Konsole
-				this.SystemPrintLine( pAusgabe );
+				this.SystemPrintLine( "["
+						+ Integer.toString( Biblionaer.meineEinstellungen.getKonsolenModus() )
+						+ "] " + pAusgabe );
 				break;
 			case 2:
 				// Ausgabe in ein File
-				this.FilePrintLine( pAusgabe );
+				this.FilePrintLine( "["
+						+ Integer.toString( Biblionaer.meineEinstellungen.getKonsolenModus() )
+						+ "]" + pAusgabe );
 				break;
 			default:
 				// Gibt es nicht!
