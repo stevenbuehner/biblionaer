@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
@@ -15,9 +14,6 @@ import main.Biblionaer;
 
 public class QuizFileModel extends AbstractTableModel {
 
-	/**
-	 * 
-	 */
 	private static final long	serialVersionUID		= -7040042367775652371L;
 	public static String		speicherOrtFuerSpiele	= "Biblionaer";
 

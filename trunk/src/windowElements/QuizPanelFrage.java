@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 import java.util.Vector;
 
 import quiz.Quizfrage;
-import window.SinglePlayerSchirm;
 
 public class QuizPanelFrage extends QuizImagePanel {
 	protected Quizfrage	frage;

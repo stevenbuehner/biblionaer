@@ -175,7 +175,7 @@ public class QuizPolygonPanelFrage extends QuizPanel {
 				g2.setFont( new Font( "Arial", Font.PLAIN, 25 ) );
 
 				int offsetSchwierigkeitsgradX = (int) 0;
-				int offsetSchwierigkeitsgradY = (int) 0;
+				// int offsetSchwierigkeitsgradY = (int) 0; // unbenutzt
 
 				int offsetNachZentrierungSGX = (int) ((rectSchwierigkeit.width - g2
 						.getFontMetrics().stringWidth( frage.getSchwierigkeitsGradInMio() )) / 2 + offsetSchwierigkeitsgradX);

@@ -7,8 +7,6 @@ import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.util.Vector;
 
-import window.SinglePlayerSchirm;
-
 public class QuizPanelAntwort extends QuizImagePanel {
 
 	public final int	SPEED			= 300;
