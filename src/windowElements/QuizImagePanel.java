@@ -10,20 +10,18 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
-import window.SinglePlayerSchirm;
-
 public abstract class QuizImagePanel extends QuizPanel implements Drawable, Movable {
 
-	public static final int			BLAU	= 0;
-	public static final int			GRUEN	= 1;
-	public static final int			GELB	= 2;
+	public static final int		BLAU	= 0;
+	public static final int		GRUEN	= 1;
+	public static final int		GELB	= 2;
 
-	protected BufferedImage[]		pics;
+	protected BufferedImage[]	pics;
 
-	protected int					angle;
-	protected int					rotationx;
-	protected int					rotationy;
-	protected AffineTransform		at;
+	protected int				angle;
+	protected int				rotationx;
+	protected int				rotationy;
+	protected AffineTransform	at;
 
 	public QuizImagePanel(BufferedImage[] i, double x, double y, long delay) {
 		super( x, y, delay );
@@ -61,7 +59,6 @@ public abstract class QuizImagePanel extends QuizPanel implements Drawable, Mova
 
 		createKlickPolygon();
 	}
-
 
 	@Override
 	public void drawObjects(Graphics g) {

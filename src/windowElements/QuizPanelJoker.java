@@ -3,12 +3,10 @@ package windowElements;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 
-import window.SinglePlayerSchirm;
-
 public class QuizPanelJoker extends QuizImagePanel {
 
 	public QuizPanelJoker(BufferedImage[] i, double x, double y) {
-		super( i, x, y, 10);
+		super( i, x, y, 10 );
 
 		loop_from = 0;
 		loop_to = 0;

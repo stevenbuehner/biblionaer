@@ -7,8 +7,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.util.Vector;
 
-import main.Biblionaer;
-
 public class QuizTextPanel implements Drawable {
 
 	protected String	text;
