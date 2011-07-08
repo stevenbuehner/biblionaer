@@ -407,7 +407,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 		JPanel quizEinstellungen = new JPanel( new GridLayout( 0, 2, 6, 3 ) );
 		lbl = new JLabel( "XML-Datenquelle:" );
 		quizEinstellungen.add( lbl );
-		xmlQuelle = new JTextField( "http://stivi.spacequadrat.de/getFrageAlsXML.php?quiz", 30 ); // XML-Quelle
+		xmlQuelle = new JTextField( "http://biblionaer.sv-ec.de/getFrageAlsXML.php?quiz", 30 ); // XML-Quelle
 		xmlQuelle.setToolTipText( "Quelle aus der das XML-File geladen werden soll." );
 		quizEinstellungen.add( xmlQuelle );
 
