@@ -45,7 +45,14 @@ public class PuplikumsJokerCountdown extends Countdown {
 		catch (Throwable e) {
 			e.printStackTrace();
 			Biblionaer.meineKonsole.println(
-					"PuplikumsKokerCountdown konnte sich nicht selbst löschen!", 2 );
+					"PuplikumsKokerCountdown konnte sich nicht selbst l√§schen!", 2 );
 		}
 	}
+	
+	@Override
+	public void stoppeCountdown(){
+		super.stoppeCountdown();
+		Biblionaer.meinWindowController.setStatusText( "" );
+	}
+	
 }

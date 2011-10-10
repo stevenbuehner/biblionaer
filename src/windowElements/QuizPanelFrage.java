@@ -57,11 +57,11 @@ public class QuizPanelFrage extends QuizImagePanel {
 			super.drawObjects( g );
 
 			/*
-			 * Rechteckgr슙e Komplett: 656 x 153 Fragefeld: ab Pos: 53/79 mit
+			 * Rechteckgr채채e Komplett: 656 x 153 Fragefeld: ab Pos: 53/79 mit
 			 * einer Breite von 552
 			 */
 
-			// Alte Schrift zwischenspeichern um sie sp둻er zur웒kzusetzen
+			// Alte Schrift zwischenspeichern um sie sp채ter zur채ckzusetzen
 			Font restoreFont = g.getFont();
 			Color restoreColor = g.getColor();
 			g.setFont( new Font( "Arial", Font.BOLD, 14 ) );

@@ -20,80 +20,91 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
 import lokaleSpiele.QuizFileModel;
 import main.Biblionaer;
 import quiz.Quizfrage;
+import timer.SekuendlicherZeitgeber;
+import timer.UhrzeitSekUpdate;
 
-public class AdministratorSchirm extends JFrame implements QuizFenster, BackendWindow,
-		ActionListener {
+public class AdministratorSchirm extends JFrame implements QuizFenster, BackendWindow, ActionListener {
 
-	private static final long	serialVersionUID			= 1L;
+	private static final long serialVersionUID = 1L;
 
 	// links oben
-	protected JPanel			monitorPanel;
+	protected JPanel monitorPanel;
 	// rechts oben
-	protected JPanel			steuerungPanel;
+	protected JPanel steuerungPanel;
 	// links unten
-	protected JPanel			dateiPanel;
+	protected JPanel dateiPanel;
 	// rechts unten
-	protected JPanel			weiteresPanel;
+	protected JPanel weiteresPanel;
 
-	private GraphicsDevice		device;
-	private boolean				isFullScreen				= false;
+	// Wird ueber Spielgestartet() und speilBeendet() gesetzt
+	private boolean cache_spielLaeuft = false;;
+
+	private GraphicsDevice device;
+	private boolean isFullScreen = false;
 
 	// SteuerungPanel Material
-	JButton						auswahlBestaetigenBtn		= new JButton( "Auswahl Best둻igen" );
-	JButton						antwort1KlickenBtn			= new JButton( "Antwort A" );
-	JButton						antwort2KlickenBtn			= new JButton( "Antwort B" );
-	JButton						antwort3KlickenBtn			= new JButton( "Antwort C" );
-	JButton						antwort4KlickenBtn			= new JButton( "Antwort D" );
-	JLabel						bibelstelleLabel			= new JLabel( "Bibelstelle" );
+	protected JButton auswahlBestaetigenBtn = new JButton("Auswahl Best채tigen");
+	protected JButton antwort1KlickenBtn = new JButton("Antwort A");
+	protected JButton antwort2KlickenBtn = new JButton("Antwort B");
+	protected JButton antwort3KlickenBtn = new JButton("Antwort C");
+	protected JButton antwort4KlickenBtn = new JButton("Antwort D");
+	protected JLabel bibelstelleLabel = new JLabel("Bibelstelle");
 
-	JButton						fiftyJokerBtn				= new JButton( "50:50 Joker" );
-	JButton						tippJokerBtn				= new JButton( "Tipp Joker" );
-	JButton						puplikumsJokerBtn			= new JButton( "Puplikums Joker" );
+	protected JButton fiftyJokerBtn = new JButton("50:50 Joker");
+	protected JButton tippJokerBtn = new JButton("Tipp Joker");
+	protected JButton puplikumsJokerBtn = new JButton("Puplikums Joker");
+
+	protected JButton laufendsSpielBeendenBtn = new JButton("laufendes Spiel beenden");
 
 	// DateiPanel Material
-	JTable						spielListeTable				= new JTable( new QuizFileModel() );
-	JButton						angeklicktesSpielStartenBtn	= new JButton( "Neues Spiel starten" );
-	JButton						angeklickesSpielLoeschenBtn	= new JButton( "Dieses Spiel l쉝chen" );
-	JButton						laufendsSpielBeendenBtn		= new JButton(
-																	"laufendes Spiel beenden" );
-	JButton						neuesSpielAusInternBtn		= new JButton(
-																	"Neues Spiel aus dem Internet importieren" );
+	protected JTable spielListeTable = new JTable(new QuizFileModel());
+	protected JButton angeklicktesSpielStartenBtn = new JButton("Neues Spiel starten");
+	protected JButton angeklickesSpielLoeschenBtn = new JButton("Dieses Spiel l철schen");
+	protected JButton neuesSpielAusInternBtn = new JButton("Neues Spiel aus dem Internet importieren");
 
 	// WeiteresPanel Material
-	JButton						leisteEinblendenBtn			= new JButton( "Leiste einblenden" );
-	JButton						schwarzerBildschirmBtn		= new JButton( "schwarzer Bildschirm" );
+	protected JButton schwarzerBildschirmBtn = new JButton("schwarzer Bildschirm");
+
+	// Zeitliche Komponenten
+	protected JLabel uhrzeit = new JLabel("Uhrzeit:");
+	protected JLabel aktuelleFragenZeit = new JLabel("Aktuelle Frage:");
+	protected JLabel gesamtSpielZeit = new JLabel("Gesamtspielzeit: ");
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+	protected SekuendlicherZeitgeber sekZeit = new SekuendlicherZeitgeber(this);
 
 	public AdministratorSchirm(String fenstername, GraphicsDevice device, boolean vollbildModus) {
-		super( fenstername );
+		super(fenstername);
 		this.device = device;
 		this.isFullScreen = vollbildModus;
 
 		doInitialisations();
 
-		this.setResizable( false );
-		// Wenn m쉍lich, dann Fullscreen setzen
+		this.setResizable(false);
+		// Wenn m철glich, dann Fullscreen setzen
 		// isFullScreen = device.isFullScreenSupported();
-		setUndecorated( isFullScreen );
-		setResizable( !isFullScreen );
-		if ( isFullScreen ) {
+		setUndecorated(isFullScreen);
+		setResizable(!isFullScreen);
+		if (isFullScreen) {
 			// Full-screen mode
-			device.setFullScreenWindow( this );
-		}
-		else {
+			device.setFullScreenWindow(this);
+		} else {
 			// Window mode
-			this.setVisible( true );
-			this.setSize( new Dimension( 1024, 768 ) );
-			this.setResizable( false );
+			this.setVisible(true);
+			this.setSize(new Dimension(1024, 768));
+			this.setResizable(false);
 		}
 	}
 
@@ -101,547 +112,710 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		Container cnt = this.getContentPane();
 
 		// ******* GesamtPanel *******
-		JPanel mainPanel = new JPanel( new GridLayout( 2, 2, 5, 5 ) );
-		mainPanel.setBackground( Color.LIGHT_GRAY );
+		JPanel mainPanel = new JPanel(new GridLayout(2, 2, 5, 5));
+		mainPanel.setBackground(Color.LIGHT_GRAY);
 
 		// ******* MonitorPanel *******
-		this.monitorPanel = new JPanel( new FlowLayout() );
-		this.monitorPanel.setBackground( Color.BLACK );
+		this.monitorPanel = new JPanel(new FlowLayout());
+		this.monitorPanel.setBackground(Color.BLACK);
 
 		// ******* SteuerungPanel *******
-		this.steuerungPanel = new JPanel( new GridLayout( 2, 1, 20, 20 ) );
-		this.steuerungPanel.setBackground( Color.BLACK );
+		this.steuerungPanel = new JPanel(new GridLayout(2, 1, 20, 20));
+		this.steuerungPanel.setBackground(null);
 
 		// TopLeisten-Panel
-		JPanel steuerungTopLeistePanel = new JPanel( new FlowLayout() );
+		JPanel steuerungTopLeistePanel = new JPanel(new FlowLayout());
 		// Button
-		auswahlBestaetigenBtn.addActionListener( this );
-		fiftyJokerBtn.addActionListener( this );
-		tippJokerBtn.addActionListener( this );
-		puplikumsJokerBtn.addActionListener( this );
+		auswahlBestaetigenBtn.addActionListener(this);
+		fiftyJokerBtn.addActionListener(this);
+		tippJokerBtn.addActionListener(this);
+		puplikumsJokerBtn.addActionListener(this);
+		laufendsSpielBeendenBtn.addActionListener(this);
 
-		auswahlBestaetigenBtn.setEnabled( false );
-		fiftyJokerBtn.setEnabled( false );
-		tippJokerBtn.setEnabled( false );
-		puplikumsJokerBtn.setEnabled( false );
+		auswahlBestaetigenBtn.setEnabled(false);
+		fiftyJokerBtn.setEnabled(false);
+		tippJokerBtn.setEnabled(false);
+		puplikumsJokerBtn.setEnabled(false);
+		laufendsSpielBeendenBtn.setEnabled(false);
 
-		steuerungTopLeistePanel.add( auswahlBestaetigenBtn );
-		steuerungTopLeistePanel.add( fiftyJokerBtn );
-		steuerungTopLeistePanel.add( tippJokerBtn );
-		steuerungTopLeistePanel.add( puplikumsJokerBtn );
+		steuerungTopLeistePanel.add(auswahlBestaetigenBtn);
+		steuerungTopLeistePanel.add(fiftyJokerBtn);
+		steuerungTopLeistePanel.add(tippJokerBtn);
+		steuerungTopLeistePanel.add(puplikumsJokerBtn);
+		steuerungTopLeistePanel.add(laufendsSpielBeendenBtn);
 
 		// Quiz-Panel
-		JPanel steuerungQuizPanel = new JPanel( new GridLayout( 3, 2, 5, 5 ) );
-		antwort1KlickenBtn.addActionListener( this );
-		antwort2KlickenBtn.addActionListener( this );
-		antwort3KlickenBtn.addActionListener( this );
-		antwort4KlickenBtn.addActionListener( this );
+		JPanel steuerungQuizPanel = new JPanel(new GridLayout(3, 2, 5, 5));
 
-		antwort1KlickenBtn.setEnabled( false );
-		antwort2KlickenBtn.setEnabled( false );
-		antwort3KlickenBtn.setEnabled( false );
-		antwort4KlickenBtn.setEnabled( false );
+		antwort1KlickenBtn.addActionListener(this);
+		antwort2KlickenBtn.addActionListener(this);
+		antwort3KlickenBtn.addActionListener(this);
+		antwort4KlickenBtn.addActionListener(this);
 
-		steuerungQuizPanel.add( this.antwort1KlickenBtn );
-		steuerungQuizPanel.add( this.antwort2KlickenBtn );
-		steuerungQuizPanel.add( this.antwort3KlickenBtn );
-		steuerungQuizPanel.add( this.antwort4KlickenBtn );
-		steuerungQuizPanel.add( new JLabel( "Bibelstelle: " ) );
-		steuerungQuizPanel.add( this.bibelstelleLabel );
+		antwort1KlickenBtn.setEnabled(false);
+		antwort2KlickenBtn.setEnabled(false);
+		antwort3KlickenBtn.setEnabled(false);
+		antwort4KlickenBtn.setEnabled(false);
 
-		steuerungPanel.add( steuerungTopLeistePanel );
-		steuerungPanel.add( steuerungQuizPanel );
+		steuerungQuizPanel.add(this.antwort1KlickenBtn);
+		steuerungQuizPanel.add(this.antwort2KlickenBtn);
+		steuerungQuizPanel.add(this.antwort3KlickenBtn);
+		steuerungQuizPanel.add(this.antwort4KlickenBtn);
+		steuerungQuizPanel.add(new JLabel("Bibelstelle: "));
+		steuerungQuizPanel.add(this.bibelstelleLabel);
+
+		steuerungPanel.add(steuerungTopLeistePanel);
+		steuerungPanel.add(steuerungQuizPanel);
 
 		// ******* DateiPanel *******
-		this.dateiPanel = new JPanel( new GridLayout( 1, 2, 20, 20 ) );
-		this.dateiPanel.setBackground( Color.BLACK );
+		this.dateiPanel = new JPanel(new GridLayout(1, 2, 20, 20));
+		this.dateiPanel.setBackground(Color.BLACK);
 
-		JPanel dateiLinkesPanel = new JPanel( new FlowLayout() );
+		JPanel dateiLinkesPanel = new JPanel(new FlowLayout());
 		// dateiLinkesPanel.add( new JLabel( "offline Spiel Liste" ) );
-		spielListeTable.setToolTipText( "Spielanzahl: " + spielListeTable.getModel().getRowCount() );
-		spielListeTable.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
-		spielListeTable
-				.setToolTipText( "Diese fertigen Spiele sind auf diesem Rechner installiert" );
-		spielListeTable.setAlignmentX( Component.LEFT_ALIGNMENT );
+		spielListeTable.setToolTipText("Spielanzahl: " + spielListeTable.getModel().getRowCount());
+		spielListeTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		spielListeTable.setToolTipText("Diese fertigen Spiele sind auf diesem Rechner installiert");
+		spielListeTable.setAlignmentX(Component.LEFT_ALIGNMENT);
 		// spielListeTable.setColumnSelectionAllowed( false );
-		spielListeTable.getTableHeader().setReorderingAllowed( false );
-		spielListeTable.getTableHeader().setResizingAllowed( false );
-		spielListeTable.getColumnModel().getColumn( 0 ).setPreferredWidth( 150 );
+		spielListeTable.getTableHeader().setReorderingAllowed(false);
+		spielListeTable.getTableHeader().setResizingAllowed(false);
+		spielListeTable.getColumnModel().getColumn(0).setPreferredWidth(150);
 		// Zeilen und Spaltenabstand:
-		spielListeTable.setIntercellSpacing( new Dimension( 2, 2 ) );
+		spielListeTable.setIntercellSpacing(new Dimension(2, 2));
 		// spielListeTable.getTableHeader().setVisible( true );
-		dateiLinkesPanel.add( spielListeTable );
+		dateiLinkesPanel.add(spielListeTable);
 
-		JPanel dateiRechtesPanel = new JPanel( new GridLayout( 3, 1 ) );
+		JPanel dateiRechtesPanel = new JPanel(new GridLayout(0, 1));
 		// Buttons
-		angeklicktesSpielStartenBtn.addActionListener( this );
-		laufendsSpielBeendenBtn.addActionListener( this );
-		neuesSpielAusInternBtn.addActionListener( this );
-		angeklickesSpielLoeschenBtn.addActionListener( this );
+		angeklicktesSpielStartenBtn.addActionListener(this);
+		neuesSpielAusInternBtn.addActionListener(this);
+		angeklickesSpielLoeschenBtn.addActionListener(this);
 
-		laufendsSpielBeendenBtn.setEnabled( false );
+		dateiRechtesPanel.add(angeklicktesSpielStartenBtn);
+		dateiRechtesPanel.add(neuesSpielAusInternBtn);
+		dateiRechtesPanel.add(angeklickesSpielLoeschenBtn);
 
-		dateiRechtesPanel.add( angeklicktesSpielStartenBtn );
-		dateiRechtesPanel.add( laufendsSpielBeendenBtn );
-		dateiRechtesPanel.add( neuesSpielAusInternBtn );
-		dateiRechtesPanel.add( angeklickesSpielLoeschenBtn );
-
-		// Zusammenf웗en
-		dateiPanel.add( dateiLinkesPanel );
-		dateiPanel.add( dateiRechtesPanel );
+		// Zusammenf채gen
+		dateiPanel.add(dateiLinkesPanel);
+		dateiPanel.add(dateiRechtesPanel);
 
 		// ******* WeiteresPanel *******
-		this.weiteresPanel = new JPanel( new GridLayout( 6, 1, 20, 20 ) );
-		this.weiteresPanel.setBackground( Color.BLACK );
+		this.weiteresPanel = new JPanel(new GridLayout(6, 1, 20, 20));
+		this.weiteresPanel.setBackground(null);
 
 		// Buttons
-		leisteEinblendenBtn.addActionListener( this );
-		schwarzerBildschirmBtn.addActionListener( this );
+		schwarzerBildschirmBtn.addActionListener(this);
 
-		weiteresPanel.add( leisteEinblendenBtn );
-		weiteresPanel.add( schwarzerBildschirmBtn );
-		weiteresPanel.add( new JLabel( "Uhrzeit: ______" ) );
-		weiteresPanel.add( new JLabel( "Aktuelle Frage Zeit ______" ) );
-		weiteresPanel.add( new JLabel( "Gesamte Spielzeit: _______" ) );
+		weiteresPanel.add(this.schwarzerBildschirmBtn);
+		weiteresPanel.add(this.uhrzeit);
+		weiteresPanel.add(this.aktuelleFragenZeit);
+		weiteresPanel.add(this.gesamtSpielZeit);
 
-		// Alles zusammenf웗en
-		mainPanel.add( monitorPanel );
-		mainPanel.add( steuerungPanel );
-		mainPanel.add( dateiPanel );
-		mainPanel.add( weiteresPanel );
+		// Alles zusammenf채gen
+		mainPanel.add(monitorPanel);
+		mainPanel.add(steuerungPanel);
+		mainPanel.add(dateiPanel);
+		mainPanel.add(weiteresPanel);
 
-		cnt.add( mainPanel );
+		cnt.add(mainPanel);
+		
+		this.sekZeit.starteZeitgeber();
+		this.sekuendlicherZeitgeber();
 	}
 
-	// * Ab hier die Methode f웦 das Interface BackendWindow
+	// * Ab hier die Methode f체r das Interface BackendWindow
 	public void setFrontendScreenImage(VolatileImage screen) {
 		Graphics g = monitorPanel.getGraphics();
-		g.drawImage( screen, 0, 0, monitorPanel.getWidth(), monitorPanel.getHeight(), this );
-
+		g.drawImage(screen, 0, 0, monitorPanel.getWidth(), monitorPanel.getHeight(), this);
 	}
 
-	// * Ab hier die Methode f웦 das Interface ActionListener
+	protected void windowClosed() {
+		// TODO Diese Funktion muss noch eingebunden werden!!!
+
+		this.sekZeit.stoppeZeitgeber();
+	}
+
+	// * Ab hier die Methode f체r das Interface ActionListener
 	public void actionPerformed(ActionEvent e) {
-		if ( e.getSource() == antwort1KlickenBtn ) {
-			Biblionaer.meineKonsole.println( "AdministratorSchirm: Klick auf Antwort1Btn", 4 );
-			Biblionaer.meineSteuerung.klickAufAntwortFeld( 1 );
-		}
-		else if ( e.getSource() == antwort2KlickenBtn ) {
-			Biblionaer.meineKonsole.println( "AdministratorSchirm: Klick auf Antwort2Btn", 4 );
-			Biblionaer.meineSteuerung.klickAufAntwortFeld( 2 );
-		}
-		else if ( e.getSource() == antwort3KlickenBtn ) {
-			Biblionaer.meineKonsole.println( "AdministratorSchirm: Klick auf Antwort3Btn", 4 );
-			Biblionaer.meineSteuerung.klickAufAntwortFeld( 3 );
-		}
-		else if ( e.getSource() == antwort4KlickenBtn ) {
-			Biblionaer.meineKonsole.println( "AdministratorSchirm: Klick auf Antwort4Btn", 4 );
-			Biblionaer.meineSteuerung.klickAufAntwortFeld( 4 );
-		}
-		else if ( e.getSource() == auswahlBestaetigenBtn ) {
-
-		}
-		else if ( e.getSource() == fiftyJokerBtn ) {
-			Biblionaer.meineSteuerung.klickAufFiftyJoker();
-			fiftyJokerBtn.setEnabled( false );
-		}
-		else if ( e.getSource() == tippJokerBtn ) {
-			Biblionaer.meineSteuerung.klickAufTippJoker();
-			tippJokerBtn.setEnabled( false );
-		}
-		else if ( e.getSource() == puplikumsJokerBtn ) {
-			Biblionaer.meineSteuerung.puplikumsJokerZeitAbgelaufen();
-			puplikumsJokerBtn.setEnabled( false );
-		}
-		else if ( e.getSource() == angeklicktesSpielStartenBtn ) {
-			if ( this.spielListeTable.getSelectedRow() >= 0 ) {
+		if (e.getSource() == this.sekZeit.timer) {
+			this.sekuendlicherZeitgeber();
+		} else if (e.getSource() == antwort1KlickenBtn) {
+			adminRequest_klickAntwort1();
+		} else if (e.getSource() == antwort2KlickenBtn) {
+			adminRequest_klickAntwort2();
+		} else if (e.getSource() == antwort3KlickenBtn) {
+			adminRequest_klickAntwort3();
+		} else if (e.getSource() == antwort4KlickenBtn) {
+			adminRequest_klickAntwort4();
+		} else if (e.getSource() == auswahlBestaetigenBtn) {
+			adminRequest_bestaetigeAusgewalteAntwort();
+		} else if (e.getSource() == fiftyJokerBtn) {
+			this.adminRequest_setFiftyJokerAktiviert(this.fiftyJokerBtn.getBackground().equals(Color.RED));
+		} else if (e.getSource() == tippJokerBtn) {
+			this.adminRequest_setTippJokerAktiviert(this.tippJokerBtn.getBackground().equals(Color.RED));
+		} else if (e.getSource() == puplikumsJokerBtn) {
+			this.adminRequest_setPublikumsJokerAktiviert(this.puplikumsJokerBtn.getBackground().equals(Color.RED));
+		} else if (e.getSource() == angeklicktesSpielStartenBtn) {
+			if (this.spielListeTable.getSelectedRow() >= 0) {
 				File quizSpeicherort = ((QuizFileModel) this.spielListeTable.getModel())
-						.getQuizFileLocationAt( this.spielListeTable.getSelectedRow() );
-				Biblionaer.meineSteuerung.starteNeuesSpiel( quizSpeicherort );
+						.getQuizFileLocationAt(this.spielListeTable.getSelectedRow());
+				Biblionaer.meineSteuerung.starteNeuesSpiel(quizSpeicherort);
 			}
-		}
-		else if ( e.getSource() == angeklickesSpielLoeschenBtn ) {
-			if ( this.spielListeTable.getSelectedRow() >= 0 ) {
+		} else if (e.getSource() == angeklickesSpielLoeschenBtn) {
+			if (this.spielListeTable.getSelectedRow() >= 0) {
 
-				if ( !((QuizFileModel) spielListeTable.getModel())
-						.removeQuizFile( this.spielListeTable.getSelectedRow() ) ) {
+				if (!((QuizFileModel) spielListeTable.getModel()).removeQuizFile(this.spielListeTable.getSelectedRow())) {
 					Biblionaer.meineKonsole.println(
-							"Es trat ein Fehler im TabelModel auf, beim l쉝chen der SpielDatei", 2 );
-				}
-				else {
-					Biblionaer.meineKonsole.println( "SpielDatei erfolgreich gel쉝cht", 4 );
+							"Es trat ein Fehler im TabelModel auf, beim l채schen der SpielDatei", 2);
+				} else {
+					Biblionaer.meineKonsole.println("SpielDatei erfolgreich gel철scht", 4);
 				}
 			}
-		}
-		else if ( e.getSource() == laufendsSpielBeendenBtn ) {
-			Biblionaer.meineSteuerung.spielBeenden();
-			this.spielButtonsAktivieren( false );
-		}
-		else if ( e.getSource() == neuesSpielAusInternBtn ) {
+		} else if (e.getSource() == laufendsSpielBeendenBtn) {
+			// Startdialog
+			int returnOptionDialog = JOptionPane.showOptionDialog(
+					(Component) Biblionaer.meinWindowController.getBackendFenster(),
+					"Bist Du dir sicher, dass Du dieses Spiel beenden m철chtest?", "Warnung", JOptionPane.YES_NO_OPTION,
+					JOptionPane.INFORMATION_MESSAGE, null, null, JOptionPane.NO_OPTION);
+
+			if (returnOptionDialog == JOptionPane.OK_OPTION) {
+				Biblionaer.meineSteuerung.spielBeenden();
+				this.spielButtonsAktivieren(false);
+			}
+
+		} else if (e.getSource() == neuesSpielAusInternBtn) {
 			// Biblionaer.meineSteuerung.actionPerformed( new ActionEvent( this,
 			// 1,
 			// "Neues Spiel aus dem Internet" ) );
 			this.neuesSpielImportieren();
-		}
-		else if ( e.getSource() == leisteEinblendenBtn ) {
-
-		}
-		else if ( e.getSource() == schwarzerBildschirmBtn ) {
+		} else if (e.getSource() == schwarzerBildschirmBtn) {
 			schwarzerBildschirmBtnKlick();
-		}
-		else {
-			Biblionaer.meineKonsole.println( "AdminSchirm mit unbekanntem Action Event: "
-					+ e.getActionCommand(), 2 );
+		} else {
+			Biblionaer.meineKonsole.println("AdminSchirm mit unbekanntem Action Event: " + e.getActionCommand(), 2);
 		}
 	}
 
 	// * Ab hier die Button-Klick-Methoden
 
 	protected void schwarzerBildschirmBtnKlick() {
-		if ( schwarzerBildschirmBtn.getText().equals( "schwarzer Bildschirm" ) ) {
-			if ( Biblionaer.meinWindowController.getFrontendFenster() != null ) {
-				// Wenn es ein Frontend gibt, dann schw둹zen
-				((FrontendWindow) Biblionaer.meinWindowController.getFrontendFenster())
-						.setBildschirmSchwarz( true );
-				schwarzerBildschirmBtn.setText( "Bilschirm wieder einblenden" );
+		if (schwarzerBildschirmBtn.getText().equals("schwarzer Bildschirm")) {
+			if (Biblionaer.meinWindowController.getFrontendFenster() != null) {
+				// Wenn es ein Frontend gibt, dann schw채rzen
+				((FrontendWindow) Biblionaer.meinWindowController.getFrontendFenster()).setBildschirmSchwarz(true);
+				schwarzerBildschirmBtn.setText("Bilschirm wieder einblenden");
 			}
-		}
-		else {
-			if ( Biblionaer.meinWindowController.getFrontendFenster() != null ) {
+		} else {
+			if (Biblionaer.meinWindowController.getFrontendFenster() != null) {
 				// Wenn es ein Frontend gibt, dann wieder Bild herstellen
-				((FrontendWindow) Biblionaer.meinWindowController.getFrontendFenster())
-						.setBildschirmSchwarz( false );
+				((FrontendWindow) Biblionaer.meinWindowController.getFrontendFenster()).setBildschirmSchwarz(false);
 			}
 			// Egal ob es ein Frontend gibt oder nicht, Button immer wieder
 			// herstellen.
-			schwarzerBildschirmBtn.setText( "schwarzer Bildschirm" );
+			schwarzerBildschirmBtn.setText("schwarzer Bildschirm");
 		}
 	}
 
 	protected void neuesSpielImportieren() {
 		try {
-			XmlToSpiel dasXMLImporterFile = new XmlToSpiel( new URL( Biblionaer.meineEinstellungen
-					.getXMLquelle() ) );
+			XmlToSpiel dasXMLImporterFile = new XmlToSpiel(new URL(Biblionaer.meineEinstellungen.getXMLquelle()));
 
-			// Finde den n둩hsten freien Speichernamen
+			// Finde den n채chsten freien Speichernamen
 			int i = 0;
 			File saveTo = null;
 			while (saveTo == null && i < 50) {
 				i++;
-				saveTo = new File( QuizFileModel.getSpeicherortSpiele().getAbsolutePath()
-						+ "/neuesSpiel_" + Integer.toString( i ) + ".bqxml" );
+				saveTo = new File(QuizFileModel.getSpeicherortSpiele().getAbsolutePath() + "/neuesSpiel_"
+						+ Integer.toString(i) + ".bqxml");
 
-				if ( saveTo.exists() ) {
+				if (saveTo.exists()) {
 					saveTo = null;
 				}
 			}
 
-			if ( i >= 50 ) {
-				Biblionaer.meineKonsole.println( "Es wurde nach " + Integer.toString( i )
-						+ " versuchen abgebrochen, das Spiel zu speichern.", 2 );
-			}
-			else {
-				if ( dasXMLImporterFile.getAnzahlFragen() > 0 ) {
-					dasXMLImporterFile.saveSpielToFile( saveTo );
-					Biblionaer.meineKonsole.println( "Es wurde noch ein neues Spiel angelegt.", 3 );
-				}
-				else {
+			if (i >= 50) {
+				Biblionaer.meineKonsole.println("Es wurde nach " + Integer.toString(i)
+						+ " versuchen abgebrochen, das Spiel zu speichern.", 2);
+			} else {
+				if (dasXMLImporterFile.getAnzahlFragen() > 0) {
+					dasXMLImporterFile.saveSpielToFile(saveTo);
+					Biblionaer.meineKonsole.println("Es wurde noch ein neues Spiel angelegt.", 3);
+				} else {
 					Biblionaer.meineKonsole.println(
 							"Es wurde kein neues Spiel importiert, weil nur "
-									+ Integer.toString( dasXMLImporterFile.getAnzahlFragen() )
-									+ " Fragen zur heruntergeladen wurden.", 2 );
+									+ Integer.toString(dasXMLImporterFile.getAnzahlFragen())
+									+ " Fragen zur heruntergeladen wurden.", 2);
 				}
 			}
-		}
-		catch (MalformedURLException e) {
-			Biblionaer.meineKonsole
-					.println(
-							"Beim Versuch ein neues Spiel herunterzuladen (im AdministratorSchirm), ist die falsche URL verwendet worden.\n"
-									+ e.getMessage(), 1 );
-		}
-		catch (IOException e2) {
+		} catch (MalformedURLException e) {
+			Biblionaer.meineKonsole.println(
+					"Beim Versuch ein neues Spiel herunterzuladen (im AdministratorSchirm), ist die falsche URL verwendet worden.\n"
+							+ e.getMessage(), 1);
+		} catch (IOException e2) {
 			Biblionaer.meineKonsole.println(
 					"Es trat ein Fehler beim speichern eines heruntergeladenen Spieles (im AdministratorSchirm) auf:\n"
-							+ e2.getMessage(), 1 );
+							+ e2.getMessage(), 1);
 
-		}
-		finally {
+		} finally {
 			((QuizFileModel) this.spielListeTable.getModel()).refreshInhalte();
 		}
 
 	}
 
 	protected void spielButtonsAktivieren(boolean spielLauft) {
-		this.laufendsSpielBeendenBtn.setEnabled( spielLauft );
-		this.angeklicktesSpielStartenBtn.setEnabled( !spielLauft );
+		this.laufendsSpielBeendenBtn.setEnabled(spielLauft);
+		this.angeklicktesSpielStartenBtn.setEnabled(!spielLauft);
 
-		this.fiftyJokerBtn.setEnabled( spielLauft );
-		this.tippJokerBtn.setEnabled( spielLauft );
-		this.puplikumsJokerBtn.setEnabled( spielLauft );
+		this.fiftyJokerBtn.setEnabled(spielLauft);
+		this.tippJokerBtn.setEnabled(spielLauft);
+		this.puplikumsJokerBtn.setEnabled(spielLauft);
 
-		this.antwort1KlickenBtn.setEnabled( spielLauft );
-		this.antwort2KlickenBtn.setEnabled( spielLauft );
-		this.antwort3KlickenBtn.setEnabled( spielLauft );
-		this.antwort4KlickenBtn.setEnabled( spielLauft );
+		this.antwort1KlickenBtn.setEnabled(spielLauft);
+		this.antwort2KlickenBtn.setEnabled(spielLauft);
+		this.antwort3KlickenBtn.setEnabled(spielLauft);
+		this.antwort4KlickenBtn.setEnabled(spielLauft);
 	}
 
-	// * Ab hier die Methoden zur Ansteuerung 웑er die Steuerung
+	// * Ab hier die Methoden zur Ansteuerung 채ber die Steuerung
 	public void playFrageFalsch() {
-		this.spielButtonsAktivieren( false );
+		this.spielButtonsAktivieren(false);
 	}
 
 	public void playFrageRichtig() {
-	// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
 
 	}
 
 	public void playStarteSpiel() {
-		spielButtonsAktivieren( true );
+		spielButtonsAktivieren(true);
 	}
 
 	public void playSpielGewonnen() {
-		this.spielButtonsAktivieren( false );
+		this.spielButtonsAktivieren(false);
 	}
 
 	public void resetAlleJoker() {
-		fiftyJokerBtn.setEnabled( true );
-		tippJokerBtn.setEnabled( true );
-		puplikumsJokerBtn.setEnabled( true );
+		this.setFiftyJokerBenutzt(false);
+		this.setTippJokerBenutzt(false);
+		this.setPublikumsJokerBenutzt(false);
+	}
+
+	/**
+	 * Eingabe des Admins ueberschreibt den bisherigen Spielstatus IMMER!
+	 * 
+	 * @param value
+	 */
+	private void adminRequest_setFiftyJokerAktiviert(boolean value) {
+		if (value) {
+			Biblionaer.meineSteuerung.resetFiftyJoker();
+		} else {
+			Biblionaer.meineSteuerung.klickAufFiftyJoker();
+		}
+	}
+
+	/**
+	 * Eingabe des Admins ueberschreibt den bisherigen Spielstatus IMMER!
+	 * 
+	 * @param value
+	 */
+	private void adminRequest_setTippJokerAktiviert(boolean value) {
+		if (value) {
+			Biblionaer.meineSteuerung.resetTippJoker();
+		} else {
+			Biblionaer.meineSteuerung.klickAufTippJoker();
+		}
+	}
+
+	/**
+	 * Eingabe des Admins ueberschreibt den bisherigen Spielstatus IMMER!
+	 * 
+	 * @param value
+	 */
+	private void adminRequest_setPublikumsJokerAktiviert(boolean value) {
+		if (value) {
+			Biblionaer.meineSteuerung.resetPublikumsJoker();
+		} else {
+			Biblionaer.meineSteuerung.klickAufPuplikumsJoker();
+		}
+	}
+
+	private void adminRequest_klickAntwort1() {
+		if (this.antwort1KlickenBtn.getBackground().equals(Color.YELLOW)) {
+			Biblionaer.meinWindowController.setAntwortFeld1Normal();
+			this.auswahlBestaetigenBtn.setEnabled(false);
+			this.auswahlBestaetigenBtn.setText("Nichts zu best채tigen");
+			this.antwort2KlickenBtn.setEnabled(true);
+			this.antwort3KlickenBtn.setEnabled(true);
+			this.antwort4KlickenBtn.setEnabled(true);
+		} else {
+			Biblionaer.meinWindowController.setAntwortFeld1Markiert();
+			this.auswahlBestaetigenBtn.setEnabled(true);
+			this.antwort2KlickenBtn.setEnabled(false);
+			this.antwort3KlickenBtn.setEnabled(false);
+			this.antwort4KlickenBtn.setEnabled(false);
+			this.auswahlBestaetigenBtn.setText("Best채tige Antwort A");
+		}
+	}
+
+	private void adminRequest_klickAntwort2() {
+		if (this.antwort2KlickenBtn.getBackground().equals(Color.YELLOW)) {
+			Biblionaer.meinWindowController.setAntwortFeld2Normal();
+			this.auswahlBestaetigenBtn.setEnabled(false);
+			this.auswahlBestaetigenBtn.setText("Nichts zu best채tigen");
+			this.antwort1KlickenBtn.setEnabled(true);
+			this.antwort3KlickenBtn.setEnabled(true);
+			this.antwort4KlickenBtn.setEnabled(true);
+		} else {
+			Biblionaer.meinWindowController.setAntwortFeld2Markiert();
+			this.auswahlBestaetigenBtn.setEnabled(true);
+			this.antwort1KlickenBtn.setEnabled(false);
+			this.antwort3KlickenBtn.setEnabled(false);
+			this.antwort4KlickenBtn.setEnabled(false);
+			this.auswahlBestaetigenBtn.setText("Best채tige Antwort B");
+		}
+	}
+
+	private void adminRequest_klickAntwort3() {
+		if (this.antwort3KlickenBtn.getBackground().equals(Color.YELLOW)) {
+			Biblionaer.meinWindowController.setAntwortFeld3Normal();
+			this.auswahlBestaetigenBtn.setEnabled(false);
+			this.auswahlBestaetigenBtn.setText("Nichts zu best채tigen");
+			this.antwort1KlickenBtn.setEnabled(true);
+			this.antwort2KlickenBtn.setEnabled(true);
+			this.antwort4KlickenBtn.setEnabled(true);
+		} else {
+			Biblionaer.meinWindowController.setAntwortFeld3Markiert();
+			this.auswahlBestaetigenBtn.setEnabled(true);
+			this.antwort1KlickenBtn.setEnabled(false);
+			this.antwort2KlickenBtn.setEnabled(false);
+			this.antwort4KlickenBtn.setEnabled(false);
+			this.auswahlBestaetigenBtn.setText("Best채tige Antwort C");
+		}
+	}
+
+	private void adminRequest_klickAntwort4() {
+		if (this.antwort4KlickenBtn.getBackground().equals(Color.YELLOW)) {
+			Biblionaer.meinWindowController.setAntwortFeld4Normal();
+			this.auswahlBestaetigenBtn.setEnabled(false);
+			this.auswahlBestaetigenBtn.setText("Nichts zu best채tigen");
+			this.antwort1KlickenBtn.setEnabled(true);
+			this.antwort2KlickenBtn.setEnabled(true);
+			this.antwort3KlickenBtn.setEnabled(true);
+		} else {
+			Biblionaer.meinWindowController.setAntwortFeld4Markiert();
+			this.auswahlBestaetigenBtn.setEnabled(true);
+			this.antwort1KlickenBtn.setEnabled(false);
+			this.antwort2KlickenBtn.setEnabled(false);
+			this.antwort3KlickenBtn.setEnabled(false);
+			this.auswahlBestaetigenBtn.setText("Best채tige Antwort D");
+		}
+	}
+
+	private void adminRequest_bestaetigeAusgewalteAntwort() {
+		int auswahl = 0;
+
+		if (this.antwort1KlickenBtn.getBackground().equals(Color.YELLOW))
+			auswahl = 1;
+		else if (this.antwort2KlickenBtn.getBackground().equals(Color.YELLOW))
+			auswahl = 2;
+		else if (this.antwort3KlickenBtn.getBackground().equals(Color.YELLOW))
+			auswahl = 3;
+		else if (this.antwort4KlickenBtn.getBackground().equals(Color.YELLOW))
+			auswahl = 4;
+
+		if (auswahl != 0) {
+			Biblionaer.meineSteuerung.klickAufAntwortFeld(auswahl);
+		} else {
+			Biblionaer.meineKonsole.println(
+					"FEHLER: Nichts wurde ausgewaehlt, aber trotzdem der Bestaetigungs-Button gedrueckt", 2);
+		}
+	}
+
+	private void sekuendlicherZeitgeber() {
+		this.uhrzeit.setText("Uhrzeit: " + this.dateFormat.format(new Date()) + " Uhr");
+
+		if (this.cache_spielLaeuft) {
+			this.aktuelleFragenZeit.setText("Aktuelle Frage: "
+					+ String.valueOf(Biblionaer.meineSteuerung.frageDauerBisJetztInSekunden()) + " Sek");
+			this.gesamtSpielZeit.setText("Gesamtspieldauer: "
+					+ Biblionaer.meineSteuerung.spielDauerBisJetztInSekunden() + " Sek");
+		}
 	}
 
 	public void setAnimationAktiviert(boolean aktiviert) {
-	// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
 
 	}
 
 	public void setAntwortFeld1Falsch() {
-	// TODO Auto-generated method stub
-
+		// Nichts zu tun
 	}
 
 	public void setAntwortFeld1Markiert() {
-	// TODO Auto-generated method stub
-
+		this.antwort1KlickenBtn.setBackground(Color.YELLOW);
 	}
 
 	public void setAntwortFeld1Normal() {
-	// TODO Auto-generated method stub
-
+		this.antwort1KlickenBtn.setBackground(null);
 	}
 
 	public void setAntwortFeld1Richtig() {
-	// TODO Auto-generated method stub
-
+		// Nichts zu tun
 	}
 
 	public void setAntwortFeld1Sichtbar(boolean sichtbar) {
-		antwort1KlickenBtn.setEnabled( sichtbar );
-
+		antwort1KlickenBtn.setEnabled(sichtbar);
 	}
 
 	public void setAntwortFeld2Falsch() {
-	// TODO Auto-generated method stub
-
+		// Nichts zu tun
 	}
 
 	public void setAntwortFeld2Markiert() {
-	// TODO Auto-generated method stub
-
+		this.antwort2KlickenBtn.setBackground(Color.YELLOW);
 	}
 
 	public void setAntwortFeld2Normal() {
-	// TODO Auto-generated method stub
-
+		this.antwort2KlickenBtn.setBackground(null);
 	}
 
 	public void setAntwortFeld2Richtig() {
-	// TODO Auto-generated method stub
-
+		// Nichts zu tun
 	}
 
 	public void setAntwortFeld2Sichtbar(boolean sichtbar) {
-		antwort2KlickenBtn.setEnabled( sichtbar );
-
+		antwort2KlickenBtn.setEnabled(sichtbar);
 	}
 
 	public void setAntwortFeld3Falsch() {
-	// TODO Auto-generated method stub
-
+		// Nichts zu tun
 	}
 
 	public void setAntwortFeld3Markiert() {
-	// TODO Auto-generated method stub
-
+		this.antwort3KlickenBtn.setBackground(Color.YELLOW);
 	}
 
 	public void setAntwortFeld3Normal() {
-	// TODO Auto-generated method stub
-
+		this.antwort3KlickenBtn.setBackground(null);
 	}
 
 	public void setAntwortFeld3Richtig() {
-	// TODO Auto-generated method stub
-
+		// Nichts zu tun
 	}
 
 	public void setAntwortFeld3Sichtbar(boolean sichtbar) {
-		antwort3KlickenBtn.setEnabled( sichtbar );
-
+		antwort3KlickenBtn.setEnabled(sichtbar);
 	}
 
 	public void setAntwortFeld4Falsch() {
-	// TODO Auto-generated method stub
-
+		// Nichts zu tun
 	}
 
 	public void setAntwortFeld4Markiert() {
-	// TODO Auto-generated method stub
-
+		this.antwort4KlickenBtn.setBackground(Color.YELLOW);
 	}
 
 	public void setAntwortFeld4Normal() {
-	// TODO Auto-generated method stub
-
+		this.antwort4KlickenBtn.setBackground(null);
 	}
 
 	public void setAntwortFeld4Richtig() {
-	// TODO Auto-generated method stub
-
+		// Nichts zu tun
 	}
 
 	public void setAntwortFeld4Sichtbar(boolean sichtbar) {
-		antwort4KlickenBtn.setEnabled( sichtbar );
+		antwort4KlickenBtn.setEnabled(sichtbar);
 	}
 
 	public void setAntwortFelderSichtbar(boolean sichtbar) {
-		this.antwort1KlickenBtn.setEnabled( sichtbar );
-		this.antwort2KlickenBtn.setEnabled( sichtbar );
-		this.antwort3KlickenBtn.setEnabled( sichtbar );
-		this.antwort4KlickenBtn.setEnabled( sichtbar );
+		this.setAntwortFeld1Sichtbar(sichtbar);
+		this.setAntwortFeld2Sichtbar(sichtbar);
+		this.setAntwortFeld3Sichtbar(sichtbar);
+		this.setAntwortFeld4Sichtbar(sichtbar);
+
+		// Nur wenn unsichtbar, dann auch nichts anklicken lassen
+		if (sichtbar == false)
+			this.auswahlBestaetigenBtn.setEnabled(false);
 	}
 
 	public void setAntwortfelderFalsch() {
-	// TODO Auto-generated method stub
+		this.setAntwortFeld1Falsch();
+		this.setAntwortFeld2Falsch();
+		this.setAntwortFeld3Falsch();
+		this.setAntwortFeld4Falsch();
 
+		this.auswahlBestaetigenBtn.setEnabled(false);
 	}
 
 	public void setAntwortfelderMariert() {
-	// TODO Auto-generated method stub
+		this.setAntwortFeld1Markiert();
+		this.setAntwortFeld2Markiert();
+		this.setAntwortFeld3Markiert();
+		this.setAntwortFeld4Markiert();
 
+		this.auswahlBestaetigenBtn.setEnabled(false);
 	}
 
 	public void setAntwortfelderNormal() {
-	// TODO Auto-generated method stub
+		this.setAntwortFeld1Normal();
+		this.setAntwortFeld2Normal();
+		this.setAntwortFeld3Normal();
+		this.setAntwortFeld4Normal();
 
+		this.auswahlBestaetigenBtn.setEnabled(false);
 	}
 
 	public void setAntwortfelderRichtig() {
-	// TODO Auto-generated method stub
+		this.setAntwortFeld1Richtig();
+		this.setAntwortFeld2Richtig();
+		this.setAntwortFeld3Richtig();
+		this.setAntwortFeld4Richtig();
 
+		this.auswahlBestaetigenBtn.setEnabled(false);
 	}
 
 	public void setCountdownText(String text) {
-		this.setStatusText( text );
+		this.setStatusText(text);
 	}
 
 	public void setFiftyJokerBenutzt(boolean benutzt) {
-		this.fiftyJokerBtn.setEnabled( !benutzt );
+		if (benutzt) {
+			this.fiftyJokerBtn.setBackground(Color.RED);
+			this.fiftyJokerBtn.setToolTipText("Joker wieder freischalten");
+		} else {
+			this.fiftyJokerBtn.setBackground(Color.GREEN);
+			this.fiftyJokerBtn.setToolTipText("Joker verwenden");
+		}
 	}
 
 	public void setFiftyJokerSichtbar(boolean sichtbar) {
-		this.fiftyJokerBtn.setEnabled( sichtbar );
+		this.fiftyJokerBtn.setEnabled(sichtbar);
 	}
 
 	public void setFrageAnzuzeigen(Quizfrage frage, boolean mitAnimation) {
-	// Wird hier nicht implementiert, wir nutzen stattdessen die Funktion
-	// setFrageKomplett(Quizfrage frage)
+		// Wird hier nicht implementiert, wir nutzen stattdessen die Funktion
+		// setFrageKomplett(Quizfrage frage)
 	}
 
 	public void setFrageKomplett(Quizfrage frage) {
 		// Wird hier implementiert, weil es ein Backendfenster ist
 
-		if ( frage != null ) {
-			this.antwort1KlickenBtn.setEnabled( true );
-			this.antwort2KlickenBtn.setEnabled( true );
-			this.antwort3KlickenBtn.setEnabled( true );
-			this.antwort4KlickenBtn.setEnabled( true );
+		if (frage != null) {
+			this.antwort1KlickenBtn.setEnabled(true);
+			this.antwort2KlickenBtn.setEnabled(true);
+			this.antwort3KlickenBtn.setEnabled(true);
+			this.antwort4KlickenBtn.setEnabled(true);
 
-			if ( frage.getAntwort1() == null )
-				this.antwort1KlickenBtn.setEnabled( false );
+			if (frage.getAntwort1() == null)
+				this.antwort1KlickenBtn.setEnabled(false);
 
-			if ( frage.getAntwort2() == null )
-				this.antwort2KlickenBtn.setEnabled( false );
+			if (frage.getAntwort2() == null)
+				this.antwort2KlickenBtn.setEnabled(false);
 
-			if ( frage.getAntwort3() == null )
-				this.antwort3KlickenBtn.setEnabled( false );
+			if (frage.getAntwort3() == null)
+				this.antwort3KlickenBtn.setEnabled(false);
 
-			if ( frage.getAntwort4() == null )
-				this.antwort4KlickenBtn.setEnabled( false );
+			if (frage.getAntwort4() == null)
+				this.antwort4KlickenBtn.setEnabled(false);
 
-			this.antwort1KlickenBtn.setToolTipText( frage.getAntwort1() );
-			this.antwort2KlickenBtn.setToolTipText( frage.getAntwort2() );
-			this.antwort3KlickenBtn.setToolTipText( frage.getAntwort3() );
-			this.antwort4KlickenBtn.setToolTipText( frage.getAntwort4() );
-			this.bibelstelleLabel.setText( frage.getLoesungshinweis() );
-		}
-		else {
-			this.antwort1KlickenBtn.setEnabled( false );
-			this.antwort2KlickenBtn.setEnabled( false );
-			this.antwort3KlickenBtn.setEnabled( false );
-			this.antwort4KlickenBtn.setEnabled( false );
+			this.antwort1KlickenBtn.setToolTipText(frage.getAntwort1());
+			this.antwort2KlickenBtn.setToolTipText(frage.getAntwort2());
+			this.antwort3KlickenBtn.setToolTipText(frage.getAntwort3());
+			this.antwort4KlickenBtn.setToolTipText(frage.getAntwort4());
+			this.bibelstelleLabel.setText(frage.getLoesungshinweis());
+		} else {
+			this.antwort1KlickenBtn.setEnabled(false);
+			this.antwort2KlickenBtn.setEnabled(false);
+			this.antwort3KlickenBtn.setEnabled(false);
+			this.antwort4KlickenBtn.setEnabled(false);
 
-			this.antwort1KlickenBtn.setToolTipText( null );
-			this.antwort2KlickenBtn.setToolTipText( null );
-			this.antwort3KlickenBtn.setToolTipText( null );
-			this.antwort4KlickenBtn.setToolTipText( null );
-			this.bibelstelleLabel.setText( null );
+			this.antwort1KlickenBtn.setToolTipText(null);
+			this.antwort2KlickenBtn.setToolTipText(null);
+			this.antwort3KlickenBtn.setToolTipText(null);
+			this.antwort4KlickenBtn.setToolTipText(null);
+			this.bibelstelleLabel.setText(null);
 
-			this.auswahlBestaetigenBtn.setEnabled( false );
+			this.auswahlBestaetigenBtn.setEnabled(false);
 		}
 	}
 
 	public void setFrageFeldSichtbar(boolean sichtbar) {
-	// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
 
 	}
 
 	public void setPublikumsJokerBenutzt(boolean benutzt) {
-		this.puplikumsJokerBtn.setEnabled( !benutzt );
+		if (benutzt) {
+			this.puplikumsJokerBtn.setBackground(Color.RED);
+			this.puplikumsJokerBtn.setToolTipText("Joker wieder freischalten");
+		} else {
+			this.puplikumsJokerBtn.setBackground(Color.GREEN);
+			this.puplikumsJokerBtn.setToolTipText("Joker verwenden");
+		}
 	}
 
 	public void setPublikumsJokerSichtbar(boolean sichtbar) {
-		this.puplikumsJokerBtn.setEnabled( sichtbar );
+		this.puplikumsJokerBtn.setEnabled(sichtbar);
 
 	}
 
 	public void setStatusText(String text) {
-	// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
 
 	}
 
 	public void setTippJokerBenutzt(boolean benutzt) {
-		this.tippJokerBtn.setEnabled( !benutzt );
-
+		if (benutzt) {
+			this.tippJokerBtn.setBackground(Color.RED);
+			this.tippJokerBtn.setToolTipText("Joker wieder freischalten");
+		} else {
+			this.tippJokerBtn.setBackground(Color.GREEN);
+			this.tippJokerBtn.setToolTipText("Joker verwenden");
+		}
 	}
 
 	public void setTippJokerSichtbar(boolean sichtbar) {
-		this.tippJokerBtn.setEnabled( sichtbar );
-
+		this.tippJokerBtn.setEnabled(sichtbar);
 	}
 
 	public void killYourSelf() {
-		this.setVisible( false );
+		this.setVisible(false);
 
 		try {
 			// Damit auch ja Operationen an den Administrator-Schirm geschickt
-			// wurden, bevor er gel쉝cht wird
-			Thread.sleep( 100 );
-		}
-		catch (InterruptedException e) {
+			// wurden, bevor er gel채scht wird
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		this.dispose();
+	}
+
+	@Override
+	public void spielBeendet() {
+		this.antwort1KlickenBtn.setEnabled(false);
+		this.antwort2KlickenBtn.setEnabled(false);
+		this.antwort3KlickenBtn.setEnabled(false);
+		this.antwort4KlickenBtn.setEnabled(false);
+
+		this.auswahlBestaetigenBtn.setEnabled(false);
+		this.fiftyJokerBtn.setEnabled(false);
+		this.tippJokerBtn.setEnabled(false);
+		this.puplikumsJokerBtn.setEnabled(false);
+
+		this.neuesSpielAusInternBtn.setEnabled(true);
+		this.cache_spielLaeuft = false;
+	}
+
+	@Override
+	public void spielGestartet() {
+		this.laufendsSpielBeendenBtn.setEnabled(true);
+
+		this.neuesSpielAusInternBtn.setEnabled(false);
+		this.angeklickesSpielLoeschenBtn.setEnabled(false);
+		this.angeklicktesSpielStartenBtn.setEnabled(false);
+		this.cache_spielLaeuft = true;
 	}
 
 }

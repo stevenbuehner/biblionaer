@@ -6,36 +6,37 @@ import main.Biblionaer;
 
 public class Spiel {
 
-	protected Quizfrage	fragen[];
-	protected int		aktuelleFrage;
+	protected Quizfrage fragen[];
+	protected int aktuelleFrage;
 
 	// Die ID, bei der der Joker verwendet wurde - Wenn unbenutzt dann '-1'
-	protected long		fiftyJoker;
-	protected long		puplikumsJoker;
-	protected long		tippJoker;
+	protected long fiftyJoker;
+	protected long puplikumsJoker;
+	protected long tippJoker;
 
 	// Spielstart und Spielende
-	protected long		spielstart	= 0;
-	protected long		spielende	= 0;
+	protected long spielstart = 0;
+	protected long spielende = 0;
+
+	protected long aktuelleFrageStartzeit = 0;
 
 	public Spiel() {
 		// TODO Auto-generated constructor stub
-		this( 15 ); // Default-Wert
+		this(15); // Default-Wert
 	}
 
 	public Spiel(int pAnzahlFragen) {
 		// 15 Quizfragen erstellen
 
-		if ( pAnzahlFragen > 0 ) {
+		if (pAnzahlFragen > 0) {
 			this.fragen = new Quizfrage[pAnzahlFragen];
-		}
-		else {
+		} else {
 			// Wenn keine Fragen erstellt werden beim initialisieren, dann soll
 			// auch kein Fragenobjekt erstellen
 			this.fragen = null;
 		}
 
-		// '-1' steht f웦 unbenutzt
+		// '-1' steht f채r unbenutzt
 		this.aktuelleFrage = 1; // oder auch Schwierigkeitsgrad, geht von 1-15
 		this.fiftyJoker = -1;
 		this.puplikumsJoker = -1;
@@ -48,11 +49,10 @@ public class Spiel {
 	}
 
 	public void setFiftyJokerVerwendet(boolean pVerwendet) {
-		if ( pVerwendet ) {
+		if (pVerwendet) {
 			fiftyJoker = fragen[aktuelleFrage - 1].getId();
-		}
-		else {
-			fiftyJoker = 0;
+		} else {
+			fiftyJoker = -1;
 		}
 	}
 
@@ -61,11 +61,10 @@ public class Spiel {
 	}
 
 	public void setPuplikumsJokerSchonVerwendet(boolean pVerwendet) {
-		if ( pVerwendet ) {
+		if (pVerwendet) {
 			puplikumsJoker = fragen[aktuelleFrage - 1].getId();
-		}
-		else {
-			puplikumsJoker = 0;
+		} else {
+			puplikumsJoker = -1;
 		}
 	}
 
@@ -74,11 +73,10 @@ public class Spiel {
 	}
 
 	public void setTippJokerSchonVerwendet(boolean pVerwendet) {
-		if ( pVerwendet ) {
+		if (pVerwendet) {
 			tippJoker = fragen[aktuelleFrage - 1].getId();
-		}
-		else {
-			tippJoker = 0;
+		} else {
+			tippJoker = -1;
 		}
 	}
 
@@ -106,14 +104,24 @@ public class Spiel {
 		return spielstart;
 	}
 
+	public void setAktuelleFrageStartzeit() {
+		this.aktuelleFrageStartzeit = System.currentTimeMillis();
+	}
+
+	public long getAktuelleFrageStartzeit() {
+		return this.aktuelleFrageStartzeit;
+	}
+	
+
 	/**
 	 * @return ob Erfolgreich, wenn ja dann true
 	 */
 	public boolean starteSpiel() {
-		if ( fragen.length > 0 ) {
+		if (fragen.length > 0) {
 			this.aktuelleFrage = 1;
 			setBegin();
-			setEnde( 0 );
+			setEnde(0);
+			setAktuelleFrageStartzeit();
 
 			fiftyJoker = -1;
 			puplikumsJoker = -1;
@@ -129,9 +137,10 @@ public class Spiel {
 	 * @return Wenn erfolgreich, dann true
 	 */
 	public boolean setNaechsteFrage() {
-		if ( aktuelleFrage < fragen.length ) {
+		if (aktuelleFrage < fragen.length) {
 			this.aktuelleFrage++;
 			fragen[aktuelleFrage - 1].setBegin();
+			this.setAktuelleFrageStartzeit();
 			return true;
 		}
 
@@ -139,33 +148,39 @@ public class Spiel {
 	}
 
 	/**
-	 * Gibt NACH dem beenden des Spiels die Dauer zur웒k. Wenn spielbeginn oder
-	 * spielende noch nicht gesezt sind, gibt die Funktion -1 zur웒k.
+	 * Gibt NACH dem beenden des Spiels die Dauer zur채ck. Wenn spielbeginn oder
+	 * spielende noch nicht gesezt sind, gibt die Funktion -1 zur채ck.
 	 * 
 	 * @return long zeitDifferenz
 	 */
 	public long spielDauerInSekunden() {
-		if ( this.spielende == 0 || this.spielstart == 0 ) {
+		if (this.spielende == 0 || this.spielstart == 0) {
 			return -1;
-		}
-		else {
+		} else {
 			return (this.spielende - this.spielstart) / 1000;
 		}
 	}
 
 	/**
 	 * Gibt, wenn spielbegin gesetzt ist, die verstrichene Zeit bis zum
-	 * aktuellen Zeitpunkt zur웒k Wenn spielgbein noch nicht gesetzt ist, gibt
-	 * die Funktion -1 zur웒k.
+	 * aktuellen Zeitpunkt zur채ck Wenn spielgbein noch nicht gesetzt ist, gibt
+	 * die Funktion -1 zur채ck.
 	 * 
 	 * @return long zeitDifferenz
 	 */
 	public long spielDauerBisJetztInSekunden() {
-		if ( this.spielstart == 0 ) {
+		if (this.spielstart == 0) {
 			return -1;
-		}
-		else {
+		} else {
 			return (System.currentTimeMillis() - this.spielstart) / 1000;
+		}
+	}
+
+	public long frageDauerBisJetztInSekunden() {
+		if (this.spielstart == 0) {
+			return -1;
+		} else {
+			return (System.currentTimeMillis() - this.aktuelleFrageStartzeit) / 1000;
 		}
 	}
 
@@ -173,22 +188,20 @@ public class Spiel {
 		try {
 			fragen[pIndex] = pFrage;
 			// this.echoFrage( pFrage );
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println( "Klasse Spiel konnte die Frage in Index " + pIndex
-					+ " nicht setzen und warf eine Exception!!!" );
+			System.out.println("Klasse Spiel konnte die Frage in Index " + pIndex
+					+ " nicht setzen und warf eine Exception!!!");
 		}
 	}
 
 	public Quizfrage getFrage(int pIndex) {
 		try {
 			return fragen[pIndex - 1];
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println( "Klasse Spiel konnte die Frage in Index " + pIndex
-					+ " nicht finden und warf eine Exception!!!" );
+			System.out.println("Klasse Spiel konnte die Frage in Index " + pIndex
+					+ " nicht finden und warf eine Exception!!!");
 		}
 		return null;
 	}
@@ -196,84 +209,83 @@ public class Spiel {
 	public Quizfrage getAktuelleFrage() {
 		try {
 			return fragen[this.aktuelleFrage - 1];
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println( "Klasse Spiel konnte die Frage in Index " + this.aktuelleFrage
-					+ " nicht finden und warf eine Exception!!!" );
+			System.out.println("Klasse Spiel konnte die Frage in Index " + this.aktuelleFrage
+					+ " nicht finden und warf eine Exception!!!");
 		}
 		return null;
 	}
 
 	public Quizfrage getAktuelleFrageAnzuzeigen() {
 
-		if ( fragen != null ) {
+		if (fragen != null) {
 			// Kopiere Objekt
 			Quizfrage rueckgabe = new Quizfrage();
 
-			rueckgabe.setFragestellung( fragen[aktuelleFrage - 1].getFragestellung() );
-			rueckgabe.setSchwierigkeitsGrad( fragen[aktuelleFrage - 1].getSchwierigkeitsGrad() );
+			rueckgabe.setFragestellung(fragen[aktuelleFrage - 1].getFragestellung());
+			rueckgabe.setSchwierigkeitsGrad(fragen[aktuelleFrage - 1].getSchwierigkeitsGrad());
 
-			rueckgabe.setAntwort1( fragen[aktuelleFrage - 1].getAntwort1() );
-			rueckgabe.setAntwort2( fragen[aktuelleFrage - 1].getAntwort2() );
-			rueckgabe.setAntwort3( fragen[aktuelleFrage - 1].getAntwort3() );
-			rueckgabe.setAntwort4( fragen[aktuelleFrage - 1].getAntwort4() );
+			rueckgabe.setAntwort1(fragen[aktuelleFrage - 1].getAntwort1());
+			rueckgabe.setAntwort2(fragen[aktuelleFrage - 1].getAntwort2());
+			rueckgabe.setAntwort3(fragen[aktuelleFrage - 1].getAntwort3());
+			rueckgabe.setAntwort4(fragen[aktuelleFrage - 1].getAntwort4());
 
-			rueckgabe.setBegin( fragen[aktuelleFrage - 1].getBegin() );
+			rueckgabe.setBegin(fragen[aktuelleFrage - 1].getBegin());
 
 			// Wenn die ID angezeigt werden soll, zeige sie an
-			if ( Biblionaer.meineEinstellungen.getQuizIdAnzeigen() ) {
-				rueckgabe.setId( fragen[aktuelleFrage - 1].getId() );
+			if (Biblionaer.meineEinstellungen.getQuizIdAnzeigen()) {
+				rueckgabe.setId(fragen[aktuelleFrage - 1].getId());
 			}
 
-			if ( fiftyJoker == fragen[aktuelleFrage - 1].getId() ) {
+			if (fiftyJoker == fragen[aktuelleFrage - 1].getId()) {
 				// Zwei Antworten per Zufall herausfiltern
 				int anzHerausgefiltert = 0;
 
 				Random generator = new Random();
 
 				while (anzHerausgefiltert < 2) {
-					int zufall = generator.nextInt( 3 ) + 1;
-					System.out.println( "Zufallszahl: " + zufall );
-					if ( zufall != fragen[aktuelleFrage - 1].getRichtigeAntwort() ) {
+					int zufall = generator.nextInt(3) + 1;
+					System.out.println("Zufallszahl: " + zufall);
+					if (zufall != fragen[aktuelleFrage - 1].getRichtigeAntwort()) {
 						switch (zufall) {
-							case 1:
-								if ( rueckgabe.getAntwort1() != null ) {
-									anzHerausgefiltert++;
-									rueckgabe.setAntwort1( null );
-								}
-								break;
-							case 2:
-								if ( rueckgabe.getAntwort2() != null ) {
-									anzHerausgefiltert++;
-									rueckgabe.setAntwort2( null );
-								}
-								break;
-							case 3:
-								if ( rueckgabe.getAntwort3() != null ) {
-									anzHerausgefiltert++;
-									rueckgabe.setAntwort3( null );
-								}
-								break;
-							case 4:
-								if ( rueckgabe.getAntwort4() != null ) {
-									anzHerausgefiltert++;
-									rueckgabe.setAntwort4( null );
-								}
-								break;
-							default:
-								Biblionaer.meineKonsole.println( "FEHLER: Versuche Antwort "
-										+ zufall + " zu entfernen. Die gibt es aber nicht!", 1 );
-								break;
+						case 1:
+							if (rueckgabe.getAntwort1() != null) {
+								anzHerausgefiltert++;
+								rueckgabe.setAntwort1(null);
+							}
+							break;
+						case 2:
+							if (rueckgabe.getAntwort2() != null) {
+								anzHerausgefiltert++;
+								rueckgabe.setAntwort2(null);
+							}
+							break;
+						case 3:
+							if (rueckgabe.getAntwort3() != null) {
+								anzHerausgefiltert++;
+								rueckgabe.setAntwort3(null);
+							}
+							break;
+						case 4:
+							if (rueckgabe.getAntwort4() != null) {
+								anzHerausgefiltert++;
+								rueckgabe.setAntwort4(null);
+							}
+							break;
+						default:
+							Biblionaer.meineKonsole.println("FEHLER: Versuche Antwort " + zufall
+									+ " zu entfernen. Die gibt es aber nicht!", 1);
+							break;
 						}
 					}
 				}
 			}
-			if ( puplikumsJoker == fragen[aktuelleFrage - 1].getId() ) {
+			if (puplikumsJoker == fragen[aktuelleFrage - 1].getId()) {
 
 			}
-			if ( tippJoker == fragen[aktuelleFrage - 1].getId() ) {
-				rueckgabe.setLoesungshinweis( fragen[aktuelleFrage - 1].getLoesungshinweis() );
+			if (tippJoker == fragen[aktuelleFrage - 1].getId()) {
+				rueckgabe.setLoesungshinweis(fragen[aktuelleFrage - 1].getLoesungshinweis());
 			}
 
 			return rueckgabe;
@@ -294,49 +306,48 @@ public class Spiel {
 	}
 
 	public void setAktuelleFrage(int pAktuelleFrage) {
-		this.aktuelleFrage = pAktuelleFrage;
+		if(this.aktuelleFrage != pAktuelleFrage){
+			this.aktuelleFrage = pAktuelleFrage;
+			this.setAktuelleFrageStartzeit();
+		}
 	}
 
 	public boolean laeufDasSpiel() {
-		if ( spielstart > 0 && spielende == 0 ) {
+		if (spielstart > 0 && spielende == 0) {
 			return true;
 		}
 		return false;
 	}
 
 	public boolean istGeradeLetzteFrage() {
-		if ( this.aktuelleFrage == this.fragen.length ) {
+		if (this.aktuelleFrage == this.fragen.length) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
 
 	public boolean istAktuelleAntwort(int antwortNummer) {
 
-		if ( fragen.length < aktuelleFrage ) {
-			Biblionaer.meineKonsole
-					.println(
-							"Spiel.istAktuelleAntwort kann nicht ausgef웘rt werden, Indizierungsfehler. Angefordert wurde die ID: "
-									+ this.aktuelleFrage, 1 );
+		if (fragen.length < aktuelleFrage) {
+			Biblionaer.meineKonsole.println(
+					"Spiel.istAktuelleAntwort kann nicht ausgef채hrt werden, Indizierungsfehler. Angefordert wurde die ID: "
+							+ this.aktuelleFrage, 1);
 			return false;
 		}
 
-		if ( fragen[aktuelleFrage - 1].getRichtigeAntwort() == antwortNummer ) {
+		if (fragen[aktuelleFrage - 1].getRichtigeAntwort() == antwortNummer) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
 
 	public int getAktuelleRichtigeAntwort() {
-		if ( fragen.length < aktuelleFrage ) {
-			Biblionaer.meineKonsole
-					.println(
-							"Spiel.getAktuelleRichtigeAntwort kann nicht ausgef웘rt werden, Indizierungsfehler. Angefordert wurde die ID: "
-									+ this.aktuelleFrage, 1 );
+		if (fragen.length < aktuelleFrage) {
+			Biblionaer.meineKonsole.println(
+					"Spiel.getAktuelleRichtigeAntwort kann nicht ausgef채hrt werden, Indizierungsfehler. Angefordert wurde die ID: "
+							+ this.aktuelleFrage, 1);
 			return -1;
 		}
 
@@ -344,11 +355,10 @@ public class Spiel {
 	}
 
 	public void aktuelleFrageBeantwortet() {
-		if ( fragen.length < aktuelleFrage ) {
-			Biblionaer.meineKonsole
-					.println(
-							"Spiel.aktuelleFrageRichtigBeantwortet kann nicht ausgef웘rt werden, Indizierungsfehler. Angefordert wurde die ID: "
-									+ this.aktuelleFrage, 1 );
+		if (fragen.length < aktuelleFrage) {
+			Biblionaer.meineKonsole.println(
+					"Spiel.aktuelleFrageRichtigBeantwortet kann nicht ausgef채hrt werden, Indizierungsfehler. Angefordert wurde die ID: "
+							+ this.aktuelleFrage, 1);
 			return;
 		}
 
@@ -356,19 +366,19 @@ public class Spiel {
 	}
 
 	/**
-	 * Debugging FUnktion ... gibt die 웑ergebene Frage auf der Konsole aus
+	 * Debugging FUnktion ... gibt die 채bergebene Frage auf der Konsole aus
 	 */
 	public static void echoFrage(Quizfrage pFrage) {
-		System.out.println( "ID: " + pFrage.getId() );
-		System.out.println( "Frage: " + pFrage.getFragestellung() );
-		System.out.println( "Antwort1: " + pFrage.getAntwort1() );
-		System.out.println( "Antwort2: " + pFrage.getAntwort2() );
-		System.out.println( "Antwort3: " + pFrage.getAntwort3() );
-		System.out.println( "Antwort4: " + pFrage.getAntwort4() );
-		System.out.println( "Tipp: " + pFrage.getLoesungshinweis() );
-		System.out.println( "richtige Antw: " + pFrage.getRichtigeAntwort() );
-		System.out.println( "Schweriegkeitsgrad: " + pFrage.getSchwierigkeitsGrad() );
-		System.out.println( "- - - - - - - - - - - - - - - - - - - - - - - - - - - - -" );
+		System.out.println("ID: " + pFrage.getId());
+		System.out.println("Frage: " + pFrage.getFragestellung());
+		System.out.println("Antwort1: " + pFrage.getAntwort1());
+		System.out.println("Antwort2: " + pFrage.getAntwort2());
+		System.out.println("Antwort3: " + pFrage.getAntwort3());
+		System.out.println("Antwort4: " + pFrage.getAntwort4());
+		System.out.println("Tipp: " + pFrage.getLoesungshinweis());
+		System.out.println("richtige Antw: " + pFrage.getRichtigeAntwort());
+		System.out.println("Schweriegkeitsgrad: " + pFrage.getSchwierigkeitsGrad());
+		System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
 	}
 
 }

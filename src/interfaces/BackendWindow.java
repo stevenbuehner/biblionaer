@@ -14,7 +14,7 @@ public interface BackendWindow {
 
 	/**
 	 * Diese Funktion wird nur zur Darstellung (zBsp im Backendfenster)
-	 * benötigt. Oder gegebenenfalls um herauszufinden, ob überhaupt ein
+	 * ben√§tigt. Oder gegebenenfalls um herauszufinden, ob √§berhaupt ein
 	 * Tipp-Joker zu dieser Frage existiert.
 	 * 
 	 * @param frage

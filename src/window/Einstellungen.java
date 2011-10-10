@@ -111,7 +111,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 
 	public void setQuizScreenModus(String quizScreenModus) {
 
-		// Nur die Auswahl Šndern, wenn Sie sich wirklich auch geŠndert hat
+		// Nur die Auswahl Ã¤ndern, wenn Sie sich wirklich auch geÃ¤ndert hat
 		if ( quizScreenModus != this.quizScreenModusLetzteAuswahl ) {
 
 			if ( quizScreenModus.equals( quizScreenModusSingleWindow )
@@ -132,7 +132,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 				this.quizScreenModus.setSelectedItem( quizScreenModusMultiWindow1FullScreen );
 				this.quizScreenModusLetzteAuswahl = quizScreenModusMultiWindow1FullScreen;
 
-				// PrŸfen ob ueberhaupt ein zweiter Monitor angeschlossen ist
+				// PrÃ¤fen ob ueberhaupt ein zweiter Monitor angeschlossen ist
 				if ( GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 1 ) {
 					// Mindestens zwei Monitore. ... alles aber im Vollbildmodus
 					Biblionaer.meinWindowController.removAllQuizFensters();
@@ -152,7 +152,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 					// Nur ein Monitor
 					Biblionaer.meineKonsole
 							.println(
-									"Es ist nur ein Monitor angeschlossen => Zweimonitorbetrieb nicht mšglich",
+									"Es ist nur ein Monitor angeschlossen => Zweimonitorbetrieb nicht mÃ¤glich",
 									2 );
 					this.quizScreenModus
 							.setSelectedItem( Einstellungen.quizScreenModusSingleWindow );
@@ -165,7 +165,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 				this.quizScreenModus.setSelectedItem( quizScreenModusMultiWindow1Windowed );
 				this.quizScreenModusLetzteAuswahl = quizScreenModusMultiWindow1Windowed;
 
-				// PrŸfen ob ueberhaupt ein zweiter Monitor angeschlossen ist
+				// PrÃ¤fen ob ueberhaupt ein zweiter Monitor angeschlossen ist
 				// Mindestens zwei Monitore
 				Biblionaer.meinWindowController.removAllQuizFensters();
 
@@ -198,7 +198,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 				this.quizScreenModus.setSelectedItem( quizScreenModusMultiWindow2FullScreen );
 				this.quizScreenModusLetzteAuswahl = quizScreenModusMultiWindow2FullScreen;
 
-				// PrŸfen ob ueberhaupt ein zweiter Monitor angeschlossen ist
+				// PrÃ¤fen ob ueberhaupt ein zweiter Monitor angeschlossen ist
 				if ( GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 1 ) {
 					// Mindestens zwei Monitore
 					Biblionaer.meinWindowController.removAllQuizFensters();
@@ -218,7 +218,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 					// Nur ein Monitor
 					Biblionaer.meineKonsole
 							.println(
-									"Es ist nur ein Monitor angeschlossen => Zweimonitorbetrieb nicht mšglich",
+									"Es ist nur ein Monitor angeschlossen => Zweimonitorbetrieb nicht mÃ¤glich",
 									2 );
 					this.quizScreenModus
 							.setSelectedItem( Einstellungen.quizScreenModusSingleWindow );
@@ -226,7 +226,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 
 			}
 			else {
-				// Wenn nichts ausgewŠhlt wurde, dann nimm StandardmŠ§ig den
+				// Wenn nichts ausgewÃ¤hlt wurde, dann nimm StandardmÃ¤Ã¤ig den
 				// SingleModus
 				Biblionaer.meineKonsole.println( "Dieser quizScreenModus existiert nicht: "
 						+ quizScreenModus + "\nEs wird der Standardmodus verwendet: "
@@ -269,7 +269,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 	}
 
 	/**
-	 * Gibt den aktuell eingestellten Konsolenmodus zurŸck
+	 * Gibt den aktuell eingestellten Konsolenmodus zurÃ¤ck
 	 * 
 	 * @return KonsolenModus
 	 */
@@ -279,9 +279,9 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 
 	/**
 	 * Der KonsolenAusgabeModus gibt an, an welches Medium die Ausgaben der
-	 * Konsole weitergeleitet werden. Man kann wŠhlen zwischen "keiner Ausgabe",
-	 * die Ausgabe Ÿber "das Systen" und einer Ausgabe in einer "Datei".
-	 * Definiert werden die drei ZustŠnde Ÿber eine Intger Zahl von 0-2. 0 =
+	 * Konsole weitergeleitet werden. Man kann wÃ¤hlen zwischen "keiner Ausgabe",
+	 * die Ausgabe Ã¤ber "das Systen" und einer Ausgabe in einer "Datei".
+	 * Definiert werden die drei ZustÃ¤nde Ã¤ber eine Intger Zahl von 0-2. 0 =
 	 * keine Ausgabe; 1 = Systemausgabe, 2 = Dateiausgabe
 	 * 
 	 * @param konsolenModus
@@ -312,7 +312,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 					}
 				}
 				break;
-			default:// UngŸltige Ausahl => Ausgabe im System
+			default:// UngÃ¤ltige Ausahl => Ausgabe im System
 				for (int i = 0; i < anzItems; i++) {
 					if ( quizKonsolenAusgabeModus.getItemAt( i ).equals( "Keine" ) ) {
 						quizKonsolenAusgabeModus.setSelectedIndex( i );
@@ -323,7 +323,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 	}
 
 	/**
-	 * Gibt den aktuellen Konsolenmodus als Integer-Zahl zurŸck.
+	 * Gibt den aktuellen Konsolenmodus als Integer-Zahl zurÃ¤ck.
 	 * 
 	 * @return AusgabenKonsolenModus
 	 */
@@ -384,7 +384,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 		proxyHost.setAutoscrolls( true );
 		proxyHost.setToolTipText( "Hostadresse des Proxy" );
 		proxyPanel.add( proxyHost );
-		// FŸr Cheatmodus
+		// FÃ¤r Cheatmodus
 		proxyHost.addKeyListener( this );
 
 		lbl = new JLabel( "Port: " );
@@ -412,14 +412,14 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 		quizEinstellungen.add( xmlQuelle );
 
 		// Tipp-Joker
-		lbl = new JLabel( "Zeit fŸr den Tipp-Joker (in Sekunden)" );
+		lbl = new JLabel( "Zeit fÃ¤r den Tipp-Joker (in Sekunden)" );
 		quizEinstellungen.add( lbl );
 		tippJokerZeitInSekunden = new JFormattedTextField( NumberFormat.getInstance() );
 		tippJokerZeitInSekunden.setText( "30" ); // Default-Sekunden-Wert
 		quizEinstellungen.add( tippJokerZeitInSekunden );
 
 		// Puplikums-Joker
-		lbl = new JLabel( "Zeit fŸr den Puplikums-Joker (in Sekunden)" );
+		lbl = new JLabel( "Zeit fÃ¤r den Puplikums-Joker (in Sekunden)" );
 		quizEinstellungen.add( lbl );
 		puplikumsJokerZeitInSekunden = new JFormattedTextField( NumberFormat.getInstance() );
 		puplikumsJokerZeitInSekunden.setText( "20" ); // Default-Sekunden-Wert
@@ -435,7 +435,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 		quizScreenModusLetzteAuswahl = quizScreenModusSingleWindow; // nie
 		// vergessen
 		// das hier
-		// mitzuŠndern
+		// mitzuÃ¤ndern
 		quizScreenModus.addActionListener( this );
 		quizEinstellungen.add( quizScreenModus );
 
@@ -446,7 +446,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 		quizDebugging.add( lbl );
 		quizIdAnzeigen = new JCheckBox( "anzeigen", true );
 		quizIdAnzeigen
-				.setToolTipText( "Zeigt die ID der Frage auf der rechten Seite an. (ist erst bei der nŠchsten Frage aktiv)" );
+				.setToolTipText( "Zeigt die ID der Frage auf der rechten Seite an. (ist erst bei der nÃ¤chsten Frage aktiv)" );
 		quizDebugging.add( quizIdAnzeigen );
 
 		// Ping anzeigen
@@ -454,7 +454,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 		quizDebugging.add( lbl );
 		quizPingAnzeigen = new JCheckBox( "Ping anzeigen", false );
 		quizPingAnzeigen
-				.setToolTipText( "Zeigt die Verzšgerung des Computers im rechten oberen Eck des Fensters an. Je kleiner die Zahl, desto besser." );
+				.setToolTipText( "Zeigt die VerzÃ¤gerung des Computers im rechten oberen Eck des Fensters an. Je kleiner die Zahl, desto besser." );
 		quizDebugging.add( quizPingAnzeigen );
 
 		// Konsolenmodus
@@ -463,7 +463,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 		quizKonsolenModus = new JFormattedTextField( NumberFormat.getInstance() );
 		quizKonsolenModus.setText( "4" );
 		quizKonsolenModus
-				.setToolTipText( "1 = wichtigste Ausgaben, 2 = normale Ausgabe, 3 = Debugg Modus, 4 = geschwŠtziger Modus" );
+				.setToolTipText( "1 = wichtigste Ausgaben, 2 = normale Ausgabe, 3 = Debugg Modus, 4 = geschwÃ¤tziger Modus" );
 		quizDebugging.add( quizKonsolenModus );
 
 		// Konsolen-Ausgabemodus
@@ -491,8 +491,8 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 		} );
 		quizDebugging.add( quizKonsolenAusgabeModus );
 		/*
-		 * Hier fehlt jetzt noch die RŸckkopplung ... wenn einer Ÿber die setter
-		 * was Šndert, muss auch die Combobox geŠndert werden ...
+		 * Hier fehlt jetzt noch die RÃ¤ckkopplung ... wenn einer Ã¤ber die setter
+		 * was Ã¤ndert, muss auch die Combobox geÃ¤ndert werden ...
 		 */
 
 		// Button-Panel
@@ -549,7 +549,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 
 		}
 		else if ( e.getActionCommand().equals( "Einstellungen speichern" ) ) {
-			// Proxy-€nderungen eintragen und wenn kein Fehler, dann Ÿbernehmen
+			// Proxy-Ã¤nderungen eintragen und wenn kein Fehler, dann Ã¤bernehmen
 			// ...
 			this.setVisible( false );
 		}

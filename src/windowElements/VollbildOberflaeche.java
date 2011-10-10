@@ -24,7 +24,7 @@ public class VollbildOberflaeche extends JFrame implements ActionListener {
 	public VollbildOberflaeche(GraphicsDevice pDevice) {
 		super( pDevice.getDefaultConfiguration() );
 		this.device = pDevice;
-		setTitle( "Wer wird Biblionär - Vollbildmodus" );
+		setTitle( "Wer wird Biblion√§r - Vollbildmodus" );
 		originalDM = device.getDisplayMode();
 
 		setDefaultCloseOperation( EXIT_ON_CLOSE );
