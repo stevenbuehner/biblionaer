@@ -135,9 +135,9 @@ public class QuizPolygonPanelFrage extends QuizPanel {
 				Vector<String> blub = wrapText( frage.getFragestellung(), breiteZurVerfuegungFrage,
 						g.getFontMetrics() );
 				g2.setColor( Color.white );
-				g2.setFont( new Font( "Arial", Font.BOLD, 20 ) ); // Sp둻er soll
+				g2.setFont( new Font( "Arial", Font.BOLD, 20 ) ); // Sp채ter soll
 				// er die
-				// Schriftgr슙e
+				// Schriftgr채채e
 				// selbst
 				// bestimmen.
 
@@ -187,7 +187,7 @@ public class QuizPolygonPanelFrage extends QuizPanel {
 						* offsetNachZentrierungSGY );
 			}
 
-			// Wiederherstellen der urspr웢glichen Einstellungen
+			// Wiederherstellen der urspr채nglichen Einstellungen
 			g.setFont( sichFont );
 			g.setColor( sichColor );
 			g2.setStroke( sichStroke );

@@ -113,7 +113,7 @@ public class QuizPolygonPanelAntwort extends QuizPanel {
 										.getLeading()) + zeilenOffsetInPixel );
 			}
 
-			// Wiederherstellen der ursprünglichen Einstellungen
+			// Wiederherstellen der urspr√§nglichen Einstellungen
 			g.setFont( sichFont );
 			g.setColor( sichColor );
 			g2.setStroke( sichStroke );

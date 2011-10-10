@@ -52,13 +52,13 @@ public abstract class Countdown {
 	}
 
 	/**
-	 * Wenn der Countdown läuft und bei 0 angelang ist, wird diese Methode
+	 * Wenn der Countdown l√§uft und bei 0 angelang ist, wird diese Methode
 	 * aufgerufen.
 	 */
 	protected abstract void doWhenCountdownFinished();
 
 	/**
-	 * Diese Methode wird nur aufgerufen, wenn der Countdown läuft und noch
+	 * Diese Methode wird nur aufgerufen, wenn der Countdown l√§uft und noch
 	 * nicht bei 0 angelant ist. Diese Methode wird beim erreichen der 0 nicht
 	 * mehr aufgerufen. Siehe stattdessen doWhenCountdownFinished().
 	 */

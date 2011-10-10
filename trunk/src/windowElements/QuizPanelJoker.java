@@ -31,7 +31,7 @@ public class QuizPanelJoker extends QuizImagePanel {
 	}
 
 	public void setPressedIfPossible() {
-		// Nur den Button reindrücken lassen, wenn er nicht schon deaktiviert
+		// Nur den Button reindr√§cken lassen, wenn er nicht schon deaktiviert
 		// ist
 
 		if ( loop_from == 0 ) {

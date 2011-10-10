@@ -63,7 +63,7 @@ public class Quizfrage {
 	public void setSchwierigkeitsGrad(int pSchwierigkeitsGrad) {
 		if ( pSchwierigkeitsGrad > 20 ) {
 			System.out.println( "Achtung, der Schwierigkeitsgrad ist " + pSchwierigkeitsGrad
-					+ " - und damit größer als 15!!" );
+					+ " - und damit gr√§√§er als 15!!" );
 		}
 		this.schwierigkeitsGrad = pSchwierigkeitsGrad;
 	}
@@ -76,7 +76,7 @@ public class Quizfrage {
 	public String getSchwierigkeitsGradInMio() {
 
 		String rueckgabe = "";
-		String waehrungAnhang = " €";
+		String waehrungAnhang = " √§";
 
 		switch (schwierigkeitsGrad) {
 			case 1:
@@ -186,7 +186,7 @@ public class Quizfrage {
 	public void setRichtigeAntwort(int pRichtigeAntwort) {
 		if ( pRichtigeAntwort < 1 || pRichtigeAntwort > 4 ) {
 			System.out
-					.println( "Achtung! Der Wert 'richtigeAntwort' wude außerhalb des zulässigen Bereiches auf '"
+					.println( "Achtung! Der Wert 'richtigeAntwort' wude au√§erhalb des zul√§ssigen Bereiches auf '"
 							+ pRichtigeAntwort + "' gesetzt, kann das wirklich sein?" );
 		}
 		this.richtigeAntwort = pRichtigeAntwort;
@@ -231,8 +231,8 @@ public class Quizfrage {
 	}
 
 	/**
-	 * Gibt NACH dem beenden der Frage die Dauer zurück. Wenn begin oder ende
-	 * noch nicht gesezt sind, gibt die Funktion -1 zurück.
+	 * Gibt NACH dem beenden der Frage die Dauer zur√§ck. Wenn begin oder ende
+	 * noch nicht gesezt sind, gibt die Funktion -1 zur√§ck.
 	 * 
 	 * @return long zeitDifferenz
 	 */
@@ -247,8 +247,8 @@ public class Quizfrage {
 
 	/**
 	 * Gibt, wenn begin gesetzt ist, die verstrichene Zeit bis zum aktuellen
-	 * Zeitpunkt zurück Wenn begin noch nicht gesetzt ist, gibt die Funktion -1
-	 * zurück.
+	 * Zeitpunkt zur√§ck Wenn begin noch nicht gesetzt ist, gibt die Funktion -1
+	 * zur√§ck.
 	 * 
 	 * @return long zeitDifferenz
 	 */

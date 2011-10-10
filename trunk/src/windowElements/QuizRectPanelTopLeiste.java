@@ -60,7 +60,7 @@ public class QuizRectPanelTopLeiste extends QuizPanel {
 		g2.fillRect( (int) rectZeichnung.x, (int) rectZeichnung.y, (int) rectZeichnung.width,
 				(int) rectZeichnung.height );
 
-		// Wiederherstellen der ursprünglichen Einstellungen
+		// Wiederherstellen der urspr√§nglichen Einstellungen
 		g.setFont( sichFont );
 		g.setColor( sichColor );
 		g2.setStroke( sichStroke );

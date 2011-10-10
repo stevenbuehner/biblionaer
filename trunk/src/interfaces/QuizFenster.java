@@ -77,7 +77,7 @@ public interface QuizFenster {
 
 	/**
 	 * Markiere das Antwortfeld. Markiert bedeutet angeklickt, aber noch nicht
-	 * als richtig oder falsch best둻igen. Wie das genau ausschauen soll, legt
+	 * als richtig oder falsch best채tigen. Wie das genau ausschauen soll, legt
 	 * das Fenster selbst fest. Dadurch lassen sich verschiedene
 	 * "Fensterklassen" mit unterschiedlichem aussehen realisieren.
 	 */
@@ -85,7 +85,7 @@ public interface QuizFenster {
 
 	/**
 	 * Markiere das Antwortfeld. Markiert bedeutet angeklickt, aber noch nicht
-	 * als richtig oder falsch best둻igen. Wie das genau ausschauen soll, legt
+	 * als richtig oder falsch best채tigen. Wie das genau ausschauen soll, legt
 	 * das Fenster selbst fest. Dadurch lassen sich verschiedene
 	 * "Fensterklassen" mit unterschiedlichem aussehen realisieren.
 	 */
@@ -93,7 +93,7 @@ public interface QuizFenster {
 
 	/**
 	 * Markiere das Antwortfeld. Markiert bedeutet angeklickt, aber noch nicht
-	 * als richtig oder falsch best둻igen. Wie das genau ausschauen soll, legt
+	 * als richtig oder falsch best채tigen. Wie das genau ausschauen soll, legt
 	 * das Fenster selbst fest. Dadurch lassen sich verschiedene
 	 * "Fensterklassen" mit unterschiedlichem aussehen realisieren.
 	 */
@@ -101,7 +101,7 @@ public interface QuizFenster {
 
 	/**
 	 * Markiere das Antwortfeld. Markiert bedeutet angeklickt, aber noch nicht
-	 * als richtig oder falsch best둻igen. Wie das genau ausschauen soll, legt
+	 * als richtig oder falsch best채tigen. Wie das genau ausschauen soll, legt
 	 * das Fenster selbst fest. Dadurch lassen sich verschiedene
 	 * "Fensterklassen" mit unterschiedlichem aussehen realisieren.
 	 */
@@ -113,28 +113,28 @@ public interface QuizFenster {
 	public void setAntwortfelderRichtig();
 
 	/**
-	 * Zeige das Antwortfeld an, als richtig ausgew둯lte Option. Wie das genau
+	 * Zeige das Antwortfeld an, als richtig ausgew채hlte Option. Wie das genau
 	 * ausschauen soll, legt das Fenster selbst fest. Dadurch lassen sich
 	 * verschiedene "Fensterklassen" mit unterschiedlichem aussehen realisieren.
 	 */
 	public void setAntwortFeld1Richtig();
 
 	/**
-	 * Zeige das Antwortfeld an, als richtig ausgew둯lte Option. Wie das genau
+	 * Zeige das Antwortfeld an, als richtig ausgew채hlte Option. Wie das genau
 	 * ausschauen soll, legt das Fenster selbst fest. Dadurch lassen sich
 	 * verschiedene "Fensterklassen" mit unterschiedlichem aussehen realisieren.
 	 */
 	public void setAntwortFeld2Richtig();
 
 	/**
-	 * Zeige das Antwortfeld an, als richtig ausgew둯lte Option. Wie das genau
+	 * Zeige das Antwortfeld an, als richtig ausgew채hlte Option. Wie das genau
 	 * ausschauen soll, legt das Fenster selbst fest. Dadurch lassen sich
 	 * verschiedene "Fensterklassen" mit unterschiedlichem aussehen realisieren.
 	 */
 	public void setAntwortFeld3Richtig();
 
 	/**
-	 * Zeige das Antwortfeld an, als richtig ausgew둯lte Option. Wie das genau
+	 * Zeige das Antwortfeld an, als richtig ausgew채hlte Option. Wie das genau
 	 * ausschauen soll, legt das Fenster selbst fest. Dadurch lassen sich
 	 * verschiedene "Fensterklassen" mit unterschiedlichem aussehen realisieren.
 	 */
@@ -146,28 +146,28 @@ public interface QuizFenster {
 	public void setAntwortfelderFalsch();
 
 	/**
-	 * Zeige das Antwortfeld an, als falsch ausgew둯lte Antwort. Wie das genau
+	 * Zeige das Antwortfeld an, als falsch ausgew채hlte Antwort. Wie das genau
 	 * ausschauen soll, legt das Fenster selbst fest. Dadurch lassen sich
 	 * verschiedene "Fensterklassen" mit unterschiedlichem aussehen realisieren.
 	 */
 	public void setAntwortFeld1Falsch();
 
 	/**
-	 * Zeige das Antwortfeld an, als falsch ausgew둯lte Antwort. Wie das genau
+	 * Zeige das Antwortfeld an, als falsch ausgew채hlte Antwort. Wie das genau
 	 * ausschauen soll, legt das Fenster selbst fest. Dadurch lassen sich
 	 * verschiedene "Fensterklassen" mit unterschiedlichem aussehen realisieren.
 	 */
 	public void setAntwortFeld2Falsch();
 
 	/**
-	 * Zeige das Antwortfeld an, als falsch ausgew둯lte Antwort. Wie das genau
+	 * Zeige das Antwortfeld an, als falsch ausgew채hlte Antwort. Wie das genau
 	 * ausschauen soll, legt das Fenster selbst fest. Dadurch lassen sich
 	 * verschiedene "Fensterklassen" mit unterschiedlichem aussehen realisieren.
 	 */
 	public void setAntwortFeld3Falsch();
 
 	/**
-	 * Zeige das Antwortfeld an, als falsch ausgew둯lte Antwort. Wie das genau
+	 * Zeige das Antwortfeld an, als falsch ausgew채hlte Antwort. Wie das genau
 	 * ausschauen soll, legt das Fenster selbst fest. Dadurch lassen sich
 	 * verschiedene "Fensterklassen" mit unterschiedlichem aussehen realisieren.
 	 */
@@ -271,34 +271,50 @@ public interface QuizFenster {
 	/**
 	 * Den Countdowntext setzen. Intern kann diese Funktion auch als SatusText
 	 * angezeigt werden. Durch diese Funktion bleibt es aber dem Entwickler der
-	 * grafischen Oberfl둩he 웑erlassen, wie und wo er den Countdown einblendet.
+	 * grafischen Oberfl채che 채berlassen, wie und wo er den Countdown einblendet.
 	 * 
 	 * @param text
 	 */
 	public void setCountdownText(String text);
 
 	/**
-	 * Ist eine Antwort richtig eingegeben worden, kann in der Oberfl둩he hier
+	 * Ist eine Antwort richtig eingegeben worden, kann in der Oberfl채che hier
 	 * nun ein Sound oder eine Animation implementiert werden.
 	 */
 	public void playFrageRichtig();
 
 	/**
-	 * Ist eine Antwort falsch eingegeben worden, kann in der Oberfl둩he hier
+	 * Ist eine Antwort falsch eingegeben worden, kann in der Oberfl채che hier
 	 * nun ein Sound oder eine Animation implementiert werden.
 	 */
 	public void playFrageFalsch();
 
 	/**
 	 * Wenn das Spiel komplett gewonnen wurde, wird diese Funktion aufgerufen.
-	 * Hier k쉗nen jetzt Blinkeffekte oder Soundeffekte eingebettet werden.
+	 * Hier k채nnen jetzt Blinkeffekte oder Soundeffekte eingebettet werden.
 	 */
 	public void playSpielGewonnen();
 
 	/**
 	 * Wird beim Start eines neuen Spieles aufgerufen ... Kann zBsp. zum
-	 * initialisieren einer Oberfl둩he verwendet werden
+	 * initialisieren einer Oberfl채che verwendet werden
 	 */
 	public void playStarteSpiel();
 
+	
+	/**
+	 * Diese Funktion wird aufgerufen wann immer ein neues Spiel gestartet wird.
+	 * Sie kann genutzt werden, um Buttons zu initialisieren (zu aktivieren oder zu deaktivieren)
+	 * die w채hrend dem Spiel gebraucht oder nicht verwendet werden d체rfen.
+	 */
+	public void spielGestartet();
+	
+	
+	/**
+	 * Diese Funktion wird aufgerufen, wenn das Spiel beendet wird.
+	 * Dies kann passieren wenn das Spiel gewonnen ist, das Spiel verloren ist, oder das Spiel vom
+	 * Administrator-Bildschirm aus von Hand beendet worden ist.
+	 */
+	public void spielBeendet();
+	
 }

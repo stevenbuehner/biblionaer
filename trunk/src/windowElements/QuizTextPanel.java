@@ -152,12 +152,12 @@ public class QuizTextPanel implements Drawable {
 				break;
 			case Font.LAYOUT_LEFT_TO_RIGHT:
 				// Biblionaer.meineKonsole.println(
-				// "Ausgabe des Tipps linksbündig", 4 );
+				// "Ausgabe des Tipps linksb√§ndig", 4 );
 				g.drawString( text, xPos, yPos );
 				break;
 			default:
 				// Biblionaer.meineKonsole.println(
-				// "Ausgabe des Tipps ohne Angabe => Linksbündig", 4 );
+				// "Ausgabe des Tipps ohne Angabe => Linksb√§ndig", 4 );
 				g.drawString( text, xPos, yPos );
 				break;
 		}

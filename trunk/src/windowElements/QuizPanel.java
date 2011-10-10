@@ -27,9 +27,9 @@ public abstract class QuizPanel extends Rectangle2D.Double implements Movable, D
 
 	protected double	startPositionX;
 	protected double	startPositionY;
-	protected double	endPositionX;				// FŸr
+	protected double	endPositionX;				// FÃ¤r
 	// Bewegungen
-	protected double	endPositionY;				// FŸr
+	protected double	endPositionY;				// FÃ¤r
 	// Bewegungen
 
 	protected boolean	remove			= false;
@@ -116,7 +116,7 @@ public abstract class QuizPanel extends Rectangle2D.Double implements Movable, D
 
 			if ( zeigerEnd <= text.length() && fm.stringWidth( substring.trim() ) <= width ) {
 				// Wenn der Text kleiner als Width ist gib ihn gleich
-				// zurŸck.
+				// zurÃ¤ck.
 				zerstueckelterText.add( substring.trim() );
 				return zerstueckelterText;
 			}
@@ -159,7 +159,7 @@ public abstract class QuizPanel extends Rectangle2D.Double implements Movable, D
 			}
 		}
 		else if ( klickFlaeche instanceof Rectangle2D ) {
-			// g.fillRectÊ(ÊÊ(int) ((Rectangle2D) klickFlaeche).getX(),
+			// g.fillRectÃ¤(Ã¤Ã¤(int) ((Rectangle2D) klickFlaeche).getX(),
 			// ((Rectangle2D) klickFlaeche).getY(), ((Rectangle2D)
 			// klickFlaeche).getWidth(), ((Rectangle2D)
 			// klickFlaeche).getHeight() );

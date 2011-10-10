@@ -46,7 +46,13 @@ public class TippJokerCountdown extends Countdown {
 		catch (Throwable e) {
 			e.printStackTrace();
 			Biblionaer.meineKonsole.println(
-					"TippJokerCountdown konnte sich nicht selbst löschen!", 2 );
+					"TippJokerCountdown konnte sich nicht selbst l√§schen!", 2 );
 		}
+	}
+	
+	@Override
+	public void stoppeCountdown() {
+		super.stoppeCountdown();
+		Biblionaer.meinWindowController.setStatusText( "" );
 	}
 }

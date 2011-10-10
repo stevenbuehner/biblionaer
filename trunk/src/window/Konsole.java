@@ -5,8 +5,8 @@ import main.Biblionaer;
 public class Konsole {
 
 	/*
-	 * 0 = nichts ausgeben, au쬮r Sachen mit Prio 0; 1 = Nur Wichtige
-	 * Fehlermeldungen; 2 = Alle Fehlermeldungen; 3 = Sei Gespr둩hig; 4 =
+	 * 0 = nichts ausgeben, au채er Sachen mit Prio 0; 1 = Nur Wichtige
+	 * Fehlermeldungen; 2 = Alle Fehlermeldungen; 3 = Sei Gespr채chig; 4 =
 	 * Degbugging ausgaben;
 	 */
 
@@ -21,7 +21,7 @@ public class Konsole {
 	}
 
 	public Konsole() {
-		// Wenn beim Start des Programms auf der Parameter -D 웑ergeben wurde,
+		// Wenn beim Start des Programms auf der Parameter -D 채bergeben wurde,
 		// dann debuggen wir
 		String prop = System.getProperty( "DEBUG" );
 		if ( Boolean.getBoolean( prop ) ) {
@@ -35,7 +35,7 @@ public class Konsole {
 				// Keine Ausgabe
 				break;
 			case 1:
-				// Ausgabe 웑er die System-Konsole
+				// Ausgabe 채ber die System-Konsole
 				this.SystemPrintLine( "["
 						+ Integer.toString( Biblionaer.meineEinstellungen.getKonsolenModus() )
 						+ "] " + pAusgabe );
@@ -74,7 +74,7 @@ public class Konsole {
 				// Keine Ausgabe
 				break;
 			case 1:
-				// Ausgabe 웑er die System-Konsole
+				// Ausgabe 채ber die System-Konsole
 				this.SystemPrint( pAusgabe );
 				break;
 			case 2:
@@ -96,11 +96,12 @@ public class Konsole {
 	}
 
 	public void FilePrintLine(String pAusgabe) {
-	// wird noch sp둻er implementiert
+		//TODO Konsolenausgabe in Datei implementieren
+	// wird noch sp채ter implementiert
 	}
 
 	public void FilePrint(String pAusgabe) {
-	// wird noch sp둻er implementiert
+	// wird noch sp채ter implementiert
 	}
 
 }
