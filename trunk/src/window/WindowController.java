@@ -13,9 +13,9 @@ import quiz.Quizfrage;
 
 public class WindowController implements QuizFenster, BackendWindow, FrontendWindow {
 
-	protected LinkedList<QuizFenster> meineQuizFenster;
-	protected QuizFenster frontendFenster = null;
-	protected QuizFenster backendFenster = null;
+	protected LinkedList<QuizFenster>	meineQuizFenster;
+	protected QuizFenster				frontendFenster	= null;
+	protected QuizFenster				backendFenster	= null;
 
 	/**
 	 * Konstruktor
@@ -30,11 +30,14 @@ public class WindowController implements QuizFenster, BackendWindow, FrontendWin
 	 * @param neuesFenster
 	 */
 	public void addQuizFenster(QuizFenster neuesFenster) {
-		if (this.meineQuizFenster.contains(neuesFenster)) {
-			Biblionaer.meineKonsole.println(
-					"Es wurde versucht ein Fenster das zweite Mal zum Controller hinzuzufägen!!", 2);
-		} else {
-			meineQuizFenster.addLast(neuesFenster);
+		if ( this.meineQuizFenster.contains( neuesFenster ) ) {
+			Biblionaer.meineKonsole
+					.println(
+							"Es wurde versucht ein Fenster das zweite Mal zum Controller hinzuzufägen!!",
+							2 );
+		}
+		else {
+			meineQuizFenster.addLast( neuesFenster );
 			Biblionaer.meineSteuerung.windowSituationHasChanged();
 		}
 	}
@@ -47,23 +50,24 @@ public class WindowController implements QuizFenster, BackendWindow, FrontendWin
 	public void addFrontendFenster(QuizFenster neuesFenster) {
 		boolean isFrontend = false;
 
-		if (neuesFenster != null) {
+		if ( neuesFenster != null ) {
 			Class<?>[] interfaces = neuesFenster.getClass().getInterfaces();
 			for (int i = 0; i < interfaces.length; ++i) {
-				if (interfaces[i].getName().equals("interfaces.FrontendWindow")) {
+				if ( interfaces[i].getName().equals( "interfaces.FrontendWindow" ) ) {
 					isFrontend = true;
 					break;
 				}
 			}
 
-			if (isFrontend) {
-				this.addQuizFenster(neuesFenster);
+			if ( isFrontend ) {
+				this.addQuizFenster( neuesFenster );
 				this.frontendFenster = neuesFenster;
-			} else {
+			}
+			else {
 				Biblionaer.meineKonsole
 						.println(
 								"Es wurde versucht ein Fenster das als FrontendFenster zum Controller hinzuzufägen - doch es enthält nicht die nätigen Interfaces!!",
-								2);
+								2 );
 			}
 		}
 	}
@@ -76,23 +80,24 @@ public class WindowController implements QuizFenster, BackendWindow, FrontendWin
 	public void addBackendFenster(QuizFenster neuesFenster) {
 		boolean isBackend = false;
 
-		if (neuesFenster != null) {
+		if ( neuesFenster != null ) {
 			Class<?>[] interfaces = neuesFenster.getClass().getInterfaces();
 			for (int i = 0; i < interfaces.length; ++i) {
-				if (interfaces[i].getName().equals("interfaces.BackendWindow")) {
+				if ( interfaces[i].getName().equals( "interfaces.BackendWindow" ) ) {
 					isBackend = true;
 					break;
 				}
 			}
 
-			if (isBackend) {
-				this.addQuizFenster(neuesFenster);
+			if ( isBackend ) {
+				this.addQuizFenster( neuesFenster );
 				this.backendFenster = neuesFenster;
-			} else {
+			}
+			else {
 				Biblionaer.meineKonsole
 						.println(
 								"Es wurde versucht ein Fenster das als FrontendFenster zum Controller hinzuzufägen - doch es enthält nicht die nätigen Interfaces!!",
-								2);
+								2 );
 			}
 		}
 	}
@@ -105,7 +110,7 @@ public class WindowController implements QuizFenster, BackendWindow, FrontendWin
 	 * @return true, wenn Fenster erfolgreich entfernt
 	 */
 	public boolean removeQuizFenster(QuizFenster zuLoeschendeFensterID) {
-		return meineQuizFenster.remove(zuLoeschendeFensterID);
+		return meineQuizFenster.remove( zuLoeschendeFensterID );
 	}
 
 	public void removAllQuizFensters() {
@@ -168,7 +173,7 @@ public class WindowController implements QuizFenster, BackendWindow, FrontendWin
 	public void setAnimationAktiviert(boolean aktiviert) {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
-			iter.next().setAnimationAktiviert(aktiviert);
+			iter.next().setAnimationAktiviert( aktiviert );
 		}
 	}
 
@@ -203,7 +208,7 @@ public class WindowController implements QuizFenster, BackendWindow, FrontendWin
 	public void setAntwortFeld1Sichtbar(boolean sichtbar) {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
-			iter.next().setAntwortFeld1Sichtbar(sichtbar);
+			iter.next().setAntwortFeld1Sichtbar( sichtbar );
 		}
 	}
 
@@ -238,7 +243,7 @@ public class WindowController implements QuizFenster, BackendWindow, FrontendWin
 	public void setAntwortFeld2Sichtbar(boolean sichtbar) {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
-			iter.next().setAntwortFeld2Sichtbar(sichtbar);
+			iter.next().setAntwortFeld2Sichtbar( sichtbar );
 		}
 	}
 
@@ -273,7 +278,7 @@ public class WindowController implements QuizFenster, BackendWindow, FrontendWin
 	public void setAntwortFeld3Sichtbar(boolean sichtbar) {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
-			iter.next().setAntwortFeld3Sichtbar(sichtbar);
+			iter.next().setAntwortFeld3Sichtbar( sichtbar );
 		}
 	}
 
@@ -308,14 +313,14 @@ public class WindowController implements QuizFenster, BackendWindow, FrontendWin
 	public void setAntwortFeld4Sichtbar(boolean sichtbar) {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
-			iter.next().setAntwortFeld4Sichtbar(sichtbar);
+			iter.next().setAntwortFeld4Sichtbar( sichtbar );
 		}
 	}
 
 	public void setAntwortFelderSichtbar(boolean sichtbar) {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
-			iter.next().setAntwortFelderSichtbar(sichtbar);
+			iter.next().setAntwortFelderSichtbar( sichtbar );
 		}
 	}
 
@@ -350,70 +355,70 @@ public class WindowController implements QuizFenster, BackendWindow, FrontendWin
 	public void setCountdownText(String text) {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
-			iter.next().setCountdownText(text);
+			iter.next().setCountdownText( text );
 		}
 	}
 
 	public void setFiftyJokerBenutzt(boolean benutzt) {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
-			iter.next().setFiftyJokerBenutzt(benutzt);
+			iter.next().setFiftyJokerBenutzt( benutzt );
 		}
 	}
 
 	public void setFiftyJokerSichtbar(boolean sichtbar) {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
-			iter.next().setFiftyJokerSichtbar(sichtbar);
+			iter.next().setFiftyJokerSichtbar( sichtbar );
 		}
 	}
 
 	public void setFrageAnzuzeigen(Quizfrage frage, boolean mitAnimation) {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
-			iter.next().setFrageAnzuzeigen(frage, mitAnimation);
+			iter.next().setFrageAnzuzeigen( frage, mitAnimation );
 		}
 	}
 
 	public void setFrageFeldSichtbar(boolean sichtbar) {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
-			iter.next().setFrageFeldSichtbar(sichtbar);
+			iter.next().setFrageFeldSichtbar( sichtbar );
 		}
 	}
 
 	public void setPublikumsJokerBenutzt(boolean benutzt) {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
-			iter.next().setPublikumsJokerBenutzt(benutzt);
+			iter.next().setPublikumsJokerBenutzt( benutzt );
 		}
 	}
 
 	public void setPublikumsJokerSichtbar(boolean sichtbar) {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
-			iter.next().setPublikumsJokerSichtbar(sichtbar);
+			iter.next().setPublikumsJokerSichtbar( sichtbar );
 		}
 	}
 
 	public void setStatusText(String text) {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
-			iter.next().setStatusText(text);
+			iter.next().setStatusText( text );
 		}
 	}
 
 	public void setTippJokerBenutzt(boolean benutzt) {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
-			iter.next().setTippJokerBenutzt(benutzt);
+			iter.next().setTippJokerBenutzt( benutzt );
 		}
 	}
 
 	public void setTippJokerSichtbar(boolean sichtbar) {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
-			iter.next().setTippJokerSichtbar(sichtbar);
+			iter.next().setTippJokerSichtbar( sichtbar );
 		}
 	}
 
@@ -428,15 +433,15 @@ public class WindowController implements QuizFenster, BackendWindow, FrontendWin
 
 	public void setBildschirmSchwarz(boolean schwarzerBildschirm) {
 		// Nur an die Frontendfenster senden
-		if (this.frontendFenster != null) {
-			((FrontendWindow) this.frontendFenster).setBildschirmSchwarz(schwarzerBildschirm);
+		if ( this.frontendFenster != null ) {
+			((FrontendWindow) this.frontendFenster).setBildschirmSchwarz( schwarzerBildschirm );
 		}
 	}
 
 	// * Ab hier Funktionen der BackendFenster
 	public void setFrageKomplett(Quizfrage frage) {
-		if (this.backendFenster != null) {
-			((BackendWindow) this.backendFenster).setFrageKomplett(frage);
+		if ( this.backendFenster != null ) {
+			((BackendWindow) this.backendFenster).setFrageKomplett( frage );
 		}
 	}
 
@@ -447,7 +452,6 @@ public class WindowController implements QuizFenster, BackendWindow, FrontendWin
 		}
 	}
 
-	@Override
 	public void spielBeendet() {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
@@ -455,7 +459,6 @@ public class WindowController implements QuizFenster, BackendWindow, FrontendWin
 		}
 	}
 
-	@Override
 	public void spielGestartet() {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {

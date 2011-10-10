@@ -733,11 +733,9 @@ public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListene
 		// TODO Auto-generated method stub
 	}
 
-	@Override
 	public void spielBeendet() {
 	}
 
-	@Override
 	public void spielGestartet() {
 	}
 
