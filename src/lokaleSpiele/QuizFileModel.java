@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
@@ -17,7 +20,7 @@ public class QuizFileModel extends AbstractTableModel {
 	private static final long	serialVersionUID		= -7040042367775652371L;
 	public static String		speicherOrtFuerSpiele	= "Biblionaer";
 
-	private String				titles[]				= new String[] { "Quizname", "Laufzeit" };
+	private String				spalten[]				= new String[] { "Quizname", "Laufzeit" };
 
 	private Class<?>			types[]					= new Class[] { String.class, String.class };
 
@@ -28,6 +31,7 @@ public class QuizFileModel extends AbstractTableModel {
 		// System herausfinden und falls noch nicht vorhanden den Ordner anlegen
 
 		setFileStats( getSpeicherortSpiele() );
+		
 	}
 
 	public static File getSpeicherortSpiele() {
@@ -78,23 +82,23 @@ public class QuizFileModel extends AbstractTableModel {
 	}
 
 	public int getColumnCount() {
-		return titles.length;
+		return spalten.length;
 	}
 
-	public String getColumnName(int c) {
-		return titles[c];
+	public String getColumnName(int index) {
+		return spalten[index];
 	}
 
-	public Class<?> getColumnClass(int c) {
-		return types[c];
+	public Class<?> getColumnClass(int index) {
+		return types[index];
 	}
 
-	public Object getValueAt(int r, int c) {
-		return data[r][c];
+	public Object getValueAt(int row, int col) {
+		return data[row][col];
 	}
 
 	/**
-	 * Gibt abhängig zur übergebenen Zeile, den Pfad zurück, wo dieses File
+	 * Gibt abh√§ngig zur √ºbergebenen Zeile, den Pfad zur√ºck, wo dieses File
 	 * gespeichert ist.
 	 * 
 	 * @param row
@@ -117,15 +121,24 @@ public class QuizFileModel extends AbstractTableModel {
 			}
 		} );
 
-		data = new Object[files.length][titles.length];
+		data = new Object[files.length][this.spalten.length];
 		dateiPfad = new File[files.length];
 		File rootPfad = getSpeicherortSpiele();
+		Date tempDate = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat( "dd-MM-yy_h-mm" );
 
 		for (int i = 0; i < files.length; i++) {
-			// File tmp = new File( files[i] );
-			data[i][0] = files[i];
-			data[i][1] = "unused";
+
+			// Dateipfad
 			dateiPfad[i] = new File( rootPfad, files[i] );
+
+			// Dateiname
+			data[i][0] = files[i].substring( 0, files[i].length() - 6 );
+
+			// Letztes √Ñnderungsdatum
+			tempDate.setTime( dateiPfad[i].lastModified() );
+			data[i][1] = dateFormat.format( tempDate );
+
 		}
 
 		// Just in case anyone's listening...
@@ -137,7 +150,7 @@ public class QuizFileModel extends AbstractTableModel {
 		try {
 			XmlToSpiel dasXMLImporterFile = xmlImporterFile;
 
-			// Finde den nächsten freien Speichernamen
+			// Finde den n√§chsten freien Speichernamen
 			int i = 0;
 			File saveTo = null;
 			while (saveTo == null && i < 50) {

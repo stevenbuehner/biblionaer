@@ -76,7 +76,7 @@ public class Quizfrage {
 	public String getSchwierigkeitsGradInMio() {
 
 		String rueckgabe = "";
-		String waehrungAnhang = " ä";
+		String waehrungAnhang = " €";
 
 		switch (schwierigkeitsGrad) {
 			case 1:
@@ -186,7 +186,7 @@ public class Quizfrage {
 	public void setRichtigeAntwort(int pRichtigeAntwort) {
 		if ( pRichtigeAntwort < 1 || pRichtigeAntwort > 4 ) {
 			System.out
-					.println( "Achtung! Der Wert 'richtigeAntwort' wude auäerhalb des zulässigen Bereiches auf '"
+					.println( "Achtung! Der Wert 'richtigeAntwort' wude außerhalb des zulässigen Bereiches auf '"
 							+ pRichtigeAntwort + "' gesetzt, kann das wirklich sein?" );
 		}
 		this.richtigeAntwort = pRichtigeAntwort;

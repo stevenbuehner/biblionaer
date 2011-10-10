@@ -301,20 +301,19 @@ public interface QuizFenster {
 	 */
 	public void playStarteSpiel();
 
-	
 	/**
 	 * Diese Funktion wird aufgerufen wann immer ein neues Spiel gestartet wird.
-	 * Sie kann genutzt werden, um Buttons zu initialisieren (zu aktivieren oder zu deaktivieren)
-	 * die während dem Spiel gebraucht oder nicht verwendet werden dürfen.
+	 * Sie kann genutzt werden, um Buttons zu initialisieren (zu aktivieren oder
+	 * zu deaktivieren) die während dem Spiel gebraucht oder nicht verwendet
+	 * werden dürfen.
 	 */
 	public void spielGestartet();
-	
-	
+
 	/**
-	 * Diese Funktion wird aufgerufen, wenn das Spiel beendet wird.
-	 * Dies kann passieren wenn das Spiel gewonnen ist, das Spiel verloren ist, oder das Spiel vom
-	 * Administrator-Bildschirm aus von Hand beendet worden ist.
+	 * Diese Funktion wird aufgerufen, wenn das Spiel beendet wird. Dies kann
+	 * passieren wenn das Spiel gewonnen ist, das Spiel verloren ist, oder das
+	 * Spiel vom Administrator-Bildschirm aus von Hand beendet worden ist.
 	 */
 	public void spielBeendet();
-	
+
 }
