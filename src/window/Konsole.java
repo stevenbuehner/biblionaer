@@ -1,8 +1,21 @@
 package window;
 
+import java.util.Observable;
+
 import main.Biblionaer;
 
-public class Konsole {
+public class Konsole extends Observable {
+
+	public Konsole() {
+		super();
+
+		// Wenn beim Start des Programms auf der Parameter -D übergeben wurde,
+		// dann debuggen wir
+		String prop = System.getProperty( "DEBUG" );
+		if ( Boolean.getBoolean( prop ) ) {
+			Biblionaer.meineEinstellungen.setKonsolenModus( 3 );
+		}
+	}
 
 	/*
 	 * 0 = nichts ausgeben, auäer Sachen mit Prio 0; 1 = Nur Wichtige
@@ -18,15 +31,6 @@ public class Konsole {
 
 	public void setAusgabeZustand(int ausgabeZustand) {
 		Biblionaer.meineEinstellungen.setKonsolenModus( ausgabeZustand );
-	}
-
-	public Konsole() {
-		// Wenn beim Start des Programms auf der Parameter -D äbergeben wurde,
-		// dann debuggen wir
-		String prop = System.getProperty( "DEBUG" );
-		if ( Boolean.getBoolean( prop ) ) {
-			Biblionaer.meineEinstellungen.setKonsolenModus( 3 );
-		}
 	}
 
 	public void println(String pAusgabe) {

@@ -220,8 +220,8 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		addComponent( quizSteuerungPanel, gbl_quizSteuerung, antwort4Panel, 1, 3, 1, 1, 0.1, 0.2, new Insets( 2, 2, 2,
 				5 ) );
 
-		addComponent( quizSteuerungPanel, gbl_quizSteuerung, new JLabel( "Bibelstelle: " ), 0, 4, 1, 1, 0, 0,
-				new Insets( 5, 5, 5, 5 ) );
+		addComponent( quizSteuerungPanel, gbl_quizSteuerung, new JLabel( "Bibelstelle (Tipp-Joker): " ), 0, 4, 1, 1, 0,
+				0, new Insets( 5, 5, 5, 5 ) );
 		addComponent( quizSteuerungPanel, gbl_quizSteuerung, bibelstelleLabel, 1, 4, 1, 1, 0, 0.0, new Insets( 5, 0, 5,
 				5 ) );
 
@@ -316,17 +316,16 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 		addComponent( screenControlePanel, gbl, new JLabel( "Konsole: " ), 0, 0, 2, 1, 0, 0, new Insets( 5, 5, 5, 5 ) );
 		addComponent( screenControlePanel, gbl, konsolenPane, 0, 1, 2, 7, 1.0, 1.0, new Insets( 0, 5, 5, 0 ) );
-		addComponent( screenControlePanel, gbl, this.schwarzerBildschirmBtn, 2, 1, 2, 1, 0.1, 0.2, new Insets( 0, 5, 1,
+		addComponent( screenControlePanel, gbl, this.schwarzerBildschirmBtn, 2, 1, 2, 1, 0, 0.2,
+				new Insets( 0, 5, 1, 5 ) );
+		addComponent( screenControlePanel, gbl, this.spielPausierenBtn, 2, 2, 2, 1, 0, 0.2, new Insets( 1, 5, 1, 5 ) );
+		addComponent( screenControlePanel, gbl, this.laufendsSpielBeendenBtn, 2, 3, 2, 1, 0, 0.2, new Insets( 1, 5, 1,
 				5 ) );
-		addComponent( screenControlePanel, gbl, this.spielPausierenBtn, 2, 2, 2, 1, 0.1, 0.2, new Insets( 1, 5, 1, 5 ) );
-		addComponent( screenControlePanel, gbl, this.laufendsSpielBeendenBtn, 2, 3, 2, 1, 0.1, 0.2, new Insets( 1, 5,
-				1, 5 ) );
 
-		addComponent( screenControlePanel, gbl, new JLabel( "Statistik:" ), 2, 4, 2, 1, 0.1, 0, new Insets( 100, 5, 1,
-				5 ) );
-		addComponent( screenControlePanel, gbl, this.uhrzeit, 2, 5, 2, 1, 0.1, 0, new Insets( 1, 5, 1, 5 ) );
-		addComponent( screenControlePanel, gbl, this.aktuelleFragenZeit, 2, 6, 2, 1, 0.1, 0, new Insets( 1, 5, 1, 5 ) );
-		addComponent( screenControlePanel, gbl, this.gesamtSpielZeit, 2, 7, 2, 1, 0.1, 0, new Insets( 1, 5, 5, 5 ) );
+		addComponent( screenControlePanel, gbl, new JLabel( "Statistik:" ), 2, 4, 2, 1, 0, 0, new Insets( 100, 5, 1, 5 ) );
+		addComponent( screenControlePanel, gbl, this.uhrzeit, 2, 5, 2, 1, 0, 0, new Insets( 1, 5, 1, 5 ) );
+		addComponent( screenControlePanel, gbl, this.aktuelleFragenZeit, 2, 6, 2, 1, 0, 0, new Insets( 1, 5, 1, 5 ) );
+		addComponent( screenControlePanel, gbl, this.gesamtSpielZeit, 2, 7, 2, 1, 0, 0, new Insets( 1, 5, 5, 5 ) );
 
 		// Alles zusammenfügen
 		mainPanel.add( monitorPanel );
@@ -539,7 +538,7 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 	protected void spielButtonsAktivieren(boolean spielLauft) {
 		this.laufendsSpielBeendenBtn.setEnabled( spielLauft );
 		this.angeklicktesSpielStartenBtn.setEnabled( !spielLauft );
-		this.laufendsSpielBeendenBtn.setEnabled( spielLauft );
+		this.spielPausierenBtn.setEnabled( false ); // Noch nicht implementiert
 
 		this.fiftyJokerBtn.setEnabled( spielLauft );
 		this.tippJokerBtn.setEnabled( spielLauft );
@@ -1027,6 +1026,13 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		this.antwort2KlickenBtn.setEnabled( false );
 		this.antwort3KlickenBtn.setEnabled( false );
 		this.antwort4KlickenBtn.setEnabled( false );
+
+		this.antwort1KlickenBtn.setText( "" );
+		this.antwort2KlickenBtn.setText( "" );
+		this.antwort3KlickenBtn.setText( "" );
+		this.antwort4KlickenBtn.setText( "" );
+		this.fragestellung.setText( "" );
+		this.bibelstelleLabel.setText( "" );
 
 		this.fiftyJokerBtn.setEnabled( false );
 		this.tippJokerBtn.setEnabled( false );
