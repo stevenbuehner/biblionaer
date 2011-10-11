@@ -10,6 +10,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GraphicsDevice;
 import java.awt.GridBagConstraints;
@@ -36,6 +37,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -55,7 +57,10 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 	protected ImageIcon					blackIcon					= new ImageIcon( "src/img/black.png" );
 	protected ImageIcon					trashIcon					= new ImageIcon( "src/img/trash.png" );
 	protected ImageIcon					playIcon					= new ImageIcon( "src/img/play.png" );
+	protected ImageIcon					pauseIcon					= new ImageIcon( "src/img/pause.png" );
 	protected ImageIcon					downloadIcon				= new ImageIcon( "src/img/download.png" );
+
+	private static Color				buttonColorRichtig			= Color.GREEN.darker();
 
 	// Wird ueber Spielgestartet() und speilBeendet() gesetzt
 	private boolean						cache_spielLaeuft			= false;
@@ -65,12 +70,8 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 	// links oben
 	protected JPanel					monitorPanel				= null;
-	// rechts oben
-	protected JPanel					steuerungPanel				= null;
 	// links unten
 	protected JPanel					dateiPanel					= null;
-	// rechts unten
-	protected JPanel					weiteresPanel				= null;
 
 	protected JPanel					antwort1Panel, antwort2Panel, antwort3Panel, antwort4Panel = null;
 
@@ -80,22 +81,28 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 	protected JButton					antwort2KlickenBtn			= new JButton( "Antwort B" );
 	protected JButton					antwort3KlickenBtn			= new JButton( "Antwort C" );
 	protected JButton					antwort4KlickenBtn			= new JButton( "Antwort D" );
+	protected JLabel					fragestellung				= new JLabel( "Fragestellung" );
 	protected JLabel					bibelstelleLabel			= new JLabel( "Bibelstelle" );
 
 	protected JButton					fiftyJokerBtn				= new JButton( "50:50 Joker" );
 	protected JButton					tippJokerBtn				= new JButton( "Tipp Joker" );
 	protected JButton					publikumsJokerBtn			= new JButton( "Puplikums Joker" );
 
-	protected JButton					laufendsSpielBeendenBtn		= new JButton( "laufendes Spiel beenden", quitIcon );
+	protected JButton					laufendsSpielBeendenBtn		= new JButton(
+																			"<html>laufendes Spiel beenden</html>",
+																			quitIcon );
 
 	// DateiPanel Material
 	protected JTable					spielListeTable				= new JTable( new QuizFileModel() );
 	protected JButton					angeklicktesSpielStartenBtn	= new JButton( playIcon );
 	protected JButton					angeklickesSpielLoeschenBtn	= new JButton( trashIcon );
 	protected JButton					neuesSpielAusInternBtn		= new JButton( downloadIcon );
+	protected JButton					spielPausierenBtn			= new JButton( "<html>Spiel pausieren</html>",
+																			pauseIcon );
 
 	// WeiteresPanel Material
-	protected JButton					schwarzerBildschirmBtn		= new JButton( "schwarzer Bildschirm", blackIcon );
+	protected JButton					schwarzerBildschirmBtn		= new JButton( "<html>schwarzer Bildschirm</html>",
+																			blackIcon );
 
 	// Zeitliche Komponenten
 	protected JLabel					uhrzeit						= new JLabel( "Uhrzeit:" );
@@ -147,37 +154,41 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		JPanel mainPanel = new JPanel( new GridLayout( 2, 2, 5, 5 ) );
 		mainPanel.setBackground( Color.LIGHT_GRAY );
 
-		// ******* MonitorPanel *******
+		// ******* MonitorPanel (Links Oben) *******
 		this.monitorPanel = new JPanel( new FlowLayout() );
 		this.monitorPanel.setBackground( Color.BLACK );
 
-		// ******* SteuerungPanel *******
-		this.steuerungPanel = new JPanel( new GridLayout( 2, 1, 20, 20 ) );
-		this.steuerungPanel.setBackground( null );
+		// ******* Quiz-SteuerungPanel (Rechts Oben) *******
+		GridBagLayout gbl_quizSteuerung = new GridBagLayout();
+		JPanel quizSteuerungPanel = new JPanel( gbl_quizSteuerung );
 
-		// TopLeisten-Panel
-		JPanel steuerungTopLeistePanel = new JPanel( new FlowLayout() );
 		// Button
 		auswahlBestaetigenBtn.addActionListener( this );
 		fiftyJokerBtn.addActionListener( this );
 		tippJokerBtn.addActionListener( this );
 		publikumsJokerBtn.addActionListener( this );
-		laufendsSpielBeendenBtn.addActionListener( this );
 
-		// auswahlBestaetigenBtn.setEnabled( false );
 		fiftyJokerBtn.setEnabled( false );
 		tippJokerBtn.setEnabled( false );
 		publikumsJokerBtn.setEnabled( false );
-		laufendsSpielBeendenBtn.setEnabled( false );
 
-		// steuerungTopLeistePanel.add( auswahlBestaetigenBtn );
-		steuerungTopLeistePanel.add( fiftyJokerBtn );
-		steuerungTopLeistePanel.add( tippJokerBtn );
-		steuerungTopLeistePanel.add( publikumsJokerBtn );
-		steuerungTopLeistePanel.add( laufendsSpielBeendenBtn );
+		auswahlBestaetigenBtn.setToolTipText( "Diese Antwort einloggen" );
 
-		// Quiz-Panel
-		JPanel steuerungQuizPanel = new JPanel( new GridLayout( 3, 2, 5, 5 ) );
+		JPanel jokerPanel = new JPanel( new FlowLayout() );
+		jokerPanel.add( fiftyJokerBtn );
+		jokerPanel.add( tippJokerBtn );
+		jokerPanel.add( publikumsJokerBtn );
+
+		addComponent( quizSteuerungPanel, gbl_quizSteuerung, jokerPanel, 0, 0, 2, 1, 0, 0, null );
+
+		// größere Schrift für Fragestellung zum besseren Ablesen
+		Font fsFont = this.fragestellung.getFont();
+		this.fragestellung.setFont( new Font( fsFont.getFontName(), fsFont.getStyle(), 20 ) );
+
+		JPanel fragestellungPanel = new JPanel( new FlowLayout() );
+		fragestellungPanel.add( this.fragestellung );
+		addComponent( quizSteuerungPanel, gbl_quizSteuerung, fragestellungPanel, 0, 1, 2, 1, 1.0, 1.0, new Insets( 20,
+				5, 20, 5 ) );
 
 		antwort1KlickenBtn.addActionListener( this );
 		antwort2KlickenBtn.addActionListener( this );
@@ -191,42 +202,45 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 		this.antwort1Panel = new JPanel( new GridLayout( 1, 0 ) );
 		this.antwort1Panel.add( this.antwort1KlickenBtn );
-		steuerungQuizPanel.add( this.antwort1Panel );
+		addComponent( quizSteuerungPanel, gbl_quizSteuerung, antwort1Panel, 0, 2, 1, 1, 0.1, 0.2, new Insets( 2, 5, 2,
+				2 ) );
 
 		this.antwort2Panel = new JPanel( new GridLayout( 1, 0 ) );
 		this.antwort2Panel.add( this.antwort2KlickenBtn );
-		steuerungQuizPanel.add( this.antwort2Panel );
+		addComponent( quizSteuerungPanel, gbl_quizSteuerung, antwort2Panel, 1, 2, 1, 1, 0.1, 0.2, new Insets( 2, 2, 2,
+				5 ) );
 
 		this.antwort3Panel = new JPanel( new GridLayout( 1, 0 ) );
 		this.antwort3Panel.add( this.antwort3KlickenBtn );
-		steuerungQuizPanel.add( this.antwort3Panel );
+		addComponent( quizSteuerungPanel, gbl_quizSteuerung, antwort3Panel, 0, 3, 1, 1, 0.1, 0.2, new Insets( 2, 5, 2,
+				2 ) );
 
 		this.antwort4Panel = new JPanel( new GridLayout( 1, 0 ) );
 		this.antwort4Panel.add( this.antwort4KlickenBtn );
-		steuerungQuizPanel.add( this.antwort4Panel );
+		addComponent( quizSteuerungPanel, gbl_quizSteuerung, antwort4Panel, 1, 3, 1, 1, 0.1, 0.2, new Insets( 2, 2, 2,
+				5 ) );
 
-		steuerungQuizPanel.add( new JLabel( "Bibelstelle: " ) );
-		steuerungQuizPanel.add( this.bibelstelleLabel );
+		addComponent( quizSteuerungPanel, gbl_quizSteuerung, new JLabel( "Bibelstelle: " ), 0, 4, 1, 1, 0, 0,
+				new Insets( 5, 5, 5, 5 ) );
+		addComponent( quizSteuerungPanel, gbl_quizSteuerung, bibelstelleLabel, 1, 4, 1, 1, 0, 0.0, new Insets( 5, 0, 5,
+				5 ) );
 
-		steuerungPanel.add( steuerungTopLeistePanel );
-		steuerungPanel.add( steuerungQuizPanel );
+		// ******* DateiPanel (Links Unten) *******
+		GridBagLayout gbl_dateiPanel = new GridBagLayout();
+		this.dateiPanel = new JPanel( gbl_dateiPanel );
 
-		// ******* DateiPanel *******
-		GridBagLayout gbl = new GridBagLayout();
-		this.dateiPanel = new JPanel( gbl );
-
-		addComponent( this.dateiPanel, gbl, new JLabel( "Gespeicherte Spiele:" ), 0, 0, 3, 1, 1.0, 0, new Insets( 5, 5,
-				5, 5 ) );
+		addComponent( this.dateiPanel, gbl_dateiPanel, new JLabel( "Gespeicherte Spiele:" ), 0, 0, 3, 1, 1.0, 0,
+				new Insets( 5, 5, 5, 5 ) );
 
 		spielListeTable.setAutoResizeMode( JTable.AUTO_RESIZE_LAST_COLUMN );
 		spielListeTable.setToolTipText( "Diese fertigen Spiele sind auf Deinem Rechner installiert" );
 		spielListeTable.setAlignmentX( Component.LEFT_ALIGNMENT );
-		// spielListeTable.setColumnSelectionAllowed( false );
 		spielListeTable.getTableHeader().setReorderingAllowed( false );
 		spielListeTable.getTableHeader().setResizingAllowed( false );
 		spielListeTable.getColumnModel().getColumn( 0 ).setPreferredWidth( 260 );
 		// spielListeTable.getColumnModel().getColumn( 1 ).setPreferredWidth(
 		// 140 );
+
 		// keine Mehrfachauswahl
 		spielListeTable.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
 
@@ -265,7 +279,7 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		dateiScrollPane.setHorizontalScrollBarPolicy( ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
 		dateiScrollPane.setVerticalScrollBarPolicy( ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED );
 
-		addComponent( this.dateiPanel, gbl, dateiScrollPane, 0, 1, 2, 6, 1.0, 1.0, new Insets( 0, 5, 5, 0 ) );
+		addComponent( this.dateiPanel, gbl_dateiPanel, dateiScrollPane, 0, 1, 2, 6, 1.0, 1.0, new Insets( 0, 5, 5, 0 ) );
 
 		// Buttons
 		angeklicktesSpielStartenBtn.addActionListener( this );
@@ -276,31 +290,49 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		angeklickesSpielLoeschenBtn.setToolTipText( "Das in der Liste ausgewählte Spiel undwiderruflich löschen" );
 		neuesSpielAusInternBtn.setToolTipText( "Ein neues Spiel mit 15 Fragen aus dem Internet herunterladen" );
 
-		addComponent( this.dateiPanel, gbl, this.angeklicktesSpielStartenBtn, 2, 1, 1, 1, 0, 0, new Insets( 0, 2, 0, 2 ) );
-		addComponent( this.dateiPanel, gbl, this.angeklickesSpielLoeschenBtn, 2, 2, 1, 1, 0, 0, new Insets( 0, 2, 0, 2 ) );
-		addComponent( this.dateiPanel, gbl, this.neuesSpielAusInternBtn, 2, 3, 1, 1, 0, 0, new Insets( 0, 2, 0, 2 ) );
+		addComponent( this.dateiPanel, gbl_dateiPanel, this.angeklicktesSpielStartenBtn, 2, 1, 1, 1, 0, 0, new Insets(
+				0, 2, 0, 2 ) );
+		addComponent( this.dateiPanel, gbl_dateiPanel, this.angeklickesSpielLoeschenBtn, 2, 2, 1, 1, 0, 0, new Insets(
+				0, 2, 0, 2 ) );
+		addComponent( this.dateiPanel, gbl_dateiPanel, this.neuesSpielAusInternBtn, 2, 3, 1, 1, 0, 0, new Insets( 0, 2,
+				0, 2 ) );
 
-		// Zusammenfügen
-		// dateiPanel.add( dateiLinkesPanel );
-		// dateiPanel.add( dateiLinksUntenPanel );
-
-		// ******* Weiteres Panel *******
-		this.weiteresPanel = new JPanel( new GridLayout( 6, 1, 20, 20 ) );
-		this.weiteresPanel.setBackground( null );
+		// ******* Konsole & Screencontrole Panel (Rechts Unten) *******
+		GridBagLayout gbl = new GridBagLayout();
+		JPanel screenControlePanel = new JPanel( gbl );
 
 		// Buttons
 		schwarzerBildschirmBtn.addActionListener( this );
+		schwarzerBildschirmBtn.setHorizontalAlignment( SwingConstants.LEFT );
 
-		weiteresPanel.add( this.schwarzerBildschirmBtn );
-		weiteresPanel.add( this.uhrzeit );
-		weiteresPanel.add( this.aktuelleFragenZeit );
-		weiteresPanel.add( this.gesamtSpielZeit );
+		laufendsSpielBeendenBtn.addActionListener( this );
+		laufendsSpielBeendenBtn.setHorizontalAlignment( SwingConstants.LEFT );
+
+		spielPausierenBtn.addActionListener( this );
+		spielPausierenBtn.setToolTipText( "Werbepause einblenden" );
+		spielPausierenBtn.setHorizontalAlignment( SwingConstants.LEFT );
+
+		JScrollPane konsolenPane = new JScrollPane();
+
+		addComponent( screenControlePanel, gbl, new JLabel( "Konsole: " ), 0, 0, 2, 1, 0, 0, new Insets( 5, 5, 5, 5 ) );
+		addComponent( screenControlePanel, gbl, konsolenPane, 0, 1, 2, 7, 1.0, 1.0, new Insets( 0, 5, 5, 0 ) );
+		addComponent( screenControlePanel, gbl, this.schwarzerBildschirmBtn, 2, 1, 2, 1, 0.1, 0.2, new Insets( 0, 5, 1,
+				5 ) );
+		addComponent( screenControlePanel, gbl, this.spielPausierenBtn, 2, 2, 2, 1, 0.1, 0.2, new Insets( 1, 5, 1, 5 ) );
+		addComponent( screenControlePanel, gbl, this.laufendsSpielBeendenBtn, 2, 3, 2, 1, 0.1, 0.2, new Insets( 1, 5,
+				1, 5 ) );
+
+		addComponent( screenControlePanel, gbl, new JLabel( "Statistik:" ), 2, 4, 2, 1, 0.1, 0, new Insets( 100, 5, 1,
+				5 ) );
+		addComponent( screenControlePanel, gbl, this.uhrzeit, 2, 5, 2, 1, 0.1, 0, new Insets( 1, 5, 1, 5 ) );
+		addComponent( screenControlePanel, gbl, this.aktuelleFragenZeit, 2, 6, 2, 1, 0.1, 0, new Insets( 1, 5, 1, 5 ) );
+		addComponent( screenControlePanel, gbl, this.gesamtSpielZeit, 2, 7, 2, 1, 0.1, 0, new Insets( 1, 5, 5, 5 ) );
 
 		// Alles zusammenfügen
 		mainPanel.add( monitorPanel );
-		mainPanel.add( steuerungPanel );
+		mainPanel.add( quizSteuerungPanel );
 		mainPanel.add( dateiPanel );
-		mainPanel.add( weiteresPanel );
+		mainPanel.add( screenControlePanel );
 
 		cnt.add( mainPanel );
 
@@ -435,11 +467,11 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 	// * Ab hier die Button-Klick-Methoden
 
 	protected void schwarzerBildschirmBtnKlick() {
-		if ( schwarzerBildschirmBtn.getText().equals( "schwarzer Bildschirm" ) ) {
+		if ( schwarzerBildschirmBtn.getText().equals( "<html>schwarzer Bildschirm</html>" ) ) {
 			if ( Biblionaer.meinWindowController.getFrontendFenster() != null ) {
 				// Wenn es ein Frontend gibt, dann schwärzen
 				((FrontendWindow) Biblionaer.meinWindowController.getFrontendFenster()).setBildschirmSchwarz( true );
-				schwarzerBildschirmBtn.setText( "Bilschirm wieder einblenden" );
+				schwarzerBildschirmBtn.setText( "<html>Bilschirm wieder einblenden</html>" );
 			}
 		}
 		else {
@@ -449,7 +481,7 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 			}
 			// Egal ob es ein Frontend gibt oder nicht, Button immer wieder
 			// herstellen.
-			schwarzerBildschirmBtn.setText( "schwarzer Bildschirm" );
+			schwarzerBildschirmBtn.setText( "<html>schwarzer Bildschirm</html>" );
 		}
 	}
 
@@ -507,6 +539,7 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 	protected void spielButtonsAktivieren(boolean spielLauft) {
 		this.laufendsSpielBeendenBtn.setEnabled( spielLauft );
 		this.angeklicktesSpielStartenBtn.setEnabled( !spielLauft );
+		this.laufendsSpielBeendenBtn.setEnabled( spielLauft );
 
 		this.fiftyJokerBtn.setEnabled( spielLauft );
 		this.tippJokerBtn.setEnabled( spielLauft );
@@ -674,6 +707,21 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 		if ( auswahl != 0 ) {
 			Biblionaer.meineSteuerung.klickAufAntwortFeld( auswahl );
+
+			switch (auswahl) {
+				case 1:
+					this.antwort1Panel.remove( auswahlBestaetigenBtn );
+					break;
+				case 2:
+					this.antwort2Panel.remove( auswahlBestaetigenBtn );
+					break;
+				case 3:
+					this.antwort3Panel.remove( auswahlBestaetigenBtn );
+					break;
+				case 4:
+					this.antwort4Panel.remove( auswahlBestaetigenBtn );
+					break;
+			}
 		}
 		else {
 			Biblionaer.meineKonsole.println(
@@ -871,11 +919,37 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 			if ( frage.getAntwort4() == null )
 				this.antwort4KlickenBtn.setEnabled( false );
 
-			this.antwort1KlickenBtn.setToolTipText( frage.getAntwort1() );
-			this.antwort2KlickenBtn.setToolTipText( frage.getAntwort2() );
-			this.antwort3KlickenBtn.setToolTipText( frage.getAntwort3() );
-			this.antwort4KlickenBtn.setToolTipText( frage.getAntwort4() );
-			this.bibelstelleLabel.setText( frage.getLoesungshinweis() );
+			// html-Tags sind nötig für den automatischen Zeilenumbruch
+			this.antwort1KlickenBtn.setText( "<html>A: " + frage.getAntwort1() + "</html>" );
+			this.antwort2KlickenBtn.setText( "<html>B: " + frage.getAntwort2() + "</html>" );
+			this.antwort3KlickenBtn.setText( "<html>C: " + frage.getAntwort3() + "</html>" );
+			this.antwort4KlickenBtn.setText( "<html>D: " + frage.getAntwort4() + "</html>" );
+			this.bibelstelleLabel.setText( "<html>" + frage.getLoesungshinweis() + "</html>" );
+			this.fragestellung.setText( "<html>" + frage.getFragestellung() + "</html>" );
+
+			// Den Text für alle Buttons schwarz setzen, um anschließend die
+			// richtige Antwort grün zu markieren
+			this.antwort1KlickenBtn.setForeground( Color.BLACK );
+			this.antwort2KlickenBtn.setForeground( Color.BLACK );
+			this.antwort3KlickenBtn.setForeground( Color.BLACK );
+			this.antwort4KlickenBtn.setForeground( Color.BLACK );
+
+			// richtiges Grün markieren
+			switch (frage.getRichtigeAntwort()) {
+				case 1:
+					this.antwort1KlickenBtn.setForeground( buttonColorRichtig );
+					break;
+				case 2:
+					this.antwort2KlickenBtn.setForeground( buttonColorRichtig );
+					break;
+				case 3:
+					this.antwort3KlickenBtn.setForeground( buttonColorRichtig );
+					break;
+				case 4:
+					this.antwort4KlickenBtn.setForeground( buttonColorRichtig );
+					break;
+				default:
+			}
 		}
 		else {
 			this.antwort1KlickenBtn.setEnabled( false );
@@ -883,10 +957,7 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 			this.antwort3KlickenBtn.setEnabled( false );
 			this.antwort4KlickenBtn.setEnabled( false );
 
-			this.antwort1KlickenBtn.setToolTipText( null );
-			this.antwort2KlickenBtn.setToolTipText( null );
-			this.antwort3KlickenBtn.setToolTipText( null );
-			this.antwort4KlickenBtn.setToolTipText( null );
+			this.fragestellung.setText( null );
 			this.bibelstelleLabel.setText( null );
 
 			this.auswahlBestaetigenBtn.setEnabled( false );
@@ -973,12 +1044,13 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		}
 		this.neuesSpielAusInternBtn.setEnabled( true );
 
+		// TODO Prüfen ob die FUnktion doppelte Sachen ausführt
+		this.spielButtonsAktivieren( false );
+
 		this.cache_spielLaeuft = false;
 	}
 
 	public void spielGestartet() {
-		this.laufendsSpielBeendenBtn.setEnabled( true );
-
 		this.angeklickesSpielLoeschenBtn.setEnabled( false );
 		this.angeklicktesSpielStartenBtn.setEnabled( false );
 
@@ -991,6 +1063,9 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		this.antwort2Panel.remove( this.auswahlBestaetigenBtn );
 		this.antwort3Panel.remove( this.auswahlBestaetigenBtn );
 		this.antwort4Panel.remove( this.auswahlBestaetigenBtn );
+
+		// TODO Prüfen ob die FUnktion doppelte Sachen ausführt
+		this.spielButtonsAktivieren( true );
 	}
 
 }
