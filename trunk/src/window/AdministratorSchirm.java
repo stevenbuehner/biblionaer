@@ -12,6 +12,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GraphicsDevice;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,14 +25,19 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JToggleButton;
+import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import lokaleSpiele.QuizFileModel;
 import main.Biblionaer;
@@ -38,29 +45,35 @@ import quiz.Quizfrage;
 import timer.SekuendlicherZeitgeber;
 import timer.UhrzeitSekUpdate;
 
-public class AdministratorSchirm extends JFrame implements QuizFenster, BackendWindow,
-		ActionListener {
+public class AdministratorSchirm extends JFrame implements QuizFenster, BackendWindow, ActionListener {
 
 	private static final long			serialVersionUID			= 1L;
 
-	// links oben
-	protected JPanel					monitorPanel;
-	// rechts oben
-	protected JPanel					steuerungPanel;
-	// links unten
-	protected JPanel					dateiPanel;
-	// rechts unten
-	protected JPanel					weiteresPanel;
+	// verwendete Icons zum Zwischenspeichern
+	protected ImageIcon					checkIcon					= new ImageIcon( "src/img/check.png" );
+	protected ImageIcon					xIcon						= new ImageIcon( "src/img/x.png" );
+	protected ImageIcon					quitIcon					= new ImageIcon( "src/img/quit.png" );
+	protected ImageIcon					blackIcon					= new ImageIcon( "src/img/black.png" );
 
 	// Wird ueber Spielgestartet() und speilBeendet() gesetzt
-	private boolean						cache_spielLaeuft			= false;												;
+	private boolean						cache_spielLaeuft			= false;
 
-	private GraphicsDevice				device;
+	private GraphicsDevice				device						= null;
 	private boolean						isFullScreen				= false;
 
+	// links oben
+	protected JPanel					monitorPanel				= null;
+	// rechts oben
+	protected JPanel					steuerungPanel				= null;
+	// links unten
+	protected JPanel					dateiPanel					= null;
+	// rechts unten
+	protected JPanel					weiteresPanel				= null;
+
+	protected JPanel					antwort1Panel, antwort2Panel, antwort3Panel, antwort4Panel = null;
+
 	// SteuerungPanel Material
-	protected JButton					auswahlBestaetigenBtn		= new JButton(
-																			"Auswahl Bestätigen" );
+	protected JButton					auswahlBestaetigenBtn		= new JButton( "einloggen", checkIcon );
 	protected JButton					antwort1KlickenBtn			= new JButton( "Antwort A" );
 	protected JButton					antwort2KlickenBtn			= new JButton( "Antwort B" );
 	protected JButton					antwort3KlickenBtn			= new JButton( "Antwort C" );
@@ -69,35 +82,26 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 	protected JButton					fiftyJokerBtn				= new JButton( "50:50 Joker" );
 	protected JButton					tippJokerBtn				= new JButton( "Tipp Joker" );
-	protected JButton					puplikumsJokerBtn			= new JButton(
-																			"Puplikums Joker" );
+	protected JButton					publikumsJokerBtn			= new JButton( "Puplikums Joker" );
 
-	protected JButton					laufendsSpielBeendenBtn		= new JButton(
-																			"laufendes Spiel beenden" );
+	protected JButton					laufendsSpielBeendenBtn		= new JButton( "laufendes Spiel beenden", quitIcon );
 
 	// DateiPanel Material
-	protected JTable					spielListeTable				= new JTable(
-																			new QuizFileModel() );
-	protected JButton					angeklicktesSpielStartenBtn	= new JButton(
-																			"Neues Spiel starten" );
-	protected JButton					angeklickesSpielLoeschenBtn	= new JButton(
-																			"Dieses Spiel löschen" );
+	protected JTable					spielListeTable				= new JTable( new QuizFileModel() );
+	protected JButton					angeklicktesSpielStartenBtn	= new JButton( "dieses Spiel starten" );
+	protected JButton					angeklickesSpielLoeschenBtn	= new JButton( "dieses Spiel löschen" );
 	protected JButton					neuesSpielAusInternBtn		= new JButton(
-																			"Neues Spiel aus dem Internet importieren" );
+																			"neues Spiel aus dem Internet importieren" );
 
 	// WeiteresPanel Material
-	protected JButton					schwarzerBildschirmBtn		= new JButton(
-																			"schwarzer Bildschirm" );
+	protected JButton					schwarzerBildschirmBtn		= new JButton( "schwarzer Bildschirm", blackIcon );
 
 	// Zeitliche Komponenten
 	protected JLabel					uhrzeit						= new JLabel( "Uhrzeit:" );
 	protected JLabel					aktuelleFragenZeit			= new JLabel( "Aktuelle Frage:" );
-	protected JLabel					gesamtSpielZeit				= new JLabel(
-																			"Gesamtspielzeit: " );
-	private SimpleDateFormat			dateFormat					= new SimpleDateFormat(
-																			"HH:mm:ss" );
-	protected SekuendlicherZeitgeber	sekZeit						= new SekuendlicherZeitgeber(
-																			this );
+	protected JLabel					gesamtSpielZeit				= new JLabel( "Gesamtspielzeit: " );
+	private SimpleDateFormat			dateFormat					= new SimpleDateFormat( "HH:mm:ss" );
+	protected SekuendlicherZeitgeber	sekZeit						= new SekuendlicherZeitgeber( this );
 
 	public AdministratorSchirm(String fenstername, GraphicsDevice device, boolean vollbildModus) {
 		super( fenstername );
@@ -106,11 +110,11 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 		// getInstalledLookAndFeels();
 		try {
-			UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName() );
+			// UIManager.setLookAndFeel(
+			// UIManager.getCrossPlatformLookAndFeelClassName() );
 		}
 		catch (Exception e) {
-			Biblionaer.meineKonsole
-					.println( "Look and Feel nicht gefunden! - " + e.getMessage(), 3 );
+			Biblionaer.meineKonsole.println( "Look and Feel nicht gefunden! - " + e.getMessage(), 3 );
 		}
 
 		doInitialisations();
@@ -156,19 +160,19 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		auswahlBestaetigenBtn.addActionListener( this );
 		fiftyJokerBtn.addActionListener( this );
 		tippJokerBtn.addActionListener( this );
-		puplikumsJokerBtn.addActionListener( this );
+		publikumsJokerBtn.addActionListener( this );
 		laufendsSpielBeendenBtn.addActionListener( this );
 
-		auswahlBestaetigenBtn.setEnabled( false );
+		// auswahlBestaetigenBtn.setEnabled( false );
 		fiftyJokerBtn.setEnabled( false );
 		tippJokerBtn.setEnabled( false );
-		puplikumsJokerBtn.setEnabled( false );
+		publikumsJokerBtn.setEnabled( false );
 		laufendsSpielBeendenBtn.setEnabled( false );
 
-		steuerungTopLeistePanel.add( auswahlBestaetigenBtn );
+		// steuerungTopLeistePanel.add( auswahlBestaetigenBtn );
 		steuerungTopLeistePanel.add( fiftyJokerBtn );
 		steuerungTopLeistePanel.add( tippJokerBtn );
-		steuerungTopLeistePanel.add( puplikumsJokerBtn );
+		steuerungTopLeistePanel.add( publikumsJokerBtn );
 		steuerungTopLeistePanel.add( laufendsSpielBeendenBtn );
 
 		// Quiz-Panel
@@ -184,10 +188,22 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		antwort3KlickenBtn.setEnabled( false );
 		antwort4KlickenBtn.setEnabled( false );
 
-		steuerungQuizPanel.add( this.antwort1KlickenBtn );
-		steuerungQuizPanel.add( this.antwort2KlickenBtn );
-		steuerungQuizPanel.add( this.antwort3KlickenBtn );
-		steuerungQuizPanel.add( this.antwort4KlickenBtn );
+		this.antwort1Panel = new JPanel( new GridLayout( 1, 0 ) );
+		this.antwort1Panel.add( this.antwort1KlickenBtn );
+		steuerungQuizPanel.add( this.antwort1Panel );
+
+		this.antwort2Panel = new JPanel( new GridLayout( 1, 0 ) );
+		this.antwort2Panel.add( this.antwort2KlickenBtn );
+		steuerungQuizPanel.add( this.antwort2Panel );
+
+		this.antwort3Panel = new JPanel( new GridLayout( 1, 0 ) );
+		this.antwort3Panel.add( this.antwort3KlickenBtn );
+		steuerungQuizPanel.add( this.antwort3Panel );
+
+		this.antwort4Panel = new JPanel( new GridLayout( 1, 0 ) );
+		this.antwort4Panel.add( this.antwort4KlickenBtn );
+		steuerungQuizPanel.add( this.antwort4Panel );
+
 		steuerungQuizPanel.add( new JLabel( "Bibelstelle: " ) );
 		steuerungQuizPanel.add( this.bibelstelleLabel );
 
@@ -202,35 +218,67 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		// dateiLinkesPanel.add( new JLabel( "offline Spiel Liste" ) );
 		spielListeTable.setToolTipText( "Spielanzahl: " + spielListeTable.getModel().getRowCount() );
 		spielListeTable.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
-		spielListeTable
-				.setToolTipText( "Diese fertigen Spiele sind auf diesem Rechner installiert" );
+		spielListeTable.setToolTipText( "Diese fertigen Spiele sind auf Deinem Rechner installiert" );
 		spielListeTable.setAlignmentX( Component.LEFT_ALIGNMENT );
 		// spielListeTable.setColumnSelectionAllowed( false );
 		spielListeTable.getTableHeader().setReorderingAllowed( false );
 		spielListeTable.getTableHeader().setResizingAllowed( false );
 		spielListeTable.getColumnModel().getColumn( 0 ).setPreferredWidth( 300 );
 		spielListeTable.getColumnModel().getColumn( 1 ).setPreferredWidth( 200 );
+		// keine Mehrfachauswahl
+		spielListeTable.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
+
+		if ( spielListeTable.getRowCount() > 0 ) {
+			// markiere zu Beginn die erste Zeile
+			spielListeTable.getSelectionModel().setSelectionInterval( 0, 0 );
+		}
+
+		ListSelectionModel rowSM = spielListeTable.getSelectionModel();
+		rowSM.addListSelectionListener( new ListSelectionListener() {
+
+			public void valueChanged(ListSelectionEvent e) {
+				if ( e.getValueIsAdjusting() )
+					return; // if you don't want to handle intermediate
+							// selections
+
+				ListSelectionModel rowSM = (ListSelectionModel) e.getSource();
+				int selectedIndex = rowSM.getMinSelectionIndex();
+
+				if ( selectedIndex >= 0 ) {
+					AdministratorSchirm.this.angeklickesSpielLoeschenBtn.setEnabled( true );
+					AdministratorSchirm.this.angeklicktesSpielStartenBtn.setEnabled( true );
+				}
+				else {
+					AdministratorSchirm.this.angeklickesSpielLoeschenBtn.setEnabled( false );
+					AdministratorSchirm.this.angeklicktesSpielStartenBtn.setEnabled( false );
+				}
+			}
+		} );
 
 		// Zeilen und Spaltenabstand:
 		spielListeTable.setIntercellSpacing( new Dimension( 2, 2 ) );
 		// spielListeTable.getTableHeader().setVisible( true );
 		dateiLinkesPanel.add( spielListeTable );
 
-		JPanel dateiRechtesPanel = new JPanel( new GridLayout( 0, 1 ) );
+		JPanel dateiLinksUntenPanel = new JPanel( new GridLayout( 0, 1 ) );
 		// Buttons
 		angeklicktesSpielStartenBtn.addActionListener( this );
-		neuesSpielAusInternBtn.addActionListener( this );
 		angeklickesSpielLoeschenBtn.addActionListener( this );
+		neuesSpielAusInternBtn.addActionListener( this );
 
-		dateiRechtesPanel.add( angeklicktesSpielStartenBtn );
-		dateiRechtesPanel.add( neuesSpielAusInternBtn );
-		dateiRechtesPanel.add( angeklickesSpielLoeschenBtn );
+		angeklicktesSpielStartenBtn.setToolTipText( "Das in der Liste ausgewählte Spiel starten/spielen" );
+		angeklickesSpielLoeschenBtn.setToolTipText( "Das in der Liste ausgewählte Spiel undwiderruflich löschen" );
+		neuesSpielAusInternBtn.setToolTipText( "Ein neues Spiel mit 15 Fragen aus dem Internet herunterladen" );
 
-		// Zusammenfägen
+		dateiLinksUntenPanel.add( angeklicktesSpielStartenBtn );
+		dateiLinksUntenPanel.add( neuesSpielAusInternBtn );
+		dateiLinksUntenPanel.add( angeklickesSpielLoeschenBtn );
+
+		// Zusammenfügen
 		dateiPanel.add( dateiLinkesPanel );
-		dateiPanel.add( dateiRechtesPanel );
+		dateiPanel.add( dateiLinksUntenPanel );
 
-		// ******* WeiteresPanel *******
+		// ******* Weiteres Panel *******
 		this.weiteresPanel = new JPanel( new GridLayout( 6, 1, 20, 20 ) );
 		this.weiteresPanel.setBackground( null );
 
@@ -252,6 +300,37 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 		this.sekZeit.starteZeitgeber();
 		this.sekuendlicherZeitgeber();
+	}
+
+	/**
+	 * Die Funktion soll ein GridBagConstraints-Objekt erstellen, die Werte
+	 * zuweisen und dem Container dieses Constraint-Objekt zuteilen. Mit einer
+	 * Komponente ist also eine Einschränkung verbunden. Zusätzlich soll die
+	 * Methode die Komponenten in den Container legen. Quelle:
+	 * com/javatutor/insel/ui/layout/GridBagLayoutDemo.java
+	 * 
+	 * @param cont
+	 * @param gbl
+	 * @param c
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 * @param weightx
+	 * @param weighty
+	 */
+	static void addComponent(Container cont, GridBagLayout gbl, Component c, int x, int y, int width, int height,
+			double weightx, double weighty) {
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.gridx = x;
+		gbc.gridy = y;
+		gbc.gridwidth = width;
+		gbc.gridheight = height;
+		gbc.weightx = weightx;
+		gbc.weighty = weighty;
+		gbl.setConstraints( c, gbc );
+		cont.add( c );
 	}
 
 	// * Ab hier die Methode für das Interface BackendWindow
@@ -287,16 +366,14 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 			adminRequest_bestaetigeAusgewalteAntwort();
 		}
 		else if ( e.getSource() == fiftyJokerBtn ) {
-			this.adminRequest_setFiftyJokerAktiviert( this.fiftyJokerBtn.getBackground().equals(
-					Color.RED ) );
+			this.adminRequest_setFiftyJokerAktiviert( !this.fiftyJokerBtn.getToolTipText().equals( "Joker verwenden" ) );
 		}
 		else if ( e.getSource() == tippJokerBtn ) {
-			this.adminRequest_setTippJokerAktiviert( this.tippJokerBtn.getBackground().equals(
-					Color.RED ) );
+			this.adminRequest_setTippJokerAktiviert( !this.tippJokerBtn.getToolTipText().equals( "Joker verwenden" ) );
 		}
-		else if ( e.getSource() == puplikumsJokerBtn ) {
-			this.adminRequest_setPublikumsJokerAktiviert( this.puplikumsJokerBtn.getBackground()
-					.equals( Color.RED ) );
+		else if ( e.getSource() == publikumsJokerBtn ) {
+			this.adminRequest_setPublikumsJokerAktiviert( !this.publikumsJokerBtn.getToolTipText().equals(
+					"Joker verwenden" ) );
 		}
 		else if ( e.getSource() == angeklicktesSpielStartenBtn ) {
 			if ( this.spielListeTable.getSelectedRow() >= 0 ) {
@@ -308,8 +385,8 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		else if ( e.getSource() == angeklickesSpielLoeschenBtn ) {
 			if ( this.spielListeTable.getSelectedRow() >= 0 ) {
 
-				if ( !((QuizFileModel) spielListeTable.getModel())
-						.removeQuizFile( this.spielListeTable.getSelectedRow() ) ) {
+				if ( !((QuizFileModel) spielListeTable.getModel()).removeQuizFile( this.spielListeTable
+						.getSelectedRow() ) ) {
 					Biblionaer.meineKonsole.println(
 							"Es trat ein Fehler im TabelModel auf, beim läschen der SpielDatei", 2 );
 				}
@@ -322,9 +399,8 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 			// Startdialog
 			int returnOptionDialog = JOptionPane.showOptionDialog(
 					(Component) Biblionaer.meinWindowController.getBackendFenster(),
-					"Bist Du dir sicher, dass Du dieses Spiel beenden möchtest?", "Warnung",
-					JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null,
-					JOptionPane.NO_OPTION );
+					"Bist Du dir sicher, dass Du dieses Spiel beenden möchtest?", "Warnung", JOptionPane.YES_NO_OPTION,
+					JOptionPane.INFORMATION_MESSAGE, null, null, JOptionPane.NO_OPTION );
 
 			if ( returnOptionDialog == JOptionPane.OK_OPTION ) {
 				Biblionaer.meineSteuerung.spielBeenden();
@@ -342,8 +418,7 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 			schwarzerBildschirmBtnKlick();
 		}
 		else {
-			Biblionaer.meineKonsole.println(
-					"AdminSchirm mit unbekanntem Action Event: " + e.getActionCommand(), 2 );
+			Biblionaer.meineKonsole.println( "AdminSchirm mit unbekanntem Action Event: " + e.getActionCommand(), 2 );
 		}
 	}
 
@@ -353,16 +428,14 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		if ( schwarzerBildschirmBtn.getText().equals( "schwarzer Bildschirm" ) ) {
 			if ( Biblionaer.meinWindowController.getFrontendFenster() != null ) {
 				// Wenn es ein Frontend gibt, dann schwärzen
-				((FrontendWindow) Biblionaer.meinWindowController.getFrontendFenster())
-						.setBildschirmSchwarz( true );
+				((FrontendWindow) Biblionaer.meinWindowController.getFrontendFenster()).setBildschirmSchwarz( true );
 				schwarzerBildschirmBtn.setText( "Bilschirm wieder einblenden" );
 			}
 		}
 		else {
 			if ( Biblionaer.meinWindowController.getFrontendFenster() != null ) {
 				// Wenn es ein Frontend gibt, dann wieder Bild herstellen
-				((FrontendWindow) Biblionaer.meinWindowController.getFrontendFenster())
-						.setBildschirmSchwarz( false );
+				((FrontendWindow) Biblionaer.meinWindowController.getFrontendFenster()).setBildschirmSchwarz( false );
 			}
 			// Egal ob es ein Frontend gibt oder nicht, Button immer wieder
 			// herstellen.
@@ -372,16 +445,15 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 	protected void neuesSpielImportieren() {
 		try {
-			XmlToSpiel dasXMLImporterFile = new XmlToSpiel( new URL(
-					Biblionaer.meineEinstellungen.getXMLquelle() ) );
+			XmlToSpiel dasXMLImporterFile = new XmlToSpiel( new URL( Biblionaer.meineEinstellungen.getXMLquelle() ) );
 
 			// Finde den nächsten freien Speichernamen
 			int i = 0;
 			File saveTo = null;
 			while (saveTo == null && i < 50) {
 				i++;
-				saveTo = new File( QuizFileModel.getSpeicherortSpiele().getAbsolutePath()
-						+ "/neuesSpiel_" + Integer.toString( i ) + ".bqxml" );
+				saveTo = new File( QuizFileModel.getSpeicherortSpiele().getAbsolutePath() + "/neuesSpiel_"
+						+ Integer.toString( i ) + ".bqxml" );
 
 				if ( saveTo.exists() ) {
 					saveTo = null;
@@ -406,10 +478,9 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 			}
 		}
 		catch (MalformedURLException e) {
-			Biblionaer.meineKonsole
-					.println(
-							"Beim Versuch ein neues Spiel herunterzuladen (im AdministratorSchirm), ist die falsche URL verwendet worden.\n"
-									+ e.getMessage(), 1 );
+			Biblionaer.meineKonsole.println(
+					"Beim Versuch ein neues Spiel herunterzuladen (im AdministratorSchirm), ist die falsche URL verwendet worden.\n"
+							+ e.getMessage(), 1 );
 		}
 		catch (IOException e2) {
 			Biblionaer.meineKonsole.println(
@@ -429,7 +500,7 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 		this.fiftyJokerBtn.setEnabled( spielLauft );
 		this.tippJokerBtn.setEnabled( spielLauft );
-		this.puplikumsJokerBtn.setEnabled( spielLauft );
+		this.publikumsJokerBtn.setEnabled( spielLauft );
 
 		this.antwort1KlickenBtn.setEnabled( spielLauft );
 		this.antwort2KlickenBtn.setEnabled( spielLauft );
@@ -507,18 +578,18 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		if ( this.antwort1KlickenBtn.getBackground().equals( Color.YELLOW ) ) {
 			Biblionaer.meinWindowController.setAntwortFeld1Normal();
 			this.auswahlBestaetigenBtn.setEnabled( false );
-			this.auswahlBestaetigenBtn.setText( "Nichts zu bestätigen" );
+			this.antwort1Panel.remove( this.auswahlBestaetigenBtn );
 			this.antwort2KlickenBtn.setEnabled( true );
 			this.antwort3KlickenBtn.setEnabled( true );
 			this.antwort4KlickenBtn.setEnabled( true );
 		}
 		else {
 			Biblionaer.meinWindowController.setAntwortFeld1Markiert();
+			this.antwort1Panel.add( this.auswahlBestaetigenBtn );
 			this.auswahlBestaetigenBtn.setEnabled( true );
 			this.antwort2KlickenBtn.setEnabled( false );
 			this.antwort3KlickenBtn.setEnabled( false );
 			this.antwort4KlickenBtn.setEnabled( false );
-			this.auswahlBestaetigenBtn.setText( "Bestätige Antwort A" );
 		}
 	}
 
@@ -526,18 +597,18 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		if ( this.antwort2KlickenBtn.getBackground().equals( Color.YELLOW ) ) {
 			Biblionaer.meinWindowController.setAntwortFeld2Normal();
 			this.auswahlBestaetigenBtn.setEnabled( false );
-			this.auswahlBestaetigenBtn.setText( "Nichts zu bestätigen" );
+			this.antwort2Panel.remove( this.auswahlBestaetigenBtn );
 			this.antwort1KlickenBtn.setEnabled( true );
 			this.antwort3KlickenBtn.setEnabled( true );
 			this.antwort4KlickenBtn.setEnabled( true );
 		}
 		else {
 			Biblionaer.meinWindowController.setAntwortFeld2Markiert();
+			this.antwort2Panel.add( this.auswahlBestaetigenBtn );
 			this.auswahlBestaetigenBtn.setEnabled( true );
 			this.antwort1KlickenBtn.setEnabled( false );
 			this.antwort3KlickenBtn.setEnabled( false );
 			this.antwort4KlickenBtn.setEnabled( false );
-			this.auswahlBestaetigenBtn.setText( "Bestätige Antwort B" );
 		}
 	}
 
@@ -545,18 +616,18 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		if ( this.antwort3KlickenBtn.getBackground().equals( Color.YELLOW ) ) {
 			Biblionaer.meinWindowController.setAntwortFeld3Normal();
 			this.auswahlBestaetigenBtn.setEnabled( false );
-			this.auswahlBestaetigenBtn.setText( "Nichts zu bestätigen" );
+			this.antwort3Panel.remove( this.auswahlBestaetigenBtn );
 			this.antwort1KlickenBtn.setEnabled( true );
 			this.antwort2KlickenBtn.setEnabled( true );
 			this.antwort4KlickenBtn.setEnabled( true );
 		}
 		else {
 			Biblionaer.meinWindowController.setAntwortFeld3Markiert();
+			this.antwort3Panel.add( this.auswahlBestaetigenBtn );
 			this.auswahlBestaetigenBtn.setEnabled( true );
 			this.antwort1KlickenBtn.setEnabled( false );
 			this.antwort2KlickenBtn.setEnabled( false );
 			this.antwort4KlickenBtn.setEnabled( false );
-			this.auswahlBestaetigenBtn.setText( "Bestätige Antwort C" );
 		}
 	}
 
@@ -564,18 +635,18 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		if ( this.antwort4KlickenBtn.getBackground().equals( Color.YELLOW ) ) {
 			Biblionaer.meinWindowController.setAntwortFeld4Normal();
 			this.auswahlBestaetigenBtn.setEnabled( false );
-			this.auswahlBestaetigenBtn.setText( "Nichts zu bestätigen" );
+			this.antwort4Panel.remove( this.auswahlBestaetigenBtn );
 			this.antwort1KlickenBtn.setEnabled( true );
 			this.antwort2KlickenBtn.setEnabled( true );
 			this.antwort3KlickenBtn.setEnabled( true );
 		}
 		else {
 			Biblionaer.meinWindowController.setAntwortFeld4Markiert();
+			this.antwort4Panel.add( this.auswahlBestaetigenBtn );
 			this.auswahlBestaetigenBtn.setEnabled( true );
 			this.antwort1KlickenBtn.setEnabled( false );
 			this.antwort2KlickenBtn.setEnabled( false );
 			this.antwort3KlickenBtn.setEnabled( false );
-			this.auswahlBestaetigenBtn.setText( "Bestätige Antwort D" );
 		}
 	}
 
@@ -595,10 +666,8 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 			Biblionaer.meineSteuerung.klickAufAntwortFeld( auswahl );
 		}
 		else {
-			Biblionaer.meineKonsole
-					.println(
-							"FEHLER: Nichts wurde ausgewaehlt, aber trotzdem der Bestaetigungs-Button gedrueckt",
-							2 );
+			Biblionaer.meineKonsole.println(
+					"FEHLER: Nichts wurde ausgewaehlt, aber trotzdem der Bestaetigungs-Button gedrueckt", 2 );
 		}
 	}
 
@@ -607,8 +676,7 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 		if ( this.cache_spielLaeuft ) {
 			this.aktuelleFragenZeit.setText( "Aktuelle Frage: "
-					+ String.valueOf( Biblionaer.meineSteuerung.frageDauerBisJetztInSekunden() )
-					+ " Sek" );
+					+ String.valueOf( Biblionaer.meineSteuerung.frageDauerBisJetztInSekunden() ) + " Sek" );
 			this.gesamtSpielZeit.setText( "Gesamtspieldauer: "
 					+ Biblionaer.meineSteuerung.spielDauerBisJetztInSekunden() + " Sek" );
 		}
@@ -625,6 +693,8 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 	public void setAntwortFeld1Markiert() {
 		this.antwort1KlickenBtn.setBackground( Color.YELLOW );
+		// this.antwort1KlickenBtn.setOpaque( true );
+		// this.antwort1KlickenBtn.setBorderPainted( false );
 	}
 
 	public void setAntwortFeld1Normal() {
@@ -752,11 +822,11 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 	public void setFiftyJokerBenutzt(boolean benutzt) {
 		if ( benutzt ) {
-			this.fiftyJokerBtn.setBackground( Color.RED );
+			this.fiftyJokerBtn.setIcon( this.xIcon );
 			this.fiftyJokerBtn.setToolTipText( "Joker wieder freischalten" );
 		}
 		else {
-			this.fiftyJokerBtn.setBackground( Color.GREEN );
+			this.fiftyJokerBtn.setIcon( this.checkIcon );
 			this.fiftyJokerBtn.setToolTipText( "Joker verwenden" );
 		}
 	}
@@ -820,17 +890,19 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 	public void setPublikumsJokerBenutzt(boolean benutzt) {
 		if ( benutzt ) {
-			this.puplikumsJokerBtn.setBackground( Color.RED );
-			this.puplikumsJokerBtn.setToolTipText( "Joker wieder freischalten" );
+			// this.publikumsJokerBtn.setBackground( Color.RED );
+			this.publikumsJokerBtn.setIcon( this.xIcon );
+			this.publikumsJokerBtn.setToolTipText( "Joker wieder freischalten" );
 		}
 		else {
-			this.puplikumsJokerBtn.setBackground( Color.GREEN );
-			this.puplikumsJokerBtn.setToolTipText( "Joker verwenden" );
+			// this.publikumsJokerBtn.setBackground( Color.GREEN );
+			this.publikumsJokerBtn.setIcon( this.checkIcon );
+			this.publikumsJokerBtn.setToolTipText( "Joker verwenden" );
 		}
 	}
 
 	public void setPublikumsJokerSichtbar(boolean sichtbar) {
-		this.puplikumsJokerBtn.setEnabled( sichtbar );
+		this.publikumsJokerBtn.setEnabled( sichtbar );
 
 	}
 
@@ -841,11 +913,11 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 	public void setTippJokerBenutzt(boolean benutzt) {
 		if ( benutzt ) {
-			this.tippJokerBtn.setBackground( Color.RED );
+			this.tippJokerBtn.setIcon( this.xIcon );
 			this.tippJokerBtn.setToolTipText( "Joker wieder freischalten" );
 		}
 		else {
-			this.tippJokerBtn.setBackground( Color.GREEN );
+			this.tippJokerBtn.setIcon( this.checkIcon );
 			this.tippJokerBtn.setToolTipText( "Joker verwenden" );
 		}
 	}
@@ -875,22 +947,40 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		this.antwort3KlickenBtn.setEnabled( false );
 		this.antwort4KlickenBtn.setEnabled( false );
 
-		this.auswahlBestaetigenBtn.setEnabled( false );
 		this.fiftyJokerBtn.setEnabled( false );
 		this.tippJokerBtn.setEnabled( false );
-		this.puplikumsJokerBtn.setEnabled( false );
+		this.publikumsJokerBtn.setEnabled( false );
 
+		ListSelectionModel rowSM = spielListeTable.getSelectionModel();
+
+		if ( rowSM.getMinSelectionIndex() >= 0 ) {
+			this.spielListeTable.setEnabled( true );
+			this.angeklickesSpielLoeschenBtn.setEnabled( true );
+		}
+		else {
+			// this.spielListeTable.setEnabled( false );
+			// this.angeklickesSpielLoeschenBtn.setEnabled( false );
+		}
 		this.neuesSpielAusInternBtn.setEnabled( true );
+
 		this.cache_spielLaeuft = false;
 	}
 
 	public void spielGestartet() {
 		this.laufendsSpielBeendenBtn.setEnabled( true );
 
-		this.neuesSpielAusInternBtn.setEnabled( false );
 		this.angeklickesSpielLoeschenBtn.setEnabled( false );
 		this.angeklicktesSpielStartenBtn.setEnabled( false );
+
+		this.neuesSpielAusInternBtn.setEnabled( false );
+		this.spielListeTable.setEnabled( false );
 		this.cache_spielLaeuft = true;
+
+		// Die letzte eingeloggte Frage entfernen
+		this.antwort1Panel.remove( this.auswahlBestaetigenBtn );
+		this.antwort2Panel.remove( this.auswahlBestaetigenBtn );
+		this.antwort3Panel.remove( this.auswahlBestaetigenBtn );
+		this.antwort4Panel.remove( this.auswahlBestaetigenBtn );
 	}
 
 }
