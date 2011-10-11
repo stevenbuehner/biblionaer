@@ -33,7 +33,7 @@ public class XmlToSpiel {
 	 * Verwende das StandardSpiel, immer das Selbe
 	 */
 	public XmlToSpiel() {
-		String spielPfad = "src/importer/quiz.bqxml";
+		String spielPfad = "src/lokaleSpiele/Test.bqxml";
 
 		this.meinSpiel = null;
 		this.anzahlFragen = 0;

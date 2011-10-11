@@ -136,7 +136,7 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 			this.setResizable( false );
 		}
 
-		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+		this.setDefaultCloseOperation( JFrame.DO_NOTHING_ON_CLOSE );
 
 	}
 
@@ -218,7 +218,6 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		addComponent( this.dateiPanel, gbl, new JLabel( "Gespeicherte Spiele:" ), 0, 0, 3, 1, 1.0, 0, new Insets( 5, 5,
 				5, 5 ) );
 
-		spielListeTable.setToolTipText( "Spielanzahl: " + spielListeTable.getModel().getRowCount() );
 		spielListeTable.setAutoResizeMode( JTable.AUTO_RESIZE_LAST_COLUMN );
 		spielListeTable.setToolTipText( "Diese fertigen Spiele sind auf Deinem Rechner installiert" );
 		spielListeTable.setAlignmentX( Component.LEFT_ALIGNMENT );
@@ -226,7 +225,8 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		spielListeTable.getTableHeader().setReorderingAllowed( false );
 		spielListeTable.getTableHeader().setResizingAllowed( false );
 		spielListeTable.getColumnModel().getColumn( 0 ).setPreferredWidth( 260 );
-		//spielListeTable.getColumnModel().getColumn( 1 ).setPreferredWidth( 140 );
+		// spielListeTable.getColumnModel().getColumn( 1 ).setPreferredWidth(
+		// 140 );
 		// keine Mehrfachauswahl
 		spielListeTable.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
 

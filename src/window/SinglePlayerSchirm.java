@@ -20,6 +20,9 @@ import java.awt.MenuShortcut;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
@@ -108,7 +111,17 @@ public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListene
 		frame.setResizable( false );
 		frame.setIgnoreRepaint( true );
 
-		// frame.setMenuBar( createMenue() );
+		// Frontend Fenster schließen => Programm beenden
+		frame.addWindowListener( new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent w) {
+				Biblionaer.meinWindowController.setFrontendFenster( null );
+				Biblionaer.meinWindowController.removeQuizFenster( SinglePlayerSchirm.this );
+				SinglePlayerSchirm.this.frame.setVisible( false );
+				SinglePlayerSchirm.this.frame.dispose();
+				System.exit( 0 );
+			}
+		} );
 
 		frame.setVisible( true );
 
