@@ -19,8 +19,9 @@ public class QuizFileModel extends AbstractTableModel {
 
 	private static final long	serialVersionUID		= -7040042367775652371L;
 	public static String		speicherOrtFuerSpiele	= "Biblionaer";
+	public static String		dateiEndungFuerSpiele	= ".bqxml";
 
-	private String				spalten[]				= new String[] { "Quizname", "Laufzeit" };
+	private String				spalten[]				= new String[] { "Name", "Datum" };
 
 	private Class<?>			types[]					= new Class[] { String.class, String.class };
 
@@ -31,7 +32,7 @@ public class QuizFileModel extends AbstractTableModel {
 		// System herausfinden und falls noch nicht vorhanden den Ordner anlegen
 
 		setFileStats( getSpeicherortSpiele() );
-		
+
 	}
 
 	public static File getSpeicherortSpiele() {
@@ -56,8 +57,7 @@ public class QuizFileModel extends AbstractTableModel {
 		File dir = new File( homeDir, subDir );
 		if ( dir.exists() ) {
 			if ( dir.isDirectory() ) {
-				Biblionaer.meineKonsole.println( "Quiz Home-Dir ist: '" + dir.getAbsolutePath()
-						+ "'", 4 );
+				Biblionaer.meineKonsole.println( "Quiz Home-Dir ist: '" + dir.getAbsolutePath() + "'", 4 );
 			}
 		}
 		else {
@@ -66,8 +66,7 @@ public class QuizFileModel extends AbstractTableModel {
 				Biblionaer.meineKonsole.println( "Verzeichnis zur Quizablage wurde erstellt.", 3 );
 			}
 			else {
-				Biblionaer.meineKonsole.println(
-						"Verzeichnis zur Quizablage konte nicht erstellt werden.", 2 );
+				Biblionaer.meineKonsole.println( "Verzeichnis zur Quizablage konte nicht erstellt werden.", 2 );
 			}
 		}
 
@@ -97,6 +96,22 @@ public class QuizFileModel extends AbstractTableModel {
 		return data[row][col];
 	}
 
+	@Override
+	public boolean isCellEditable(int rowIndex, int colIndex) {
+		if ( colIndex == 0 ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	public void setValueAt(Object value, int rowIndex, int colIndex) {
+		Biblionaer.meineKonsole.println(
+				"Neuer Wert für '" + this.getValueAt( rowIndex, colIndex ) + "' ist '" + value.toString() + "'", 3 );
+		this.renameQuizFile( rowIndex, value.toString() );
+	}
+
 	/**
 	 * Gibt abhängig zur übergebenen Zeile, den Pfad zurück, wo dieses File
 	 * gespeichert ist.
@@ -117,7 +132,7 @@ public class QuizFileModel extends AbstractTableModel {
 
 		String files[] = dir.list( new FilenameFilter() {
 			public boolean accept(File f, String s) {
-				return new File( f, s ).isFile() && s.toLowerCase().endsWith( ".bqxml" );
+				return new File( f, s ).isFile() && s.toLowerCase().endsWith( QuizFileModel.dateiEndungFuerSpiele );
 			}
 		} );
 
@@ -125,7 +140,7 @@ public class QuizFileModel extends AbstractTableModel {
 		dateiPfad = new File[files.length];
 		File rootPfad = getSpeicherortSpiele();
 		Date tempDate = new Date();
-		SimpleDateFormat dateFormat = new SimpleDateFormat( "dd-MM-yy_h-mm" );
+		SimpleDateFormat dateFormat = new SimpleDateFormat( "dd.MM.yy hh:mm" );
 
 		for (int i = 0; i < files.length; i++) {
 
@@ -137,7 +152,7 @@ public class QuizFileModel extends AbstractTableModel {
 
 			// Letztes Änderungsdatum
 			tempDate.setTime( dateiPfad[i].lastModified() );
-			data[i][1] = dateFormat.format( tempDate );
+			data[i][1] = dateFormat.format( tempDate ) + " Uhr";
 
 		}
 
@@ -155,8 +170,8 @@ public class QuizFileModel extends AbstractTableModel {
 			File saveTo = null;
 			while (saveTo == null && i < 50) {
 				i++;
-				saveTo = new File( getSpeicherortSpiele().getAbsolutePath() + "/neuesSpiel_"
-						+ Integer.toString( i ) + ".bqxml" );
+				saveTo = new File( getSpeicherortSpiele().getAbsolutePath() + "/neuesSpiel_" + Integer.toString( i )
+						+ ".bqxml" );
 
 				if ( saveTo.exists() ) {
 					saveTo = null;
@@ -181,10 +196,9 @@ public class QuizFileModel extends AbstractTableModel {
 			}
 		}
 		catch (MalformedURLException e) {
-			Biblionaer.meineKonsole
-					.println(
-							"Beim Versuch ein neues Spiel herunterzuladen (im AdministratorSchirm), ist die falsche URL verwendet worden.\n"
-									+ e.getMessage(), 1 );
+			Biblionaer.meineKonsole.println(
+					"Beim Versuch ein neues Spiel herunterzuladen (im AdministratorSchirm), ist die falsche URL verwendet worden.\n"
+							+ e.getMessage(), 1 );
 			return false;
 		}
 		catch (IOException e2) {
@@ -211,6 +225,44 @@ public class QuizFileModel extends AbstractTableModel {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Bennent die Datei in der angegebenen Reihe um zu neuerName
+	 * 
+	 * @param row
+	 * @param neuerName
+	 */
+	protected void renameQuizFile(int row, String neuerName) {
+		if ( row <= dateiPfad.length && dateiPfad[row].exists() ) {
+			if ( neuerName != null && neuerName.length() > 0 ) {
+
+				File neuerDateiname = new File( dateiPfad[row].getParent(), neuerName
+						+ QuizFileModel.dateiEndungFuerSpiele );
+
+				if ( neuerDateiname.equals( dateiPfad[row] ) ) {
+					Biblionaer.meineKonsole.println( "Umbennen nicht nötig: Gleicher Dateiname", 4 );
+					return;
+				}
+
+				if ( !neuerDateiname.exists() ) {
+					dateiPfad[row].renameTo( neuerDateiname );
+					this.refreshInhalte();
+				}
+				else {
+					Biblionaer.meineKonsole.println( "Umbennen nicht möglich: Die Datei existiert bereits!", 2 );
+				}
+			}
+			else {
+				Biblionaer.meineKonsole
+						.println(
+								"Umbennen nicht möglich: Der Dateiname darf nicht null seind und muss mindestens 1 Zeichen lang sein!",
+								2 );
+			}
+		}
+		else {
+			Biblionaer.meineKonsole.println( "Umbennen nicht möglich: Diese Reihe existiert nicht in der Tabelle", 2 );
+		}
 	}
 
 	public void refreshInhalte() {
