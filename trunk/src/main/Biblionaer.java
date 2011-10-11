@@ -33,7 +33,7 @@ public class Biblionaer {
 		meineEinstellungen = new Einstellungen("Einstellungen", meineSteuerung);
 		meinWindowController = new WindowController();
 		
-		meinWindowController.addFrontendFenster(new SinglePlayerSchirm("Hauptfenster", 678, 549, meineSteuerung));
+		meinWindowController.addFrontendFenster(new SinglePlayerSchirm("Der Biblionär", 678, 549, meineSteuerung));
 		// meinWindowController.addBackendFenster(new
 		// VollbildSchirm("Administrationsfenster", GraphicsEnvironment
 		// .getLocalGraphicsEnvironment().getScreenDevices()[1]));
