@@ -109,7 +109,7 @@ public class Steuerung implements ActionListener, KeyListener {
 
 		} else if (e.getActionCommand().equals("Neues Standard-Spiel")) {
 			// Das Spiel direkt aus der SRC-Quelltext-Datei laden
-			this.starteNeuesSpiel(getClass().getClassLoader().getResource("lokaleSpiele/spielTest.txt"));
+			this.starteNeuesSpiel(getClass().getClassLoader().getResource("lokaleSpiele/Test.bqxml"));
 		} else if (e.getActionCommand().equals("URLtest")) {
 			try {
 				URL test = new URL("http://schwann-evangelisch.torres.webcontact.de/");
