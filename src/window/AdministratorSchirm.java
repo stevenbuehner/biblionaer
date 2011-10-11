@@ -32,11 +32,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JToggleButton;
 import javax.swing.ListSelectionModel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -44,7 +43,6 @@ import lokaleSpiele.QuizFileModel;
 import main.Biblionaer;
 import quiz.Quizfrage;
 import timer.SekuendlicherZeitgeber;
-import timer.UhrzeitSekUpdate;
 
 public class AdministratorSchirm extends JFrame implements QuizFenster, BackendWindow, ActionListener {
 
@@ -216,20 +214,19 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		// ******* DateiPanel *******
 		GridBagLayout gbl = new GridBagLayout();
 		this.dateiPanel = new JPanel( gbl );
-		// this.dateiPanel.setBackground( Color.BLACK );
 
 		addComponent( this.dateiPanel, gbl, new JLabel( "Gespeicherte Spiele:" ), 0, 0, 3, 1, 1.0, 0, new Insets( 5, 5,
 				5, 5 ) );
 
 		spielListeTable.setToolTipText( "Spielanzahl: " + spielListeTable.getModel().getRowCount() );
-		spielListeTable.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
+		spielListeTable.setAutoResizeMode( JTable.AUTO_RESIZE_LAST_COLUMN );
 		spielListeTable.setToolTipText( "Diese fertigen Spiele sind auf Deinem Rechner installiert" );
 		spielListeTable.setAlignmentX( Component.LEFT_ALIGNMENT );
 		// spielListeTable.setColumnSelectionAllowed( false );
 		spielListeTable.getTableHeader().setReorderingAllowed( false );
 		spielListeTable.getTableHeader().setResizingAllowed( false );
-		spielListeTable.getColumnModel().getColumn( 0 ).setPreferredWidth( 300 );
-		spielListeTable.getColumnModel().getColumn( 1 ).setPreferredWidth( 200 );
+		spielListeTable.getColumnModel().getColumn( 0 ).setPreferredWidth( 260 );
+		//spielListeTable.getColumnModel().getColumn( 1 ).setPreferredWidth( 140 );
 		// keine Mehrfachauswahl
 		spielListeTable.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
 
@@ -262,8 +259,13 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 		// Zeilen und Spaltenabstand:
 		spielListeTable.setIntercellSpacing( new Dimension( 2, 2 ) );
-		// spielListeTable.getTableHeader().setVisible( true );
-		addComponent( this.dateiPanel, gbl, this.spielListeTable, 0, 1, 2, 6, 1.0, 1.0, new Insets( 0, 5, 5, 0 ) );
+		spielListeTable.getTableHeader().setVisible( true );
+
+		JScrollPane dateiScrollPane = new JScrollPane( this.spielListeTable );
+		dateiScrollPane.setHorizontalScrollBarPolicy( ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
+		dateiScrollPane.setVerticalScrollBarPolicy( ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED );
+
+		addComponent( this.dateiPanel, gbl, dateiScrollPane, 0, 1, 2, 6, 1.0, 1.0, new Insets( 0, 5, 5, 0 ) );
 
 		// Buttons
 		angeklicktesSpielStartenBtn.addActionListener( this );

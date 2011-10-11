@@ -25,7 +25,7 @@ public class Konsole {
 		// dann debuggen wir
 		String prop = System.getProperty( "DEBUG" );
 		if ( Boolean.getBoolean( prop ) ) {
-			Biblionaer.meineEinstellungen.setKonsolenModus( 4 );
+			Biblionaer.meineEinstellungen.setKonsolenModus( 3 );
 		}
 	}
 
@@ -36,15 +36,11 @@ public class Konsole {
 				break;
 			case 1:
 				// Ausgabe äber die System-Konsole
-				this.SystemPrintLine( "["
-						+ Integer.toString( Biblionaer.meineEinstellungen.getKonsolenModus() )
-						+ "] " + pAusgabe );
+				this.SystemPrintLine( pAusgabe );
 				break;
 			case 2:
 				// Ausgabe in ein File
-				this.FilePrintLine( "["
-						+ Integer.toString( Biblionaer.meineEinstellungen.getKonsolenModus() )
-						+ "]" + pAusgabe );
+				this.FilePrintLine( pAusgabe );
 				break;
 			default:
 				// Gibt es nicht!
@@ -74,7 +70,7 @@ public class Konsole {
 				// Keine Ausgabe
 				break;
 			case 1:
-				// Ausgabe äber die System-Konsole
+				// Ausgabe über die System-Konsole
 				this.SystemPrint( pAusgabe );
 				break;
 			case 2:
@@ -96,12 +92,12 @@ public class Konsole {
 	}
 
 	public void FilePrintLine(String pAusgabe) {
-		//TODO Konsolenausgabe in Datei implementieren
-	// wird noch später implementiert
+		// TODO Konsolenausgabe in Datei implementieren
+		// wird noch später implementiert
 	}
 
 	public void FilePrint(String pAusgabe) {
-	// wird noch später implementiert
+		// wird noch später implementiert
 	}
 
 }
