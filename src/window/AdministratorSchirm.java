@@ -15,6 +15,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.VolatileImage;
@@ -54,6 +55,9 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 	protected ImageIcon					xIcon						= new ImageIcon( "src/img/x.png" );
 	protected ImageIcon					quitIcon					= new ImageIcon( "src/img/quit.png" );
 	protected ImageIcon					blackIcon					= new ImageIcon( "src/img/black.png" );
+	protected ImageIcon					trashIcon					= new ImageIcon( "src/img/trash.png" );
+	protected ImageIcon					playIcon					= new ImageIcon( "src/img/play.png" );
+	protected ImageIcon					downloadIcon				= new ImageIcon( "src/img/download.png" );
 
 	// Wird ueber Spielgestartet() und speilBeendet() gesetzt
 	private boolean						cache_spielLaeuft			= false;
@@ -88,10 +92,9 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 	// DateiPanel Material
 	protected JTable					spielListeTable				= new JTable( new QuizFileModel() );
-	protected JButton					angeklicktesSpielStartenBtn	= new JButton( "dieses Spiel starten" );
-	protected JButton					angeklickesSpielLoeschenBtn	= new JButton( "dieses Spiel löschen" );
-	protected JButton					neuesSpielAusInternBtn		= new JButton(
-																			"neues Spiel aus dem Internet importieren" );
+	protected JButton					angeklicktesSpielStartenBtn	= new JButton( playIcon );
+	protected JButton					angeklickesSpielLoeschenBtn	= new JButton( trashIcon );
+	protected JButton					neuesSpielAusInternBtn		= new JButton( downloadIcon );
 
 	// WeiteresPanel Material
 	protected JButton					schwarzerBildschirmBtn		= new JButton( "schwarzer Bildschirm", blackIcon );
@@ -211,11 +214,13 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		steuerungPanel.add( steuerungQuizPanel );
 
 		// ******* DateiPanel *******
-		this.dateiPanel = new JPanel( new GridLayout( 2, 1, 20, 20 ) );
+		GridBagLayout gbl = new GridBagLayout();
+		this.dateiPanel = new JPanel( gbl );
 		// this.dateiPanel.setBackground( Color.BLACK );
 
-		JPanel dateiLinkesPanel = new JPanel( new FlowLayout() );
-		// dateiLinkesPanel.add( new JLabel( "offline Spiel Liste" ) );
+		addComponent( this.dateiPanel, gbl, new JLabel( "Gespeicherte Spiele:" ), 0, 0, 3, 1, 1.0, 0, new Insets( 5, 5,
+				5, 5 ) );
+
 		spielListeTable.setToolTipText( "Spielanzahl: " + spielListeTable.getModel().getRowCount() );
 		spielListeTable.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
 		spielListeTable.setToolTipText( "Diese fertigen Spiele sind auf Deinem Rechner installiert" );
@@ -258,9 +263,8 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		// Zeilen und Spaltenabstand:
 		spielListeTable.setIntercellSpacing( new Dimension( 2, 2 ) );
 		// spielListeTable.getTableHeader().setVisible( true );
-		dateiLinkesPanel.add( spielListeTable );
+		addComponent( this.dateiPanel, gbl, this.spielListeTable, 0, 1, 2, 6, 1.0, 1.0, new Insets( 0, 5, 5, 0 ) );
 
-		JPanel dateiLinksUntenPanel = new JPanel( new GridLayout( 0, 1 ) );
 		// Buttons
 		angeklicktesSpielStartenBtn.addActionListener( this );
 		angeklickesSpielLoeschenBtn.addActionListener( this );
@@ -270,13 +274,13 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		angeklickesSpielLoeschenBtn.setToolTipText( "Das in der Liste ausgewählte Spiel undwiderruflich löschen" );
 		neuesSpielAusInternBtn.setToolTipText( "Ein neues Spiel mit 15 Fragen aus dem Internet herunterladen" );
 
-		dateiLinksUntenPanel.add( angeklicktesSpielStartenBtn );
-		dateiLinksUntenPanel.add( neuesSpielAusInternBtn );
-		dateiLinksUntenPanel.add( angeklickesSpielLoeschenBtn );
+		addComponent( this.dateiPanel, gbl, this.angeklicktesSpielStartenBtn, 2, 1, 1, 1, 0, 0, new Insets( 0, 2, 0, 2 ) );
+		addComponent( this.dateiPanel, gbl, this.angeklickesSpielLoeschenBtn, 2, 2, 1, 1, 0, 0, new Insets( 0, 2, 0, 2 ) );
+		addComponent( this.dateiPanel, gbl, this.neuesSpielAusInternBtn, 2, 3, 1, 1, 0, 0, new Insets( 0, 2, 0, 2 ) );
 
 		// Zusammenfügen
-		dateiPanel.add( dateiLinkesPanel );
-		dateiPanel.add( dateiLinksUntenPanel );
+		// dateiPanel.add( dateiLinkesPanel );
+		// dateiPanel.add( dateiLinksUntenPanel );
 
 		// ******* Weiteres Panel *******
 		this.weiteresPanel = new JPanel( new GridLayout( 6, 1, 20, 20 ) );
@@ -290,7 +294,7 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		weiteresPanel.add( this.aktuelleFragenZeit );
 		weiteresPanel.add( this.gesamtSpielZeit );
 
-		// Alles zusammenfägen
+		// Alles zusammenfügen
 		mainPanel.add( monitorPanel );
 		mainPanel.add( steuerungPanel );
 		mainPanel.add( dateiPanel );
@@ -320,7 +324,7 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 	 * @param weighty
 	 */
 	static void addComponent(Container cont, GridBagLayout gbl, Component c, int x, int y, int width, int height,
-			double weightx, double weighty) {
+			double weightx, double weighty, Insets randAbstaende) {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.gridx = x;
@@ -329,6 +333,10 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		gbc.gridheight = height;
 		gbc.weightx = weightx;
 		gbc.weighty = weighty;
+
+		if ( randAbstaende != null ) {
+			gbc.insets = randAbstaende;
+		}
 		gbl.setConstraints( c, gbc );
 		cont.add( c );
 	}
