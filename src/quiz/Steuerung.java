@@ -3,28 +3,23 @@ package quiz;
 import importer.XmlToSpiel;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
 
 import main.Biblionaer;
 import timer.PuplikumsJokerCountdown;
 import timer.TippJokerCountdown;
+import window.Einstellungen;
 
-public class Steuerung implements ActionListener, KeyListener {
+public class Steuerung implements KeyListener {
 
 	protected Spiel meinSpiel;
 
+	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 1L;
 	protected boolean game_running = true;
 	protected boolean started = false;
@@ -50,117 +45,25 @@ public class Steuerung implements ActionListener, KeyListener {
 		 * if (returnOptionDialog == JOptionPane.CANCEL_OPTION ||
 		 * returnOptionDialog == JOptionPane.CLOSED_OPTION) { System.exit(0); }
 		 */
-		this.actionPerformed(new ActionEvent(this, 0, "Neues Standard-Spiel"));
-
-	}
-
-	public void actionPerformed(ActionEvent e) {
-
-		// *** Klicks aus dem Hauptfenster ***//
-		// Fenster Einstellungen äffnen
-		if (e.getActionCommand().equals("Einstellungen")) {
-			Biblionaer.meineEinstellungen.setVisible(true);
-		} else if (e.getActionCommand().equals("Neues Spiel aus dem Internet")) {
-
-			// meinSpiel = new Spiel( 15 );
-			try {
-				XmlToSpiel dasFile = new XmlToSpiel(new URL(Biblionaer.meineEinstellungen.getXMLquelle()));
-				this.meinSpiel = dasFile.getSpiel();
-
-			} catch (MalformedURLException e1) {
-				Biblionaer.meineKonsole.println("Die URL zum XML-File ist falsch!");
-				e1.printStackTrace();
-			} finally {
-				this.initialisiereNeuesSpiel();
-			}
-		}
-
-		else if (e.getActionCommand().equals("Neues Spiel von Datei")) {
-			// Spiel aus einer Datei laden
-			JFileChooser derFC = new JFileChooser();
-			derFC.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			derFC.setDialogTitle("Gespeichertes Spiel auswählen");
-			derFC.setAcceptAllFileFilterUsed(false);
-
-			File currentDir = new File(System.getProperty("user.home"), "Desktop");
-			derFC.setCurrentDirectory(currentDir);
-
-			derFC.setFileFilter(new FileFilter() {
-
-				@Override
-				public String getDescription() {
-					return "Bibel-Quiz-Dateien (*.bqxml)";
-				}
-
-				@Override
-				public boolean accept(File f) {
-					return f.getName().toLowerCase().endsWith(".bqxml") || f.isDirectory();
-				}
-			});
-
-			if (derFC.showOpenDialog((Component) Biblionaer.meinWindowController.getFrontendFenster()) == JFileChooser.APPROVE_OPTION) {
-
-				XmlToSpiel dasFile = new XmlToSpiel(derFC.getSelectedFile());
-				meinSpiel = dasFile.getSpiel();
-
-				this.initialisiereNeuesSpiel();
-
-			}
-
-		} else if (e.getActionCommand().equals("Neues Standard-Spiel")) {
-			// Das Spiel direkt aus der SRC-Quelltext-Datei laden
-			this.starteNeuesSpiel(getClass().getClassLoader().getResource("lokaleSpiele/Test.bqxml"));
-		} else if (e.getActionCommand().equals("URLtest")) {
-			try {
-				URL test = new URL("http://schwann-evangelisch.torres.webcontact.de/");
-				URLConnection con = test.openConnection();
-				System.out.println(con);
-			} catch (MalformedURLException e1) {
-				Biblionaer.meineKonsole.println("MalformedURLException:", 3);
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				Biblionaer.meineKonsole.println("IOException:", 3);
-				e1.printStackTrace();
-			} finally {
-				Biblionaer.meineKonsole.println("Es besteht eine Verbindung zum Internet", 3);
-			}
-
-		} else {
-			System.out.println("Steuerung: Kein Absender den ich kenne, sagt mir: " + e.getActionCommand());
-			System.out.print("Absender: ");
-			System.out.println(e);
-		}
-
 	}
 
 	public void starteNeuesSpiel(File quizLocation) {
 		XmlToSpiel dasFile = new XmlToSpiel(quizLocation);
 		meinSpiel = dasFile.getSpiel();
 
-		if (dasFile != null) {
-			if (dasFile.getAnzahlFragen() > 0) {
-				meinSpiel = dasFile.getSpiel();
+		if (dasFile.getAnzahlFragen() > 0) {
+			meinSpiel = dasFile.getSpiel();
 
-				this.initialisiereNeuesSpiel();
-			}
-		} else {
-			Biblionaer.meineKonsole.println(
-					"Steuerung meldet: Neues Spiel konnte nicht initialisiert werden. Fehlerhafter Pfad.", 2);
+			this.initialisiereNeuesSpiel();
 		}
 	}
 
 	public void starteNeuesSpiel(URL quizLocation) {
 		XmlToSpiel dasFile = new XmlToSpiel(quizLocation);
+		if (dasFile.getAnzahlFragen() > 0) {
+			meinSpiel = dasFile.getSpiel();
 
-		if (dasFile != null) {
-			if (dasFile.getAnzahlFragen() > 0) {
-				meinSpiel = dasFile.getSpiel();
-
-				this.initialisiereNeuesSpiel();
-			}
-		} else {
-			Biblionaer.meineKonsole.println(
-					"Steuerung meldet: Neues Spiel konnte nicht initialisiert werden. Fehlerhafter Pfad.", 2);
+			this.initialisiereNeuesSpiel();
 		}
 	}
 
@@ -218,18 +121,15 @@ public class Steuerung implements ActionListener, KeyListener {
 		}
 
 		else if (e.getKeyCode() == KeyEvent.VK_1 && Biblionaer.meineEinstellungen.getKonsolenModus() >= 4) {
-			Biblionaer.meineEinstellungen
-					.setQuizScreenModus(Biblionaer.meineEinstellungen.quizScreenModusMultiWindow1FullScreen);
+			Biblionaer.meineEinstellungen.setQuizScreenModus(Einstellungen.quizScreenModusMultiWindow1FullScreen);
 		} else if (e.getKeyCode() == KeyEvent.VK_2 && Biblionaer.meineEinstellungen.getKonsolenModus() >= 4) {
 			// Wechsle in den Betriebsmodus Windowed Player - Das ist zum
 			// Debuggen ganz nätzlich
-			Biblionaer.meineEinstellungen
-					.setQuizScreenModus(Biblionaer.meineEinstellungen.quizScreenModusMultiWindow1Windowed);
+			Biblionaer.meineEinstellungen.setQuizScreenModus(Einstellungen.quizScreenModusMultiWindow1Windowed);
 		} else if (e.getKeyCode() == KeyEvent.VK_3 && Biblionaer.meineEinstellungen.getKonsolenModus() >= 4) {
-			Biblionaer.meineEinstellungen
-					.setQuizScreenModus(Biblionaer.meineEinstellungen.quizScreenModusMultiWindow2FullScreen);
+			Biblionaer.meineEinstellungen.setQuizScreenModus(Einstellungen.quizScreenModusMultiWindow2FullScreen);
 		} else if (e.getKeyCode() == KeyEvent.VK_4 && Biblionaer.meineEinstellungen.getKonsolenModus() >= 4) {
-			Biblionaer.meineEinstellungen.setQuizScreenModus(Biblionaer.meineEinstellungen.quizScreenModusSingleWindow);
+			Biblionaer.meineEinstellungen.setQuizScreenModus(Einstellungen.quizScreenModusSingleWindow);
 		}
 
 		else if (e.getKeyCode() == KeyEvent.VK_SPACE && Biblionaer.meineEinstellungen.darfGechetetWerden()) {
@@ -598,14 +498,27 @@ public class Steuerung implements ActionListener, KeyListener {
 			return 0;
 	}
 
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
+	public void programmBeendenRequest() {
+		if (this.meinSpiel != null && this.meinSpiel.laeufDasSpiel()) {
+			int returnOptionDialog = JOptionPane.showOptionDialog(
+					(Component) Biblionaer.meinWindowController.getBackendFenster(),
+					"Bist Du dir sicher, dass Du dieses Spiel beenden möchtest?", "Warnung", JOptionPane.YES_NO_OPTION,
+					JOptionPane.INFORMATION_MESSAGE, null, null, JOptionPane.NO_OPTION);
 
+			if (returnOptionDialog == JOptionPane.YES_OPTION) {
+				System.exit(0);
+			}
+		}else{
+			System.exit(0);
+		}
+	}
+
+	public void keyReleased(KeyEvent e) {
+		// Do nothing
 	}
 
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
+		// Do nothing
 	}
 
 	/**
