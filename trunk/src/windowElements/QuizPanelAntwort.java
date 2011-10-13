@@ -31,7 +31,6 @@ public class QuizPanelAntwort extends QuizImagePanel {
 	public QuizPanelAntwort(BufferedImage[] i, double xPos, double yPos, double xZielPos, double yZielPos, long delay,
 			String pAusgabeString) {
 		super(i, xPos, yPos, delay);
-		// TODO Auto-generated constructor stub
 
 		this.endPositionX = xZielPos;
 		this.endPositionY = yZielPos;

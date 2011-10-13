@@ -5,8 +5,8 @@ import importer.XmlToSpiel;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.ObjectInputStream.GetField;
 import java.net.MalformedURLException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -28,15 +28,16 @@ public class QuizFileModel extends AbstractTableModel {
 
 	private Object data[][];
 	private File dateiPfad[];
+	private boolean editable[];
 
 	public QuizFileModel() {
 		// System herausfinden und falls noch nicht vorhanden den Ordner anlegen
 
-		setFileStats(getSpeicherortSpiele());
+		setFileStats(getSpeicherortHomeSpiele());
 
 	}
 
-	public static File getSpeicherortSpiele() {
+	public static File getSpeicherortHomeSpiele() {
 		String subDir = null;
 		File homeDir = FileSystemView.getFileSystemView().getHomeDirectory();
 
@@ -45,8 +46,7 @@ public class QuizFileModel extends AbstractTableModel {
 		}
 
 		else if (isWindows()) {
-			// TODO Der Windows Home-Dir landet noch auf dem Desktop ... das ist
-			// blöd!!
+			homeDir = new File(System.getProperty("user.home"));
 			subDir = "Application Data/" + QuizFileModel.speicherOrtFuerSpiele;
 
 		} else if (isUnix()) {
@@ -69,6 +69,11 @@ public class QuizFileModel extends AbstractTableModel {
 			}
 		}
 
+		return dir;
+	}
+
+	public static File getSpeicherortLokaleSpiel() {
+		File dir = new File("src/lokaleSpiele");
 		return dir;
 	}
 
@@ -97,11 +102,16 @@ public class QuizFileModel extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int colIndex) {
-		if (colIndex == 0) {
-			return true;
+
+		if (colIndex == 0 && rowIndex >= 0 && this.editable.length > rowIndex) {
+			return this.editable[rowIndex];
 		}
 
 		return false;
+	}
+
+	public boolean isRowDeletable(int rowIndex) {
+		return this.isCellEditable(rowIndex, 0);
 	}
 
 	@Override
@@ -129,30 +139,59 @@ public class QuizFileModel extends AbstractTableModel {
 	// method could also be called after the table is on display.
 	public void setFileStats(File dir) {
 
-		String files[] = dir.list(new FilenameFilter() {
+		String filesHomeDir[] = dir.list(new FilenameFilter() {
 			public boolean accept(File f, String s) {
 				return new File(f, s).isFile() && s.toLowerCase().endsWith(QuizFileModel.dateiEndungFuerSpiele);
 			}
 		});
 
-		data = new Object[files.length][this.spalten.length];
-		dateiPfad = new File[files.length];
-		File rootPfad = getSpeicherortSpiele();
+		File filesLokalDir[] = getSpeicherortLokaleSpiel().listFiles(new FilenameFilter() {
+			public boolean accept(File f, String s) {
+				return new File(f, s).isFile() && s.toLowerCase().endsWith(QuizFileModel.dateiEndungFuerSpiele);
+			}
+		});
+
+		this.data = new Object[filesHomeDir.length + filesLokalDir.length][this.spalten.length];
+		this.dateiPfad = new File[filesHomeDir.length + filesLokalDir.length];
+		this.editable = new boolean[filesHomeDir.length + filesLokalDir.length];
+		File rootPfadToHomeDir = getSpeicherortHomeSpiele();
 		Date tempDate = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy hh:mm");
 
-		for (int i = 0; i < files.length; i++) {
+		// Für alle Spiele die auf der Festplatte im Home-Directory gespeichert
+		// sind
+		int i = 0;
+		for (i = 0; i < filesHomeDir.length; i++) {
 
 			// Dateipfad
-			dateiPfad[i] = new File(rootPfad, files[i]);
+			this.dateiPfad[i] = new File(rootPfadToHomeDir, filesHomeDir[i]);
 
 			// Dateiname
-			data[i][0] = files[i].substring(0, files[i].length() - 6);
+			this.data[i][0] = filesHomeDir[i].substring(0, filesHomeDir[i].length() - 6);
 
 			// Letztes Änderungsdatum
 			tempDate.setTime(dateiPfad[i].lastModified());
-			data[i][1] = dateFormat.format(tempDate) + " Uhr";
+			this.data[i][1] = dateFormat.format(tempDate) + " Uhr";
 
+			this.editable[i] = true;
+
+		}
+
+		// Für alle Spiele die mit der Software als Bundle ausgeliefert werden
+		for (int j = 0; j < filesLokalDir.length; j++) {
+
+			// Dateipfad
+			this.dateiPfad[i] = filesLokalDir[j];
+
+			// Dateiname
+			this.data[i][0] = filesLokalDir[j].getName().substring(0, filesLokalDir[j].getName().length() - 6);
+
+			// Letztes Änderungsdatum
+			tempDate.setTime(filesLokalDir[j].lastModified());
+			this.data[i][1] = " - ";
+
+			this.editable[i] = false;
+			i++;
 		}
 
 		// Just in case anyone's listening...
@@ -169,7 +208,7 @@ public class QuizFileModel extends AbstractTableModel {
 			File saveTo = null;
 			while (saveTo == null && i < 50) {
 				i++;
-				saveTo = new File(getSpeicherortSpiele().getAbsolutePath() + "/neuesSpiel_" + Integer.toString(i)
+				saveTo = new File(getSpeicherortHomeSpiele().getAbsolutePath() + "/neuesSpiel_" + Integer.toString(i)
 						+ ".bqxml");
 
 				if (saveTo.exists()) {
@@ -188,7 +227,7 @@ public class QuizFileModel extends AbstractTableModel {
 					Biblionaer.meineKonsole.println(
 							"Es wurde kein neues Spiel importiert, weil nur "
 									+ Integer.toString(dasXMLImporterFile.getAnzahlFragen())
-									+ " Fragen zur heruntergeladen wurden.", 2);
+									+ " Fragen heruntergeladen wurden.", 2);
 				}
 			}
 		} catch (MalformedURLException e) {
@@ -211,13 +250,28 @@ public class QuizFileModel extends AbstractTableModel {
 
 	public boolean removeQuizFile(int row) {
 
+		if (!this.isRowDeletable(row)) {
+			// Datei gehört vermutlich zu den lokalen Spielen (sollen nicht
+			// gelöscht werden)
+			Biblionaer.meineKonsole.println("Datei wurde nicht gelöscht: Es besteht keine Berechtigung dazu!", 2);
+			return false;
+		}
+
 		if (row <= dateiPfad.length) {
 			if (dateiPfad[row].exists()) {
 				dateiPfad[row].delete();
-				this.refreshInhalte();
-				return true;
+				if (dateiPfad[row].exists()) {
+					Biblionaer.meineKonsole.println("Die Datei '" + dateiPfad[row].getName()
+							+ "' wurde NICHT gelöscht.", 4);
+					return false;
+				} else {
+					this.refreshInhalte();
+					Biblionaer.meineKonsole.println("Die Datei '" + dateiPfad[row].getName() + "' wurde gelöscht.", 4);
+					return true;
+				}
 			}
 		}
+		Biblionaer.meineKonsole.println("Es wurde nichts gelöscht: Die zu löchende Datei existiert nicht!", 4);
 		return false;
 	}
 
@@ -257,7 +311,7 @@ public class QuizFileModel extends AbstractTableModel {
 	}
 
 	public void refreshInhalte() {
-		setFileStats(getSpeicherortSpiele());
+		setFileStats(getSpeicherortHomeSpiele());
 	}
 
 	public static boolean isWindows() {

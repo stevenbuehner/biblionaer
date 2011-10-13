@@ -21,7 +21,6 @@ public class Spiel {
 	protected long aktuelleFrageStartzeit = 0;
 
 	public Spiel() {
-		// TODO Auto-generated constructor stub
 		this(15); // Default-Wert
 	}
 
@@ -111,7 +110,6 @@ public class Spiel {
 	public long getAktuelleFrageStartzeit() {
 		return this.aktuelleFrageStartzeit;
 	}
-	
 
 	/**
 	 * @return ob Erfolgreich, wenn ja dann true
@@ -189,8 +187,7 @@ public class Spiel {
 			fragen[pIndex] = pFrage;
 			// this.echoFrage( pFrage );
 		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println("Klasse Spiel konnte die Frage in Index " + pIndex
+			Biblionaer.meineKonsole.println("Klasse Spiel konnte die Frage in Index " + pIndex
 					+ " nicht setzen und warf eine Exception!!!");
 		}
 	}
@@ -306,7 +303,7 @@ public class Spiel {
 	}
 
 	public void setAktuelleFrage(int pAktuelleFrage) {
-		if(this.aktuelleFrage != pAktuelleFrage){
+		if (this.aktuelleFrage != pAktuelleFrage) {
 			this.aktuelleFrage = pAktuelleFrage;
 			this.setAktuelleFrageStartzeit();
 		}

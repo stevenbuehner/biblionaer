@@ -25,6 +25,13 @@ public class Biblionaer {
 	public static void main(String[] args) {
 		// Steuerung erstellen und initiieren
 
+		// Grafikarte zum skalieren der Bilder mit einsetzen
+		// TURN THIS OFF TO SEE THE BEFORE & AFTER HARDWARE SCALING FPS
+		System.setProperty("sun.java2d.ddscale", "true");
+
+		System.setProperty("sun.java2d.accthreshold", "0");
+		System.setProperty("sun.java2d.translaccel", "true");
+
 		meineSteuerung = new Steuerung();
 
 		meineKonsole = new Konsole();
@@ -32,7 +39,7 @@ public class Biblionaer {
 		// Alle anderen Fenster und Objekte erstellen
 		meineEinstellungen = new Einstellungen("Einstellungen", meineSteuerung);
 		meinWindowController = new WindowController();
-		
+
 		meinWindowController.addFrontendFenster(new SinglePlayerSchirm("Der Biblionär", 678, 549, meineSteuerung));
 		// meinWindowController.addBackendFenster(new
 		// VollbildSchirm("Administrationsfenster", GraphicsEnvironment

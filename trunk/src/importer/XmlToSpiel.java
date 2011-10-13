@@ -45,13 +45,10 @@ public class XmlToSpiel {
 			in = new FileInputStream(spielPfad);
 			doc = builder.build(in);
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (JDOMException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			this.documentToSpiel();
@@ -68,10 +65,8 @@ public class XmlToSpiel {
 		try {
 			doc = builder.build(pPathToXMLFile);
 		} catch (JDOMException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			this.documentToSpiel();
@@ -95,7 +90,6 @@ public class XmlToSpiel {
 			e1.printStackTrace();
 		} catch (JDOMParseException e1) {
 			Biblionaer.meineKonsole.println("Die empfangene Quiz-Datei ist kein valides XML-File!");
-			// e1.printStackTrace();
 		} catch (JDOMException e2) {
 			e2.printStackTrace();
 		} finally {
@@ -121,8 +115,7 @@ public class XmlToSpiel {
 
 				// Alle XML-Fragen in das Quizfragenobjekt konvertieren
 				int i = 0;
-				Element pXmlFrage;
-
+				
 				for (java.util.Iterator<Element> dieFrage = fragen.iterator(); dieFrage.hasNext();) {
 					meinSpiel.setFrage(i++, xmlFrageToQuizfrage(dieFrage.next()));
 				}
