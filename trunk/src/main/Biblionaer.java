@@ -17,36 +17,38 @@ import window.WindowController;
  */
 public class Biblionaer {
 
-	public static Steuerung meineSteuerung;
-	public static Einstellungen meineEinstellungen;
-	public static WindowController meinWindowController;
-	public static Konsole meineKonsole;
+	public static Steuerung			meineSteuerung;
+	public static Einstellungen		meineEinstellungen;
+	public static WindowController	meinWindowController;
+	public static Konsole			meineKonsole;
 
 	public static void main(String[] args) {
 		// Steuerung erstellen und initiieren
 
 		// Grafikarte zum skalieren der Bilder mit einsetzen
 		// TURN THIS OFF TO SEE THE BEFORE & AFTER HARDWARE SCALING FPS
-		System.setProperty("sun.java2d.ddscale", "true");
+		System.setProperty( "sun.java2d.ddscale", "true" );
 
-		System.setProperty("sun.java2d.accthreshold", "0");
-		System.setProperty("sun.java2d.translaccel", "true");
+		System.setProperty( "sun.java2d.accthreshold", "0" );
+		System.setProperty( "sun.java2d.translaccel", "true" );
 
 		meineSteuerung = new Steuerung();
 
 		meineKonsole = new Konsole();
 
 		// Alle anderen Fenster und Objekte erstellen
-		meineEinstellungen = new Einstellungen("Einstellungen", meineSteuerung);
+		meineEinstellungen = new Einstellungen( "Einstellungen", meineSteuerung );
 		meinWindowController = new WindowController();
 
-		meinWindowController.addFrontendFenster(new SinglePlayerSchirm("Der Biblionär", 678, 549, meineSteuerung));
+		meinWindowController.addFrontendFenster( new SinglePlayerSchirm( "Der Biblionär", 678, 549, meineSteuerung ) );
 		// meinWindowController.addBackendFenster(new
 		// VollbildSchirm("Administrationsfenster", GraphicsEnvironment
 		// .getLocalGraphicsEnvironment().getScreenDevices()[1]));
 
-		meinWindowController.addBackendFenster(new AdministratorSchirm("Administrationsfenster", GraphicsEnvironment
-				.getLocalGraphicsEnvironment().getDefaultScreenDevice(), false));
+		meinWindowController.addBackendFenster( new AdministratorSchirm( "Administrationsfenster", GraphicsEnvironment
+				.getLocalGraphicsEnvironment().getDefaultScreenDevice(), false ) );
+
+		meineSteuerung.starteNeuesBeispielSpiel();
 
 		// meinWindowController.addFrontendFenster( new VollbildSchirm(
 		// "Vollbildschirm",
