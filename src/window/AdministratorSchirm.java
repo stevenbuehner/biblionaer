@@ -16,13 +16,11 @@ import java.awt.GraphicsDevice;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 import java.io.File;
 import java.io.IOException;
@@ -60,18 +58,29 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 	private static final long			serialVersionUID					= 1L;
 
 	// verwendete Icons zum Zwischenspeichern
-	protected ImageIcon					checkIcon							= new ImageIcon( "src/img/check.png" );
-	protected ImageIcon					xIcon								= new ImageIcon( "src/img/x.png" );
-	protected ImageIcon					gameQuitIcon						= new ImageIcon( "src/img/gameQuit.png" );
-	protected ImageIcon					blackIcon							= new ImageIcon( "src/img/black.png" );
-	protected ImageIcon					trashIcon							= new ImageIcon( "src/img/trash.png" );
-	protected ImageIcon					playIcon							= new ImageIcon( "src/img/play.png" );
-	protected ImageIcon					pauseIcon							= new ImageIcon( "src/img/pause.png" );
-	protected ImageIcon					downloadIcon						= new ImageIcon( "src/img/download.png" );
+	protected ImageIcon					checkIcon							= new ImageIcon( this.getClass()
+																					.getResource( "/img/check.png" ) );
+	protected ImageIcon					xIcon								= new ImageIcon( this.getClass()
+																					.getResource( "/img/x.png" ) );
+	protected ImageIcon					gameQuitIcon						= new ImageIcon( this.getClass()
+																					.getResource( "/img/gameQuit.png" ) );
+	protected ImageIcon					blackIcon							= new ImageIcon( this.getClass()
+																					.getResource( "/img/black.png" ) );
+	protected ImageIcon					trashIcon							= new ImageIcon( this.getClass()
+																					.getResource( "/img/trash.png" ) );
+	protected ImageIcon					playIcon							= new ImageIcon( this.getClass()
+																					.getResource( "/img/play.png" ) );
+	protected ImageIcon					pauseIcon							= new ImageIcon( this.getClass()
+																					.getResource( "/img/pause.png" ) );
+	protected ImageIcon					downloadIcon						= new ImageIcon( this.getClass()
+																					.getResource( "/img/download.png" ) );
 
-	protected ImageIcon					starIcon							= new ImageIcon( "src/img/star.png" );
-	protected ImageIcon					appQuitIcon							= new ImageIcon( "src/img/appQuit.png" );
-	protected ImageIcon					settingsIcon						= new ImageIcon( "src/img/settings.png" );
+	protected ImageIcon					starIcon							= new ImageIcon( this.getClass()
+																					.getResource( "/img/star.png" ) );
+	protected ImageIcon					appQuitIcon							= new ImageIcon( this.getClass()
+																					.getResource( "/img/appQuit.png" ) );
+	protected ImageIcon					settingsIcon						= new ImageIcon( this.getClass()
+																					.getResource( "/img/settings.png" ) );
 
 	private static Color				buttonColorRichtig					= Color.GREEN.darker();
 
@@ -98,9 +107,11 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 																					"<html><center>Fragestellung</center></html>" );
 	protected JLabel					bibelstelleLabel					= new JLabel( "Bibelstelle" );
 
-	protected JButton					fiftyJokerBtn						= new JButton( "50:50 Joker" );
-	protected JButton					tippJokerBtn						= new JButton( "Tipp Joker" );
-	protected JButton					publikumsJokerBtn					= new JButton( "Puplikums Joker" );
+	protected JButton					fiftyJokerBtn						= new JButton( "50:50 Joker",
+																					this.checkIcon );
+	protected JButton					tippJokerBtn						= new JButton( "Tipp Joker", this.checkIcon );
+	protected JButton					publikumsJokerBtn					= new JButton( "Puplikums Joker",
+																					this.checkIcon );
 
 	protected JButton					laufendsSpielBeendenBtn				= new JButton(
 																					"<html>Spiel beenden</html>",
@@ -253,8 +264,8 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 		addComponent( quizSteuerungPanel, gbl_quizSteuerung, new JLabel( "Bibelstelle (Tipp-Joker): " ), 0, 4, 1, 1, 0,
 				0, new Insets( 5, 5, 5, 5 ) );
-		addComponent( quizSteuerungPanel, gbl_quizSteuerung, bibelstelleLabel, 1, 4, 1, 1, 0, 0.0, new Insets( 5, 0, 5,
-				5 ) );
+		addComponent( quizSteuerungPanel, gbl_quizSteuerung, bibelstelleLabel, 1, 4, 1, 1, 0, 0,
+				new Insets( 5, 5, 5, 5 ) );
 
 		// ******* DateiPanel (Links Unten) *******
 		GridBagLayout gbl_dateiPanel = new GridBagLayout();
@@ -560,8 +571,7 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 			this.neuesSpielImportieren();
 		}
 		else if ( e.getSource() == this.neuesStandardSpielStartenBtn ) {
-			Biblionaer.meineSteuerung.starteNeuesSpiel( getClass().getClassLoader().getResource(
-					"lokaleSpiele/ein Testspiel.bqxml" ) );
+			Biblionaer.meineSteuerung.starteNeuesBeispielSpiel();
 		}
 		else if ( e.getSource() == this.schwarzerBildschirmBtn ) {
 			schwarzerBildschirmBtnKlick();
@@ -630,7 +640,8 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 			else {
 				if ( dasXMLImporterFile.getAnzahlFragen() > 0 ) {
 					dasXMLImporterFile.saveSpielToFile( saveTo );
-					Biblionaer.meineKonsole.println( "Es wurde noch ein neues Spiel angelegt.", 3 );
+					Biblionaer.meineKonsole.println(
+							"Es wurde noch ein neues Spiel aus dem Internet heruntergeladen und gespeichert.", 3 );
 				}
 				else {
 					Biblionaer.meineKonsole.println(
