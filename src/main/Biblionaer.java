@@ -8,6 +8,7 @@ import window.Einstellungen;
 import window.Konsole;
 import window.SinglePlayerSchirm;
 import window.WindowController;
+import sound.SoundLib;
 
 /**
  * Diese Klasse ist eine statische Bibliothek zur Verwaltung der Referenzen auf
@@ -27,10 +28,10 @@ public class Biblionaer {
 
 		// Grafikarte zum skalieren der Bilder mit einsetzen
 		// TURN THIS OFF TO SEE THE BEFORE & AFTER HARDWARE SCALING FPS
-		System.setProperty( "sun.java2d.ddscale", "true" );
+		// System.setProperty( "sun.java2d.ddscale", "true" );
 
-		System.setProperty( "sun.java2d.accthreshold", "0" );
-		System.setProperty( "sun.java2d.translaccel", "true" );
+	//	System.setProperty( "sun.java2d.accthreshold", "0" );
+//		System.setProperty( "sun.java2d.translaccel", "true" );
 
 		meineSteuerung = new Steuerung();
 
@@ -47,6 +48,13 @@ public class Biblionaer {
 
 		meinWindowController.addBackendFenster( new AdministratorSchirm( "Administrationsfenster", GraphicsEnvironment
 				.getLocalGraphicsEnvironment().getDefaultScreenDevice(), false ) );
+
+		// Pre-Caching Sound
+		SoundLib sl = SoundLib.getInstance();
+		// sl.loadSound( "background", "sound/background3_ohnePegelung.wav" );
+		// sl.loadSound( "gewonnen", "sound/gewonnen.wav" );
+		// sl.loadSound( "richtig", "sound/richtig.wav" );
+		// sl.loadSound( "verloren", "sound/verloren.wav" );
 
 		meineSteuerung.starteNeuesBeispielSpiel();
 

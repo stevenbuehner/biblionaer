@@ -11,6 +11,7 @@ import java.net.URL;
 import javax.swing.JOptionPane;
 
 import main.Biblionaer;
+import sound.SoundLib;
 import timer.PuplikumsJokerCountdown;
 import timer.TippJokerCountdown;
 import window.Einstellungen;
@@ -67,7 +68,7 @@ public class Steuerung implements KeyListener {
 	}
 
 	public void starteNeuesBeispielSpiel() {
-		if ( this.meinSpiel != null && 	this.meinSpiel.laeufDasSpiel() ) {
+		if ( this.meinSpiel != null && this.meinSpiel.laeufDasSpiel() ) {
 			this.spielBeenden();
 		}
 
@@ -393,6 +394,7 @@ public class Steuerung implements KeyListener {
 	}
 
 	public void klickAufFiftyJoker() {
+
 		Biblionaer.meineKonsole.println( "Klick auf Fifty-Joker", 4 );
 
 		if ( meinSpiel == null )

@@ -113,7 +113,7 @@ public class WindowController implements QuizFenster, BackendWindow, FrontendWin
 		return meineQuizFenster.remove( zuLoeschendeFensterID );
 	}
 
-	public void removAllQuizFensters() {
+	public void removeAllQuizFensters() {
 		Iterator<QuizFenster> iter = meineQuizFenster.iterator();
 		while (iter.hasNext()) {
 			QuizFenster dasFenster = iter.next();
