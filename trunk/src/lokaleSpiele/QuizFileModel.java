@@ -5,7 +5,6 @@ import importer.XmlToSpiel;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.ObjectInputStream.GetField;
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

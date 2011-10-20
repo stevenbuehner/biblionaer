@@ -119,7 +119,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 				this.quizScreenModus.setSelectedItem( quizScreenModusSingleWindow );
 				this.quizScreenModusLetzteAuswahl = quizScreenModusSingleWindow;
 
-				Biblionaer.meinWindowController.removAllQuizFensters();
+				Biblionaer.meinWindowController.removeAllQuizFensters();
 				Biblionaer.meinWindowController.addFrontendFenster( new SinglePlayerSchirm( "Hauptfenster", 678, 549,
 						meineSteuerung ) );
 
@@ -135,7 +135,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 				// Präfen ob ueberhaupt ein zweiter Monitor angeschlossen ist
 				if ( GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 1 ) {
 					// Mindestens zwei Monitore. ... alles aber im Vollbildmodus
-					Biblionaer.meinWindowController.removAllQuizFensters();
+					Biblionaer.meinWindowController.removeAllQuizFensters();
 
 					Biblionaer.meinWindowController.addBackendFenster( new AdministratorSchirm(
 							"Administrationsfenster", GraphicsEnvironment.getLocalGraphicsEnvironment()
@@ -160,9 +160,9 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 				this.quizScreenModus.setSelectedItem( quizScreenModusMultiWindow1Windowed );
 				this.quizScreenModusLetzteAuswahl = quizScreenModusMultiWindow1Windowed;
 
-				// Präfen ob ueberhaupt ein zweiter Monitor angeschlossen ist
+				// Prüfen ob ueberhaupt ein zweiter Monitor angeschlossen ist
 				// Mindestens zwei Monitore
-				Biblionaer.meinWindowController.removAllQuizFensters();
+				Biblionaer.meinWindowController.removeAllQuizFensters();
 
 				Biblionaer.meinWindowController.addBackendFenster( new AdministratorSchirm( "Administrationsfenster",
 						GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice(), false ) );
@@ -193,7 +193,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 				// Präfen ob ueberhaupt ein zweiter Monitor angeschlossen ist
 				if ( GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 1 ) {
 					// Mindestens zwei Monitore
-					Biblionaer.meinWindowController.removAllQuizFensters();
+					Biblionaer.meinWindowController.removeAllQuizFensters();
 
 					Biblionaer.meinWindowController.addBackendFenster( new AdministratorSchirm(
 							"Administrationsfenster", GraphicsEnvironment.getLocalGraphicsEnvironment()
@@ -221,7 +221,7 @@ public class Einstellungen extends JFrame implements ActionListener, KeyListener
 				this.quizScreenModus.setSelectedItem( quizScreenModusSingleWindow );
 				this.quizScreenModusLetzteAuswahl = quizScreenModusSingleWindow;
 
-				Biblionaer.meinWindowController.removAllQuizFensters();
+				Biblionaer.meinWindowController.removeAllQuizFensters();
 				Biblionaer.meinWindowController.addFrontendFenster( new SinglePlayerSchirm( "Hauptfenster", 678, 549,
 						meineSteuerung ) );
 			}

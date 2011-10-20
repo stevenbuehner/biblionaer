@@ -27,6 +27,7 @@ import javax.swing.JFrame;
 import main.Biblionaer;
 import quiz.Quizfrage;
 import quiz.Steuerung;
+import sound.SoundLib;
 import windowElements.QuizImagePanel;
 import windowElements.QuizPanelAntwort;
 import windowElements.QuizPanelFrage;
@@ -653,11 +654,11 @@ public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListene
 	}
 
 	public void playFrageFalsch() {
-		// Do nothing
+		SoundLib.getInstance().playSound( "verloren" );
 	}
 
 	public void playFrageRichtig() {
-		// Do nothing
+		SoundLib.getInstance().playSound( "richtig" );
 	}
 
 	public void playSpielGewonnen() {
@@ -669,7 +670,7 @@ public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListene
 
 		this.quizQuestionPanel.setLoop(2, 2);
 
-		// Eventuell hier noch einen Sound abspielen
+		SoundLib.getInstance().playSound( "gewonnen" );
 	}
 
 	// * Ab hier die Interfacemethoden fär FrontendWindow
@@ -684,7 +685,7 @@ public class SinglePlayerSchirm extends Canvas implements Runnable, MouseListene
 	}
 
 	public void playStarteSpiel() {
-		// TODO Auto-generated method stub
+		// SoundLib.getInstance().loopSound( "background" );
 	}
 
 	public void spielBeendet() {
