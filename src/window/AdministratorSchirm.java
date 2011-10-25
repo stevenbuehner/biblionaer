@@ -96,7 +96,8 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 
 	private GraphicsDevice				device								= null;
 	private boolean						isFullScreen						= false;
-	private DisplayMode					oldWindowedDisplayMode				= null;
+	private DisplayMode					originalDM							= null;
+	public static DisplayMode			fullscreenDM						= new DisplayMode ( 1024, 768, 32, 60 );
 
 	// links oben
 	protected JPanel					monitorPanel						= null;
@@ -166,7 +167,7 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		this.isFullScreen = vollbildModus;
 
 		if ( this.device != null ) {
-			this.oldWindowedDisplayMode = this.device.getDisplayMode ();
+			this.originalDM = this.device.getDisplayMode ();
 		}
 
 		// Initialisiere Oberfläche
@@ -918,84 +919,67 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 	 *             
 	 */
 	public void setFullscreen (boolean fullscreen) {
-		// nur ändern wenn nötig
-		if ( this.isFullScreen != fullscreen && this.device != null && this.device.isFullScreenSupported () ) {
-
+		if ( this.isFullScreen != fullscreen ) { // are we actually changing
+													// modes.
 			// change modes.
 			this.isFullScreen = fullscreen;
 
 			// toggle fullscreen mode
-			if ( !fullscreen ) {
+			if ( !fullscreen ) { // change to windowed mode.
+				// hide the frame so we can change it.
+				setVisible ( false );
+
 				// set the display mode back to the what it was when
 				// the program was launched.
-				this.device.setDisplayMode ( this.oldWindowedDisplayMode );
-				System.out.println ( "Save DisplayMode: " + this.oldWindowedDisplayMode.toString () );
-
-				// hide the frame so we can change it.
-				this.setVisible ( false );
-				System.out.println ( "Set Visible(false)" );
+				device.setDisplayMode ( this.originalDM );
 
 				// remove the frame from being displayable.
-				this.dispose ();
-				System.out.println ( "dispose" );
+				dispose ();
 
 				// put the borders back on the frame.
-				this.setUndecorated ( false );
-				System.out.println ( "set undecorated false" );
+				setUndecorated ( false );
 
 				// needed to unset this window as the fullscreen window.
-				this.device.setFullScreenWindow ( null );
-				System.out.println ( "setFullScreenWindow null" );
+				device.setFullScreenWindow ( null );
 
 				// make sure the size of the window is correct.
-				this.setSize ( new Dimension ( 1024, 768 ) );
-				System.out.println ( "set Size (1024 x 768)" );
+				setSize ( 1024, 768 );
 
 				// recenter window
-				this.setLocationRelativeTo ( null );
-				System.out.println ( "setLocationRelativeTo null" );
+				setLocationRelativeTo ( null );
 
 				// reset the display mode to what it was before
 				// we changed it.
-				this.setVisible ( true );
-				System.out.println ( "Set Visible(true)" );
+				setVisible ( true );
 
 			}
-			else {
-				// save off the old display mode.
-				// this.oldWindowedDisplayMode = this.device.getDisplayMode ();
-
-				// hide everything
-				this.setVisible ( false );
-				System.out.println ( "Set Visible(false)" );
+			else { // change to fullscreen.
+					// hide everything
+				setVisible ( false );
 
 				// remove the frame from being displayable.
-				this.dispose ();
-				System.out.println ( "dispose()" );
+				dispose ();
+				System.out.println ( "Dipose()" );
 
 				// remove borders around the frame
-				this.setUndecorated ( true );
-				System.out.println ( "Set undecorated true" );
-
-				System.out.println ( "Fullscreen Supported?: " + this.device.isFullScreenSupported () );
+				setUndecorated ( true );
+				System.out.println ( "setUndecorated true" );
 
 				// make the window fullscreen.
-				this.device.setFullScreenWindow ( this );
-				System.out.println ( "Set setFullScreenWindow(this) " + this.toString () );
+				device.setFullScreenWindow ( this );
+				System.out.println ( "setFullScreenWindow " + this );
 
 				// attempt to change the screen resolution.
-				// this.device.setDisplayMode ( this.oldWindowedDisplayMode );
+				device.setDisplayMode ( AdministratorSchirm.fullscreenDM );
+				System.out.println ( "setDisplayMode: " + AdministratorSchirm.fullscreenDM.toString () );
 
 				// show the frame
-				this.setVisible ( true );
-				System.out.println ( "Set Visible(true)" );
+				setVisible ( true );
 
-			}
+			} // end if
 
 			// make sure that the screen is refreshed.
-			this.repaint ();
-			System.out.println ( "repaint" );
-
+			repaint ();
 		}
 	}
 
