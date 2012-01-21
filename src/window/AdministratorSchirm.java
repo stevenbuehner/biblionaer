@@ -863,7 +863,6 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 			auswahl = 4;
 
 		if ( auswahl != 0 ) {
-			Biblionaer.meineSteuerung.klickAufAntwortFeld ( auswahl );
 
 			switch (auswahl) {
 				case 1:
@@ -879,6 +878,15 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 					this.antwort4Panel.remove ( auswahlBestaetigenBtn );
 					break;
 			}
+
+			this.antwort1KlickenBtn.setEnabled ( true );
+			this.antwort2KlickenBtn.setEnabled ( true );
+			this.antwort3KlickenBtn.setEnabled ( true );
+			this.antwort4KlickenBtn.setEnabled ( true );
+
+			// Als letztes, da es beim Ton-Einspielen fehler geben kann =>
+			// nachfolgende Befehle werde nicht ausgeführt
+			Biblionaer.meineSteuerung.klickAufAntwortFeld ( auswahl );
 		}
 		else {
 			Biblionaer.meineKonsole.println (
@@ -1145,23 +1153,20 @@ public class AdministratorSchirm extends JFrame implements QuizFenster, BackendW
 		// Wird hier implementiert, weil es ein Backendfenster ist
 
 		if ( frage != null ) {
-			this.antwort1KlickenBtn.setEnabled ( true );
-			this.antwort2KlickenBtn.setEnabled ( true );
-			this.antwort3KlickenBtn.setEnabled ( true );
-			this.antwort4KlickenBtn.setEnabled ( true );
-
-			if ( frage.getAntwort1 () == null )
-				this.antwort1KlickenBtn.setEnabled ( false );
-
-			if ( frage.getAntwort2 () == null )
-				this.antwort2KlickenBtn.setEnabled ( false );
-
-			if ( frage.getAntwort3 () == null )
-				this.antwort3KlickenBtn.setEnabled ( false );
-
-			if ( frage.getAntwort4 () == null )
-				this.antwort4KlickenBtn.setEnabled ( false );
-
+			/*
+			 * this.antwort1KlickenBtn.setEnabled ( true );
+			 * this.antwort2KlickenBtn.setEnabled ( true );
+			 * this.antwort3KlickenBtn.setEnabled ( true );
+			 * this.antwort4KlickenBtn.setEnabled ( true );
+			 * if ( frage.getAntwort1 () == null )
+			 * this.antwort1KlickenBtn.setEnabled ( false );
+			 * if ( frage.getAntwort2 () == null )
+			 * this.antwort2KlickenBtn.setEnabled ( false );
+			 * if ( frage.getAntwort3 () == null )
+			 * this.antwort3KlickenBtn.setEnabled ( false );
+			 * if ( frage.getAntwort4 () == null )
+			 * this.antwort4KlickenBtn.setEnabled ( false );
+			 */
 			// html-Tags sind nötig für den automatischen Zeilenumbruch
 			this.antwort1KlickenBtn.setText ( "<html>A: " + frage.getAntwort1 () + "</html>" );
 			this.antwort2KlickenBtn.setText ( "<html>B: " + frage.getAntwort2 () + "</html>" );
